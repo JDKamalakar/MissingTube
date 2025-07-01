@@ -162,6 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <ComparisonModal
           onClose={() => setShowComparisonModal(false)}
           currentVideos={currentVideos}
+          currentPlaylistInfo={currentPlaylistInfo}
         />
       )}
     </>

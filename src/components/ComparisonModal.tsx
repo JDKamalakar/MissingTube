@@ -1,21 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, FileText, CheckCircle, AlertTriangle, X, GitCompare, ChevronDown, ChevronUp } from 'lucide-react';
-import { Video } from '../types';
+import { Upload, FileText, CheckCircle, AlertTriangle, X, GitCompare, ChevronDown, Download } from 'lucide-react';
+import { Video, PlaylistInfo } from '../types';
 
 interface ComparisonModalProps {
   onClose: () => void;
   currentVideos: Video[];
+  currentPlaylistInfo?: PlaylistInfo | null;
 }
 
 interface ComparisonResult {
-  exactMatches: Array<{
-    currentIndex: number;
-    fileIndex: number;
-    currentTitle: string;
-    fileTitle: string;
-    videoId: string;
-    confidence: 100;
-  }>;
   unavailableMatches: Array<{
     currentIndex: number;
     fileIndex: number;
@@ -26,6 +19,7 @@ interface ComparisonResult {
   }>;
   allVideos: Array<{
     currentIndex: number;
+    fileIndex?: number;
     currentTitle: string;
     fileTitle?: string;
     videoId: string;
@@ -33,19 +27,24 @@ interface ComparisonResult {
     isUnavailable: boolean;
     status: 'exact-match' | 'unavailable-match' | 'no-match';
   }>;
+  hasNewData: boolean;
 }
 
-export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, currentVideos }) => {
+export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, currentVideos, currentPlaylistInfo }) => {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [showExactMatches, setShowExactMatches] = useState(false); // Minimized by default
-  const [showUnavailableMatches, setShowUnavailableMatches] = useState(true); // Expanded by default
-  const [showAllVideos, setShowAllVideos] = useState(true); // Expanded by default
+  const [showUnavailableVideos, setShowUnavailableVideos] = useState(true);
+  const [showAllVideos, setShowAllVideos] = useState(false);
+  const [showContent, setShowContent] = useState(false); // For modal entry animation
+  const [isComparisonView, setIsComparisonView] = useState(false); // Controls which view is active
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // Modal entry animation
+    setShowContent(true);
+
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -66,48 +65,45 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
     if (selectedFile && selectedFile.type === 'application/json') {
       setFile(selectedFile);
       setError(null);
+      setComparisonResult(null); // Clear previous comparison results
     } else {
-      setError('Please select a valid JSON file');
-    }
-  };
-
-  const extractPlaylistId = (url: string): string | null => {
-    try {
-      const urlObj = new URL(url);
-      return urlObj.searchParams.get('list');
-    } catch {
-      return null;
+      setError('Please select a valid JSON file.');
+      setFile(null);
+      setComparisonResult(null); // Clear previous comparison results
     }
   };
 
   const isUnavailableTitle = (title: string): boolean => {
     const unavailableTitles = [
       'Deleted video',
-      'Private video', 
+      'Private video',
       'Unavailable video',
       '[Deleted video]',
       '[Private video]',
       '[Unavailable video]'
     ];
-    return unavailableTitles.some(unavailable => 
+    return unavailableTitles.some(unavailable =>
       title.toLowerCase().includes(unavailable.toLowerCase())
     );
   };
 
   const handleCompare = async () => {
-    if (!file) return;
+    if (!file || !currentPlaylistInfo) {
+      setError('Please select a file and ensure a current playlist is loaded.');
+      return;
+    }
 
     setIsProcessing(true);
     setError(null);
+    setComparisonResult(null); // Clear previous results immediately for a clean state before comparison
 
     try {
       const fileContent = await file.text();
-      
-      // Check if file content is empty or only whitespace
+
       if (!fileContent || fileContent.trim().length === 0) {
         throw new Error('The uploaded file is empty. Please select a file with valid JSON content.');
       }
-      
+
       let fileData;
       try {
         fileData = JSON.parse(fileContent);
@@ -117,65 +113,69 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
         }
         throw parseError;
       }
-      
-      // Extract videos and playlist info from file data
+
       let fileVideos: any[] = [];
-      let filePlaylistId: string | null = null;
-      
-      if (fileData.playlists && fileData.playlists.length > 0) {
-        // Backup format
+      let filePlaylistInfo: Partial<PlaylistInfo> | null = null;
+
+      if (fileData.playlists && Array.isArray(fileData.playlists) && fileData.playlists.length > 0) {
         const playlist = fileData.playlists[0];
         fileVideos = playlist.videos || [];
-        filePlaylistId = playlist.id;
+        filePlaylistInfo = {
+          id: playlist.id,
+          title: playlist.title,
+          thumbnail: playlist.thumbnail
+        };
       } else if (Array.isArray(fileData)) {
-        // Direct video array
         fileVideos = fileData;
-      } else if (fileData.videos) {
-        // Object with videos property
+        filePlaylistInfo = null;
+      } else if (fileData.videos && Array.isArray(fileData.videos)) {
         fileVideos = fileData.videos;
-        filePlaylistId = fileData.id;
+        filePlaylistInfo = {
+          id: fileData.id,
+          title: fileData.title,
+          thumbnail: fileData.thumbnail
+        };
       } else {
         throw new Error('Invalid file format. The file must contain video data in a supported format.');
       }
 
-      // Get current playlist ID (assuming it's available from the first video's URL or stored somewhere)
-      const currentPlaylistId = currentVideos.length > 0 ? 
-        extractPlaylistId(window.location.href) || 'current' : null;
+      if (filePlaylistInfo && currentPlaylistInfo.id && filePlaylistInfo.id) {
+        if (filePlaylistInfo.id !== currentPlaylistInfo.id) {
+          const currentPlaylistName = currentPlaylistInfo.title || 'Current Playlist';
+          const filePlaylistName = filePlaylistInfo.title || 'Uploaded File Playlist';
 
-      // Check if playlist IDs match (if both are available)
-      if (filePlaylistId && currentPlaylistId && filePlaylistId !== currentPlaylistId) {
-        setError(`Wrong playlist file. The uploaded file contains data for playlist "${filePlaylistId}" but you're currently viewing a different playlist.`);
-        setIsProcessing(false);
-        return;
+          setError(
+            `Wrong playlist file selected. This file is for "${filePlaylistName}", but you are viewing "${currentPlaylistName}".`
+          );
+          setIsProcessing(false);
+          return;
+        }
       }
 
-      const exactMatches: ComparisonResult['exactMatches'] = [];
       const unavailableMatches: ComparisonResult['unavailableMatches'] = [];
       const allVideos: ComparisonResult['allVideos'] = [];
+      let hasNewData = false;
 
-      // Create a map of file videos by video ID for quick lookup
-      const fileVideoMap = new Map();
+      const fileVideoMap = new Map<string, Video & { fileIndex: number }>();
       fileVideos.forEach((video, index) => {
         if (video.videoId) {
           fileVideoMap.set(video.videoId, { ...video, fileIndex: index });
         }
       });
 
-      // Process each current video
       currentVideos.forEach((currentVideo, currentIndex) => {
         let status: 'exact-match' | 'unavailable-match' | 'no-match' = 'no-match';
         let fileMatch = null;
         let confidence = 0;
+        let fileIndexForDisplay: number | undefined = undefined;
 
-        // Try to find match by video ID
         if (currentVideo.videoId && fileVideoMap.has(currentVideo.videoId)) {
-          fileMatch = fileVideoMap.get(currentVideo.videoId);
+          fileMatch = fileVideoMap.get(currentVideo.videoId)!;
           confidence = 100;
+          fileIndexForDisplay = fileMatch.fileIndex + 1;
 
-          if (currentVideo.unavailable) {
-            // Current is unavailable but we found a match by video ID
+          if (currentVideo.unavailable || isUnavailableTitle(currentVideo.title)) {
             if (!isUnavailableTitle(fileMatch.title)) {
-              // File has real title, current is unavailable - this is a match
               unavailableMatches.push({
                 currentIndex: currentIndex + 1,
                 fileIndex: fileMatch.fileIndex + 1,
@@ -185,45 +185,32 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                 confidence: 100
               });
               status = 'unavailable-match';
+              hasNewData = true;
             } else {
-              // Both are unavailable titles - still a match but different category
-              exactMatches.push({
-                currentIndex: currentIndex + 1,
-                fileIndex: fileMatch.fileIndex + 1,
-                currentTitle: currentVideo.title,
-                fileTitle: fileMatch.title,
-                videoId: currentVideo.videoId,
-                confidence: 100
-              });
               status = 'exact-match';
             }
           } else {
-            // Current is available and we found a match by video ID
-            exactMatches.push({
-              currentIndex: currentIndex + 1,
-              fileIndex: fileMatch.fileIndex + 1,
-              currentTitle: currentVideo.title,
-              fileTitle: fileMatch.title,
-              videoId: currentVideo.videoId,
-              confidence: 100
-            });
             status = 'exact-match';
           }
         }
 
-        // Add to all videos list
         allVideos.push({
           currentIndex: currentIndex + 1,
+          fileIndex: fileIndexForDisplay,
           currentTitle: currentVideo.title,
           fileTitle: fileMatch?.title,
           videoId: currentVideo.videoId,
           confidence,
-          isUnavailable: currentVideo.unavailable,
+          isUnavailable: currentVideo.unavailable || isUnavailableTitle(currentVideo.title),
           status
         });
       });
 
-      setComparisonResult({ exactMatches, unavailableMatches, allVideos });
+      setComparisonResult({ unavailableMatches, allVideos, hasNewData });
+      setShowUnavailableVideos(true);
+      setShowAllVideos(false);
+      setIsComparisonView(true); // Switch to comparison view only on successful comparison
+
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -234,6 +221,51 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleDownloadNewData = () => {
+    if (!comparisonResult || !comparisonResult.hasNewData) return;
+
+    const newDataVideos = comparisonResult.unavailableMatches.map(match => {
+      const originalVideo = currentVideos.find(v => v.videoId === match.videoId);
+
+      if (!originalVideo) {
+        console.warn(`Original video with ID ${match.videoId} not found in currentVideos for recovery.`);
+        return null;
+      }
+
+      return {
+        ...originalVideo,
+        title: match.fileTitle,
+        unavailable: false
+      };
+    }).filter((v): v is Video => v !== null);
+
+    const backupData = {
+      playlists: [{
+        id: currentPlaylistInfo?.id,
+        title: `${currentPlaylistInfo?.title || 'Unknown Playlist'} - Recovered Titles`,
+        thumbnail: currentPlaylistInfo?.thumbnail,
+        lastAccessed: new Date().toISOString(),
+        videoCount: newDataVideos.length,
+        videos: newDataVideos
+      }],
+      createdAt: new Date().toISOString(),
+      version: '1.0.0'
+    };
+
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+      type: 'application/json',
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `recovered-titles-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const getStatusColor = (status: string) => {
@@ -252,7 +284,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       case 'exact-match':
         return 'Match';
       case 'unavailable-match':
-        return 'Unavailable Match';
+        return 'Recovered';
       default:
         return 'No Match';
     }
@@ -260,280 +292,279 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop with navbar-like blur */}
-      <div 
-        className="fixed inset-0 bg-scrim/60 blur-subtle transition-opacity duration-225 ease-out animate-fade-in"
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-scrim/60 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
       />
-      
-      {/* Modal with navbar-like transparency */}
-      <div 
-        className="relative bg-surface/90 blur-light rounded-2xl shadow-2xl border border-outline-variant w-full max-w-5xl max-h-[90vh] animate-modal-enter elevation-3"
+
+      {/* Modal */}
+      <div
+        className={`relative bg-surface/90 rounded-2xl shadow-2xl border border-outline-variant w-full max-w-5xl max-h-[90vh] flex flex-col transition-all duration-300 ease-out ${showContent ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between p-6 border-b border-outline-variant">
+        <div className="flex items-center justify-between p-6 border-b border-outline-variant flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-primary-container rounded-2xl">
+            <div className="p-3 bg-primary-container rounded-xl">
               <GitCompare className="w-6 h-6 text-on-primary-container" />
             </div>
-            <h2 className="text-xl font-semibold text-on-surface">Compare With Local File</h2>
+            <div>
+              <h2 className="text-xl font-semibold text-on-surface">Compare With Local File</h2>
+              {currentPlaylistInfo && (
+                <p className="text-sm text-on-surface-variant">Currently viewing: {currentPlaylistInfo.title}</p>
+              )}
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-surface-container rounded-2xl transition-all duration-225 hover:scale-110 active:scale-95 text-on-surface-variant hover:text-on-surface"
+            className="p-2 hover:bg-surface-container rounded-full transition-all duration-200 hover:scale-110"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
-        
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]" style={{ scrollbarWidth: 'thin' }}>
-          <div className="space-y-6">
-            {!comparisonResult && (
-              <>
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold text-on-surface mb-2">
-                    Upload JSON File for Comparison
-                  </h3>
-                  <p className="text-on-surface-variant text-sm leading-relaxed">
-                    Upload a JSON file containing video data to compare with the current playlist.
-                    Comparison is based on video IDs and will identify exact matches and unavailable video recoveries.
+
+        {/* Content area with controlled height and overflow */}
+        <div className="p-6 flex-grow overflow-hidden relative"> {/* Changed overflow-y-auto to overflow-hidden for slide effect */}
+          {/* Main content wrapper for transition */}
+          <div className={`flex w-full transition-transform duration-500 ease-in-out ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`}>
+            {/* Select File View */}
+            <div className="flex-shrink-0 w-full space-y-6 pr-2"> {/* Added overflow-y-auto and pr-2 */}
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-on-surface mb-2">
+                  Upload JSON File for Comparison
+                </h3>
+                <p className="text-on-surface-variant text-sm">
+                  Upload a backup file to find titles for any unavailable videos in the current playlist.
+                </p>
+              </div>
+
+              {currentPlaylistInfo ? (
+                <div className="p-4 bg-tertiary-container rounded-xl border border-tertiary shadow-md">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-5 h-5 text-on-tertiary-container" />
+                    <span className="font-medium text-on-tertiary-container">Current Playlist Ready</span>
+                  </div>
+                  <div className="text-sm text-on-tertiary-container">
+                    <div className="font-medium truncate">{currentPlaylistInfo.title}</div>
+                    <div className="text-xs opacity-75 mt-1">
+                      {currentVideos.length} videos loaded for comparison
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-error-container rounded-xl border border-error shadow-md">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="w-5 h-5 text-on-error-container" />
+                    <span className="font-medium text-on-error-container">No Playlist Loaded</span>
+                  </div>
+                  <p className="text-sm text-on-error-container">
+                    Please analyze a playlist before comparing it with a file.
                   </p>
                 </div>
+              )}
 
-                <div className="border-2 border-dashed border-outline-variant rounded-2xl p-8 text-center">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".json"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-                  
-                  <div className="p-4 bg-surface-container rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                    <Upload className="w-8 h-8 text-on-surface-variant" />
-                  </div>
-                  
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="px-6 py-3 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg"
-                  >
-                    Select JSON File
-                  </button>
-                  
-                  {file && (
-                    <div className="mt-4 p-3 bg-tertiary-container/70 backdrop-blur-sm rounded-2xl">
-                      <div className="flex items-center gap-2 justify-center">
-                        <FileText className="w-4 h-4 text-on-tertiary-container" />
-                        <span className="text-sm font-medium text-on-tertiary-container">{file.name}</span>
-                      </div>
-                    </div>
-                  )}
+              <div className="border-2 border-dashed border-outline-variant rounded-xl p-8 text-center bg-surface-container-low transition-all duration-300 hover:border-primary">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+
+                <div className="p-4 bg-surface-container rounded-xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner">
+                  <Upload className="w-8 h-8 text-on-surface-variant" />
                 </div>
+
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={!currentPlaylistInfo}
+                  className="px-6 py-3 bg-primary text-on-primary rounded-xl font-medium shadow-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105 active:scale-95"
+                >
+                  <Upload className="w-5 h-5" />
+                  Select JSON File
+                </button>
 
                 {file && (
-                  <button
-                    onClick={handleCompare}
-                    disabled={isProcessing}
-                    className="w-full py-3 bg-secondary text-on-secondary rounded-2xl font-medium hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-on-secondary/30 border-t-on-secondary rounded-full animate-spin"></div>
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        <GitCompare className="w-5 h-5" />
-                        Compare Files
-                      </>
-                    )}
-                  </button>
-                )}
-
-                {error && (
-                  <div className="p-4 bg-error-container/70 backdrop-blur-sm text-on-error-container rounded-2xl">
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5" />
-                      <span className="font-medium">{error}</span>
+                  <div className="mt-4 p-3 bg-tertiary-container rounded-xl inline-block shadow-md">
+                    <div className="flex items-center gap-2 justify-center">
+                      <FileText className="w-4 h-4 text-on-tertiary-container" />
+                      <span className="text-sm font-medium text-on-tertiary-container">{file.name}</span>
                     </div>
-                  </div>
-                )}
-
-                <div className="text-xs text-on-surface-variant bg-surface-container/70 backdrop-blur-sm rounded-2xl p-4">
-                  <p className="mb-2">
-                    <strong>How comparison works:</strong>
-                  </p>
-                  <ul className="space-y-1 text-xs">
-                    <li>• Matches videos by their unique video IDs</li>
-                    <li>• Identifies exact matches (100% confidence)</li>
-                    <li>• Finds titles for unavailable videos</li>
-                    <li>• Validates playlist compatibility</li>
-                  </ul>
-                </div>
-              </>
-            )}
-
-            {comparisonResult && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
-                  <button
-                    onClick={() => {
-                      setComparisonResult(null);
-                      setFile(null);
-                      setError(null);
-                    }}
-                    className="px-4 py-2 bg-surface-container/70 backdrop-blur-sm text-on-surface rounded-2xl font-medium hover:bg-surface-container-high transition-all duration-225"
-                  >
-                    Compare Another File
-                  </button>
-                </div>
-
-                {/* All Videos - Expanded by default */}
-                <div className="bg-surface-container/70 backdrop-blur-sm rounded-2xl border border-outline-variant">
-                  <button
-                    onClick={() => setShowAllVideos(!showAllVideos)}
-                    className="w-full p-4 flex items-center justify-between hover:bg-surface-container-high transition-all duration-225 rounded-t-2xl"
-                  >
-                    <h4 className="font-medium text-on-surface flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      All Videos ({comparisonResult.allVideos.length})
-                    </h4>
-                    {showAllVideos ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                  </button>
-                  
-                  {showAllVideos && (
-                    <div className="p-4 pt-0 space-y-2 max-h-64 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-                      {comparisonResult.allVideos.map((video, index) => (
-                        <div key={index} className="bg-surface rounded-2xl p-3 border border-outline-variant">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="text-sm font-medium text-on-surface">
-                              Index {video.currentIndex}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(video.status)}`}>
-                                {getStatusLabel(video.status)}
-                              </div>
-                              {video.confidence > 0 && (
-                                <div className="text-xs px-2 py-1 rounded-full bg-tertiary text-on-tertiary">
-                                  {video.confidence}%
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <div className="text-xs text-on-surface-variant space-y-1">
-                            <div className="flex items-center gap-2">
-                              {video.isUnavailable && (
-                                <AlertTriangle className="w-3 h-3 text-error" />
-                              )}
-                              <span className="truncate">Current: {video.currentTitle}</span>
-                            </div>
-                            {video.fileTitle && (
-                              <div className="truncate">File: {video.fileTitle}</div>
-                            )}
-                            <div className="text-xs opacity-75">ID: {video.videoId}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Exact Matches - Minimized by default */}
-                {comparisonResult.exactMatches.length > 0 && (
-                  <div className="bg-tertiary-container/70 backdrop-blur-sm rounded-2xl border border-tertiary">
-                    <button
-                      onClick={() => setShowExactMatches(!showExactMatches)}
-                      className="w-full p-4 flex items-center justify-between hover:bg-tertiary-container transition-all duration-225 rounded-t-2xl"
-                    >
-                      <h4 className="font-medium text-on-tertiary-container flex items-center gap-2">
-                        <CheckCircle className="w-5 h-5" />
-                        Exact Matches ({comparisonResult.exactMatches.length})
-                      </h4>
-                      {showExactMatches ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                    </button>
-                    
-                    {showExactMatches && (
-                      <div className="p-4 pt-0 space-y-3 max-h-64 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-                        {comparisonResult.exactMatches.map((match, index) => (
-                          <div key={index} className="bg-surface-container/70 backdrop-blur-sm rounded-2xl p-3">
-                            <div className="flex items-center justify-between mb-1">
-                              <div className="text-sm font-medium text-on-surface">
-                                Index {match.currentIndex} ↔ Index {match.fileIndex}
-                              </div>
-                              <div className="text-xs px-2 py-1 rounded-full bg-tertiary text-on-tertiary">
-                                100% match
-                              </div>
-                            </div>
-                            <div className="text-xs text-on-surface-variant space-y-1">
-                              <div className="truncate">Current: {match.currentTitle}</div>
-                              <div className="truncate">File: {match.fileTitle}</div>
-                              <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Unavailable Matches - Expanded by default */}
-                {comparisonResult.unavailableMatches.length > 0 && (
-                  <div className="bg-primary-container/70 backdrop-blur-sm rounded-2xl border border-primary">
-                    <button
-                      onClick={() => setShowUnavailableMatches(!showUnavailableMatches)}
-                      className="w-full p-4 flex items-center justify-between hover:bg-primary-container transition-all duration-225 rounded-t-2xl"
-                    >
-                      <h4 className="font-medium text-on-primary-container flex items-center gap-2">
-                        <AlertTriangle className="w-5 h-5" />
-                        Matched Unavailable Videos ({comparisonResult.unavailableMatches.length})
-                      </h4>
-                      {showUnavailableMatches ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                    </button>
-                    
-                    {showUnavailableMatches && (
-                      <div className="p-4 pt-0 space-y-3 max-h-64 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-                        {comparisonResult.unavailableMatches.map((match, index) => (
-                          <div key={index} className="bg-surface-container/70 backdrop-blur-sm rounded-2xl p-3">
-                            <div className="flex items-center justify-between mb-1">
-                              <div className="text-sm font-medium text-on-surface">
-                                Index {match.currentIndex} ↔ Index {match.fileIndex}
-                              </div>
-                              <div className="text-xs px-2 py-1 rounded-full bg-primary text-on-primary">
-                                100% match
-                              </div>
-                            </div>
-                            <div className="text-xs text-on-surface-variant space-y-1">
-                              <div className="flex items-center gap-2">
-                                <AlertTriangle className="w-3 h-3 text-error" />
-                                <span className="truncate">Current: {match.currentTitle}</span>
-                              </div>
-                              <div className="truncate">File: {match.fileTitle}</div>
-                              <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {comparisonResult.exactMatches.length === 0 && comparisonResult.unavailableMatches.length === 0 && (
-                  <div className="text-center py-8">
-                    <div className="p-4 bg-surface-container rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                      <AlertTriangle className="w-8 h-8 text-on-surface-variant" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-on-surface mb-2">No Matches Found</h3>
-                    <p className="text-on-surface-variant">
-                      No video ID matches were found between the current playlist and the uploaded file.
-                      This might indicate different playlists or incompatible data formats.
-                    </p>
                   </div>
                 )}
               </div>
-            )}
+
+              {error && (
+                <div className="p-4 bg-error-container text-on-error-container rounded-xl shadow-md">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span className="font-medium">{error}</span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handleCompare}
+                disabled={!file || !currentPlaylistInfo || isProcessing}
+                className="w-full py-3 bg-secondary text-on-secondary rounded-2xl font-medium hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+              >
+                {isProcessing ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-on-secondary/30 border-t-on-secondary rounded-full animate-spin"></div>
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <GitCompare className="w-5 h-5" />
+                    Compare Files
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Comparison Results View */}
+            {/* Added a key to force re-render/remount on view switch if needed for complex state resets */}
+            <div key={isComparisonView ? "results-view" : "upload-view-placeholder"} className="flex-shrink-0 w-full space-y-6 overflow-y-auto pl-2"> {/* Added overflow-y-auto and pl-2 */}
+              {comparisonResult && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
+                    <div className="flex items-center gap-3">
+                      {comparisonResult.hasNewData && (
+                        <button
+                          onClick={handleDownloadNewData}
+                          className="flex items-center gap-2 px-4 py-2 bg-tertiary text-on-tertiary rounded-xl font-medium shadow-md hover:bg-tertiary/90 transition-all duration-200 hover:scale-105 active:scale-95"
+                        >
+                          <Download className="w-4 h-4" />
+                          Download Recovered Data
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          setComparisonResult(null);
+                          setFile(null);
+                          setError(null);
+                          setIsComparisonView(false); // Transition back to select file view
+                          if (fileInputRef.current) {
+                            fileInputRef.current.value = '';
+                          }
+                        }}
+                        className="px-4 py-2 bg-surface-container text-on-surface rounded-xl font-medium shadow-md hover:bg-surface-container-high transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                      >
+                        <GitCompare className="w-5 h-5" />
+                        Compare Another
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Unavailable Videos Section */}
+                  {comparisonResult.unavailableMatches.length > 0 ? (
+                    <div className="bg-primary-container rounded-xl border border-primary shadow-lg">
+                      <button
+                        onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
+                        className="w-full p-4 flex items-center justify-between hover:bg-primary-container/80 rounded-t-xl transition-all duration-200"
+                      >
+                        <h4 className="font-medium text-on-primary-container flex items-center gap-2">
+                          <AlertTriangle className="w-5 h-5" />
+                          Unavailable Videos ({comparisonResult.unavailableMatches.length})
+                          {comparisonResult.hasNewData && (
+                            <span className="ml-2 px-3 py-1 bg-green-500 text-white text-xs font-semibold rounded-xl animate-pulse-fade">
+                              Data Found!
+                            </span>
+                          )}
+                        </h4>
+                        <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''}`}>
+                          <ChevronDown className="w-5 h-5" />
+                        </div>
+                      </button>
+
+                      <div className={`transition-all duration-300 ease-out overflow-hidden ${
+                        showUnavailableVideos ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      }`}>
+                        <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto">
+                          {comparisonResult.unavailableMatches.map((match, index) => (
+                            <div key={index} className="bg-surface rounded-lg p-3 shadow-sm border border-outline-variant transition-all duration-200 hover:scale-[1.02] hover:shadow-md">
+                              <div className="flex items-center justify-between mb-1">
+                                <div className="text-sm font-medium text-on-surface">
+                                  Index {match.currentIndex} - Index {match.fileIndex}
+                                </div>
+                                <div className="text-xs px-2 py-1 rounded-xl bg-primary text-on-primary">
+                                  100% Match
+                                </div>
+                              </div>
+                              <div className="text-xs text-on-surface-variant space-y-1">
+                                <div className="flex items-center gap-2 text-error">
+                                  <AlertTriangle className="w-3 h-3" />
+                                  <span className="truncate">Current: {match.currentTitle}</span>
+                                </div>
+                                <div className="truncate font-medium text-tertiary">Recovered: {match.fileTitle}</div>
+                                <div className="text-xs opacity-75">ID: {match.videoId}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="p-4 bg-surface-container rounded-xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-md">
+                        <CheckCircle className="w-8 h-8 text-on-surface-variant" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
+                      <p className="text-on-surface-variant">
+                        No unavailable video titles were recovered from the uploaded file.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* All Videos Section */}
+                  <div className="bg-surface-container rounded-xl border border-outline-variant shadow-lg">
+                    <button
+                      onClick={() => setShowAllVideos(!showAllVideos)}
+                      className="w-full p-4 flex items-center justify-between hover:bg-surface-container-high rounded-t-xl transition-all duration-200"
+                    >
+                      <h4 className="font-medium text-on-surface flex items-center gap-2">
+                        <FileText className="w-5 h-5" />
+                        All Videos ({comparisonResult.allVideos.length})
+                      </h4>
+                      <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}>
+                        <ChevronDown className="w-5 h-5" />
+                      </div>
+                    </button>
+
+                    <div className={`transition-all duration-300 ease-out overflow-hidden ${
+                      showAllVideos ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}>
+                      <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto">
+                        {comparisonResult.allVideos.map((video, index) => (
+                          <div key={index} className="bg-surface rounded-lg p-3 shadow-sm border border-outline-variant transition-all duration-200 hover:scale-[1.02] hover:shadow-md">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="text-sm font-medium text-on-surface">
+                                Index {video.currentIndex}
+                                {video.fileIndex && ` - Index ${video.fileIndex}`}
+                              </div>
+                              <div className={`text-xs px-2 py-1 rounded-xl ${getStatusColor(video.status)}`}>
+                                {getStatusLabel(video.status)}
+                              </div>
+                            </div>
+                            <div className="text-xs text-on-surface-variant space-y-1">
+                              <p className="truncate">Current: {video.currentTitle}</p>
+                              {video.fileTitle && (
+                                <p className="truncate">File: {video.fileTitle}</p>
+                              )}
+                              <p className="text-xs opacity-75">ID: {video.videoId}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
