@@ -51,21 +51,21 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
         playlistTitle: currentPlaylistInfo?.title,
         hasCompleteData: !!(currentVideos.length > 0 && currentPlaylistInfo)
       });
-      
+
       // Create a deep copy to ensure data integrity
       const videosCopy = currentVideos.map(video => ({ ...video }));
       const playlistCopy = currentPlaylistInfo ? { ...currentPlaylistInfo } : null;
-      
+
       console.log('📋 Copied data verification:', {
         originalCount: currentVideos.length,
         copyCount: videosCopy.length,
         firstVideoMatch: currentVideos[0]?.title === videosCopy[0]?.title,
         playlistTitleMatch: currentPlaylistInfo?.title === playlistCopy?.title
       });
-      
+
       // Call download with copied data
       downloadBackup(videosCopy, playlistCopy);
-      
+
       setDownloadStatus('success');
       setDownloadMessage('Download Completed Successfully!');
       setTimeout(() => setDownloadStatus('idle'), 3000);
@@ -85,37 +85,42 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop with navbar-like blur */}
-      <div 
-        className="fixed inset-0 bg-scrim/60 blur-subtle transition-opacity duration-225 ease-out animate-fade-in"
+      {/* Backdrop with more transparency (bg-black/10) and blur */}
+      <div
+        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
-      
-      {/* Modal with navbar-like transparency */}
-      <div 
-        className="relative bg-surface/90 blur-light rounded-2xl shadow-2xl border border-outline-variant w-full max-w-md animate-modal-enter elevation-3"
+
+      {/* Main Modal Container: Replaced with Code 1's transparency and blur */}
+      <div
+        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3"
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between p-6 border-b border-outline-variant">
+        {/* Title & Button Div: Replaced with Code 1's fixed header with transparency and blur */}
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm"> {/* Added border-b and shadow-sm for separator effect */}
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-tertiary-container rounded-2xl">
+            {/* Modal icon with transparency, depth, and scale on hover */}
+            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
               <Download className="w-6 h-6 text-on-tertiary-container" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Download Data</h2>
           </div>
+          {/* Close button with p-3 padding, transparency, depth, and red 'X' - now with spin and scale */}
           <button
             onClick={onClose}
-            className="p-2 hover:bg-surface-container rounded-2xl transition-all duration-225 hover:scale-110 active:scale-95 text-on-surface-variant hover:text-on-surface"
+            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group class
             aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            {/* X icon in red, spins and scales on hover */}
+            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
-        
+
         <div className="p-6">
           <div className="space-y-6">
-            <div className="text-center">
+            {/* Download Playlist Data text card */}
+            <div className="group relative text-center p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg font-semibold text-on-surface mb-2">
                 Download Playlist Data
               </h3>
@@ -124,9 +129,9 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
               </p>
             </div>
 
-            {/* Current Data Status */}
+            {/* Current Data Status Card */}
             {hasCurrentData ? (
-              <div className="p-4 bg-tertiary-container/70 backdrop-blur-sm rounded-2xl border border-tertiary">
+              <div className="group relative p-4 bg-tertiary-container/20 backdrop-blur-lg rounded-2xl border border-tertiary/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
                 <div className="flex items-center gap-2 mb-3">
                   <CheckCircle className="w-5 h-5 text-on-tertiary-container" />
                   <span className="font-medium text-on-tertiary-container">Ready to Download</span>
@@ -146,12 +151,12 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
                 </div>
               </div>
             ) : (
-              <div className="p-4 bg-warning-container/70 backdrop-blur-sm rounded-2xl border border-warning">
+              <div className="group relative p-4 bg-warning-container/20 backdrop-blur-lg rounded-2xl border border-warning/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertCircle className="w-5 h-5 text-on-warning-container" />
-                  <span className="font-medium text-on-warning-container">No Current Data</span>
+                  <AlertCircle className="w-5 h-5" />
+                  <span className="font-medium">No Current Data</span>
                 </div>
-                <p className="text-sm text-on-warning-container">
+                <p className="text-sm">
                   Please analyze a playlist first to download its data.
                 </p>
               </div>
@@ -167,10 +172,10 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
             </button>
 
             {downloadStatus !== 'idle' && (
-              <div className={`p-4 rounded-2xl flex items-center gap-3 animate-fade-in backdrop-blur-sm ${
-                downloadStatus === 'success' 
-                  ? 'bg-tertiary-container/70 text-on-tertiary-container border border-tertiary' 
-                  : 'bg-error-container/70 text-on-error-container border border-error'
+              <div className={`p-4 rounded-2xl flex items-center gap-3 animate-fade-in backdrop-blur-lg shadow-md ${
+                downloadStatus === 'success'
+                  ? 'bg-tertiary-container/20 text-on-tertiary-container border border-tertiary/30'
+                  : 'bg-error-container/20 text-on-error-container border border-error/30'
               }`}>
                 {downloadStatus === 'success' ? (
                   <CheckCircle className="w-5 h-5" />
@@ -181,7 +186,8 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
               </div>
             )}
 
-            <div className="text-xs text-on-surface-variant bg-surface-container/70 backdrop-blur-sm rounded-2xl p-4">
+            {/* What's Included Info Card */}
+            <div className="group relative text-xs text-on-surface-variant bg-surface-container/20 backdrop-blur-lg rounded-2xl p-4 border border-outline-variant/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <div className="flex items-center gap-2 mb-2">
                 <Info className="w-4 h-4" />
                 <span className="font-medium">What's included:</span>

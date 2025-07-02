@@ -28,7 +28,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
   };
 
   return (
-    <div className="bg-surface/95 blur-light rounded-2xl p-8 shadow-lg border border-outline-variant elevation-2 animate-fade-in">
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex items-center gap-4 mb-6">
           <div className="p-3 bg-primary-container rounded-2xl">
@@ -46,7 +46,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Enter YouTube playlist URL or ID"
-            className="w-full px-6 py-4 rounded-2xl border border-outline-variant bg-surface-container focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant"
+            className="w-full px-6 py-4 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant"
             disabled={isLoading}
           />
         </div>

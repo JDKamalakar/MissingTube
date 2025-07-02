@@ -78,34 +78,38 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        {/* Backdrop with navbar-like blur */}
-        <div 
-          className="fixed inset-0 bg-scrim/60 blur-subtle transition-opacity duration-225 ease-out animate-fade-in"
+        {/* Backdrop: Enhanced blur and transparency */}
+        <div
+          className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
           onClick={onClose}
         />
-        
-        {/* Modal with navbar-like transparency */}
-        <div 
-          className="relative bg-surface/90 blur-light rounded-2xl shadow-2xl border border-outline-variant w-full max-w-md animate-modal-enter elevation-3"
+
+        {/* Modal Container: Enhanced transparency, blur, shadow, and depth */}
+        <div
+          className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3"
           role="dialog"
           aria-modal="true"
         >
-          <div className="flex items-center justify-between p-6 border-b border-outline-variant">
+          {/* Header: Sticky, transparent, blurred, with bottom border and subtle shadow */}
+          <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-primary-container rounded-2xl">
-                <Key className="w-6 h-6 text-on-primary-container" />
+              {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
+              <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
+                <Key className="w-6 h-6 text-on-secondary-container" />
               </div>
               <h2 className="text-xl font-semibold text-on-surface">YouTube API Key</h2>
             </div>
+            {/* Close Button: Same effect as ConfirmationModal's X button */}
             <button
               onClick={onClose}
-              className="p-2 hover:bg-surface-container rounded-2xl transition-all duration-225 hover:scale-110 active:scale-95 text-on-surface-variant hover:text-on-surface"
+              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group
               aria-label="Close modal"
             >
-              <X className="w-5 h-5" />
+              {/* X icon in red, spins and scales on hover */}
+              <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
             </button>
           </div>
-          
+
           <div className="p-6">
             {!isStored ? (
               <div className="space-y-4">
@@ -115,18 +119,21 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
                     placeholder="Enter your YouTube API key"
-                    className="w-full px-4 py-3 rounded-2xl border border-outline-variant bg-surface-container/70 backdrop-blur-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 pr-12 text-on-surface placeholder:text-on-surface-variant"
+                    // Input field with transparency, blur, border, shadow, and hover scale
+                    className="w-full px-4 py-3 rounded-2xl border border-gray-300/30 dark:border-gray-700/30 bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 pr-12 text-on-surface placeholder:text-on-surface-variant shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.98]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowKey(!showKey)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-all duration-200 hover:scale-110 active:scale-95"
+                    // Eye icon button with transparent, blurred, shadowed hover effects and hover scale
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant p-2 rounded-full hover:bg-white/10 dark:hover:bg-gray-800/10 backdrop-blur-sm transition-all duration-300 hover:scale-[1.08] active:scale-[0.92] shadow-lg hover:shadow-xl"
                   >
                     {showKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
-                
-                <div className="text-xs text-on-surface-variant bg-surface-container/70 backdrop-blur-sm rounded-2xl p-3">
+
+                {/* How-to-get-key info card: Transparent, blurred, shadowed for depth and hover scale */}
+                <div className="text-xs text-on-surface-variant bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm rounded-2xl p-3 shadow-lg border border-gray-300/30 dark:border-gray-700/30 transition-all duration-300 hover:shadow-xl hover:scale-[1.08]">
                   <p className="mb-1">
                     <strong>How to get your API key:</strong>
                   </p>
@@ -139,10 +146,11 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                   </ol>
                 </div>
 
+                {/* Save Button: Primary color, with shadow, transparency, and hover scale */}
                 <button
                   onClick={handleSave}
                   disabled={isLoading || !apiKey.trim()}
-                  className="w-full py-3 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 border border-primary/50 dark:border-primary-dark/50"
                 >
                   {isLoading ? (
                     <>
@@ -159,26 +167,29 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="flex items-center justify-center gap-2 p-4 bg-tertiary-container/70 backdrop-blur-sm rounded-2xl">
-                  <div className="w-2 h-2 bg-tertiary rounded-full animate-pulse"></div>
-                  <span className="text-on-tertiary-container font-medium">API Key Is Configured</span>
+                {/* API Key Configured message card: Green/success color, with transparency, blur, shadow, and hover scale */}
+                <div className="flex items-center justify-center gap-2 p-4 bg-emerald-100/80 dark:bg-emerald-800/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-500/50 dark:border-emerald-700/50 transition-all duration-300 hover:shadow-xl hover:scale-[1.08]">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <span className="text-emerald-800 dark:text-emerald-200 font-medium">API Key Is Configured</span>
                 </div>
-                
+
+                {/* Clear API Key button: Same effect as ConfirmationModal's Trash button */}
                 <button
                   onClick={() => setShowConfirmClear(true)}
-                  className="w-full py-3 bg-error text-on-error rounded-2xl font-medium hover:bg-error/90 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.12] active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50" // Added group
                 >
-                  <Trash2 className="w-5 h-5" />
+                  {/* Trash icon with translateY and scale on group-hover */}
+                  <Trash2 className="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-110" />
                   Clear API Key
                 </button>
               </div>
             )}
 
             {message && (
-              <div className={`mt-4 p-3 rounded-2xl flex items-center gap-2 animate-fade-in backdrop-blur-sm ${
-                message.type === 'success' 
-                  ? 'bg-tertiary-container/70 border border-tertiary text-on-tertiary-container' 
-                  : 'bg-error-container/70 border border-error text-on-error-container'
+              <div className={`mt-4 p-3 rounded-2xl flex items-center gap-2 animate-fade-in backdrop-blur-sm shadow-lg border ${
+                message.type === 'success'
+                  ? 'bg-emerald-100/70 border-emerald-500 text-emerald-800 dark:bg-emerald-800/70 dark:border-emerald-700 dark:text-emerald-200'
+                  : 'bg-error-container/70 border-error text-on-error-container'
               }`}>
                 {message.type === 'success' ? (
                   <CheckCircle className="w-4 h-4" />

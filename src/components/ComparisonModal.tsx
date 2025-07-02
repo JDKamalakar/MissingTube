@@ -28,6 +28,8 @@ interface ComparisonResult {
     status: 'exact-match' | 'unavailable-match' | 'no-match';
   }>;
   hasNewData: boolean;
+  recoveredVideos: Video[];
+  mergedVideos: Video[];
 }
 
 export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, currentVideos, currentPlaylistInfo }) => {
@@ -37,13 +39,15 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
   const [error, setError] = useState<string | null>(null);
   const [showUnavailableVideos, setShowUnavailableVideos] = useState(true);
   const [showAllVideos, setShowAllVideos] = useState(false);
-  const [showContent, setShowContent] = useState(false); // For modal entry animation
-  const [isComparisonView, setIsComparisonView] = useState(false); // Controls which view is active
+  const [showContent, setShowContent] = useState(false); // State to control modal entry animation
+  const [isComparisonView, setIsComparisonView] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Modal entry animation
-    setShowContent(true);
+    // Trigger the enter animation
+    const timer = setTimeout(() => {
+      setShowContent(true);
+    }, 50); // Small delay to allow the modal to mount before animating
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -55,23 +59,11 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
     document.body.style.overflow = 'hidden';
 
     return () => {
+      clearTimeout(timer);
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
   }, [onClose]);
-
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile && selectedFile.type === 'application/json') {
-      setFile(selectedFile);
-      setError(null);
-      setComparisonResult(null); // Clear previous comparison results
-    } else {
-      setError('Please select a valid JSON file.');
-      setFile(null);
-      setComparisonResult(null); // Clear previous comparison results
-    }
-  };
 
   const isUnavailableTitle = (title: string): boolean => {
     const unavailableTitles = [
@@ -95,7 +87,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
 
     setIsProcessing(true);
     setError(null);
-    setComparisonResult(null); // Clear previous results immediately for a clean state before comparison
+    setComparisonResult(null);
 
     try {
       const fileContent = await file.text();
@@ -154,6 +146,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
 
       const unavailableMatches: ComparisonResult['unavailableMatches'] = [];
       const allVideos: ComparisonResult['allVideos'] = [];
+      const recoveredVideos: Video[] = [];
       let hasNewData = false;
 
       const fileVideoMap = new Map<string, Video & { fileIndex: number }>();
@@ -161,6 +154,25 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
         if (video.videoId) {
           fileVideoMap.set(video.videoId, { ...video, fileIndex: index });
         }
+      });
+
+      // Create merged videos array with recovered titles
+      const mergedVideos: Video[] = currentVideos.map(currentVideo => {
+        if (currentVideo.videoId && fileVideoMap.has(currentVideo.videoId)) {
+          const fileMatch = fileVideoMap.get(currentVideo.videoId)!;
+          
+          // If current video is unavailable but file has a proper title
+          if ((currentVideo.unavailable || isUnavailableTitle(currentVideo.title)) &&
+              !isUnavailableTitle(fileMatch.title)) {
+            return {
+              ...currentVideo,
+              title: fileMatch.title,
+              unavailable: false,
+              channelTitle: fileMatch.channelTitle || currentVideo.channelTitle
+            };
+          }
+        }
+        return currentVideo;
       });
 
       currentVideos.forEach((currentVideo, currentIndex) => {
@@ -184,6 +196,15 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                 videoId: currentVideo.videoId,
                 confidence: 100
               });
+
+              // Create recovered video entry
+              recoveredVideos.push({
+                ...currentVideo,
+                title: fileMatch.title,
+                unavailable: false,
+                channelTitle: fileMatch.channelTitle || currentVideo.channelTitle
+              });
+
               status = 'unavailable-match';
               hasNewData = true;
             } else {
@@ -206,10 +227,16 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
         });
       });
 
-      setComparisonResult({ unavailableMatches, allVideos, hasNewData });
+      setComparisonResult({
+        unavailableMatches,
+        allVideos,
+        hasNewData,
+        recoveredVideos,
+        mergedVideos
+      });
       setShowUnavailableVideos(true);
       setShowAllVideos(false);
-      setIsComparisonView(true); // Switch to comparison view only on successful comparison
+      setIsComparisonView(true);
 
     } catch (err) {
       if (err instanceof Error) {
@@ -222,33 +249,18 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       setIsProcessing(false);
     }
   };
-
-  const handleDownloadNewData = () => {
-    if (!comparisonResult || !comparisonResult.hasNewData) return;
-
-    const newDataVideos = comparisonResult.unavailableMatches.map(match => {
-      const originalVideo = currentVideos.find(v => v.videoId === match.videoId);
-
-      if (!originalVideo) {
-        console.warn(`Original video with ID ${match.videoId} not found in currentVideos for recovery.`);
-        return null;
-      }
-
-      return {
-        ...originalVideo,
-        title: match.fileTitle,
-        unavailable: false
-      };
-    }).filter((v): v is Video => v !== null);
+  
+  const handleDownloadMerged = () => {
+    if (!comparisonResult) return;
 
     const backupData = {
       playlists: [{
         id: currentPlaylistInfo?.id,
-        title: `${currentPlaylistInfo?.title || 'Unknown Playlist'} - Recovered Titles`,
+        title: `${currentPlaylistInfo?.title || 'Unknown Playlist'} - Complete Merged Data`,
         thumbnail: currentPlaylistInfo?.thumbnail,
         lastAccessed: new Date().toISOString(),
-        videoCount: newDataVideos.length,
-        videos: newDataVideos
+        videoCount: comparisonResult.mergedVideos.length,
+        videos: comparisonResult.mergedVideos
       }],
       createdAt: new Date().toISOString(),
       version: '1.0.0'
@@ -261,7 +273,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `recovered-titles-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `merged-complete-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -269,14 +281,8 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'exact-match':
-        return 'bg-tertiary-container text-on-tertiary-container';
-      case 'unavailable-match':
-        return 'bg-primary-container text-on-primary-container';
-      default:
-        return 'bg-error-container text-on-error-container';
-    }
+    // Using a clear cyan/teal for consistency
+    return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-800/50 dark:text-cyan-200';
   };
 
   const getStatusLabel = (status: string) => {
@@ -294,20 +300,23 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-scrim/60 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Modal */}
+      {/* Main Modal Container */}
       <div
-        className={`relative bg-surface/90 rounded-2xl shadow-2xl border border-outline-variant w-full max-w-5xl max-h-[90vh] flex flex-col transition-all duration-300 ease-out ${showContent ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+        className={`relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-6xl max-h-[90vh] flex flex-col transition-all animate-modal-enter elevation-3
+        ${showContent ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between p-6 border-b border-outline-variant flex-shrink-0">
+        {/* Header - Fixed with transparency and blur */}
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-primary-container rounded-xl">
-              <GitCompare className="w-6 h-6 text-on-primary-container" />
+            {/* Icon container with transparency, depth, and hover effects - adjusted scale */}
+            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
+              <GitCompare className="w-6 h-6 text-on-secondary-container" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-on-surface">Compare With Local File</h2>
@@ -316,37 +325,42 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
               )}
             </div>
           </div>
+          {/* Close button with transparency, depth, and hover effects - now with spin and scale */}
           <button
             onClick={onClose}
-            className="p-2 hover:bg-surface-container rounded-full transition-all duration-200 hover:scale-110"
+            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group class
             aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            {/* X icon in red, spins and scales on hover */}
+            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
 
-        {/* Content area with controlled height and overflow */}
-        <div className="p-6 flex-grow overflow-hidden relative"> {/* Changed overflow-y-auto to overflow-hidden for slide effect */}
-          {/* Main content wrapper for transition */}
-          <div className={`flex w-full transition-transform duration-500 ease-in-out ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`}>
-            {/* Select File View */}
-            <div className="flex-shrink-0 w-full space-y-6 pr-2"> {/* Added overflow-y-auto and pr-2 */}
+        {/* Content area with proper overflow handling for slide transition */}
+        <div className="p-6 flex-grow overflow-hidden relative custom-scrollbar">
+          {/* Main content wrapper for smooth sliding transition */}
+          <div className={`flex transition-transform duration-500 ease-in-out ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`} style={{ width: '200%' }}>
+            {/* Select File View - Takes full width when visible */}
+            <div className="w-full flex-shrink-0 space-y-6 pr-6">
               <div className="text-center">
-                <h3 className="text-lg font-semibold text-on-surface mb-2">
-                  Upload JSON File for Comparison
-                </h3>
-                <p className="text-on-surface-variant text-sm">
-                  Upload a backup file to find titles for any unavailable videos in the current playlist.
-                </p>
+                {/* Upload JSON File for Comparison Text in a card - adjusted scale */}
+                <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
+                  <h3 className="text-lg font-semibold text-on-surface mb-2">
+                    Upload JSON File for Comparison
+                  </h3>
+                  <p className="text-on-surface-variant text-sm">
+                    Upload a backup file to find titles for any unavailable videos in the current playlist.
+                  </p>
+                </div>
               </div>
 
               {currentPlaylistInfo ? (
-                <div className="p-4 bg-tertiary-container rounded-xl border border-tertiary shadow-md">
+                <div className="p-4 bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.01]">
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="w-5 h-5 text-on-tertiary-container" />
-                    <span className="font-medium text-on-tertiary-container">Current Playlist Ready</span>
+                    <CheckCircle className="w-5 h-5 text-on-primary-container" />
+                    <span className="font-medium text-on-primary-container">Current Playlist Ready</span>
                   </div>
-                  <div className="text-sm text-on-tertiary-container">
+                  <div className="text-sm text-on-primary-container">
                     <div className="font-medium truncate">{currentPlaylistInfo.title}</div>
                     <div className="text-xs opacity-75 mt-1">
                       {currentVideos.length} videos loaded for comparison
@@ -354,7 +368,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-error-container rounded-xl border border-error shadow-md">
+                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 backdrop-blur-md rounded-2xl border border-error/50 dark:border-error-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.01]">
                   <div className="flex items-center gap-2 mb-2">
                     <AlertTriangle className="w-5 h-5 text-on-error-container" />
                     <span className="font-medium text-on-error-container">No Playlist Loaded</span>
@@ -365,40 +379,52 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                 </div>
               )}
 
-              <div className="border-2 border-dashed border-outline-variant rounded-xl p-8 text-center bg-surface-container-low transition-all duration-300 hover:border-primary">
+              <div className="border-2 border-dashed border-gray-300/30 dark:border-gray-700/30 rounded-2xl p-8 text-center bg-white/10 dark:bg-gray-800/10 backdrop-blur-sm transition-all duration-300 hover:border-primary hover:shadow-md">
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept=".json"
-                  onChange={handleFileSelect}
+                  onChange={(event) => {
+                    const selectedFile = event.target.files?.[0];
+                    if (selectedFile && selectedFile.type === 'application/json') {
+                      setFile(selectedFile);
+                      setError(null);
+                      setComparisonResult(null);
+                    } else {
+                      setError('Please select a valid JSON file.');
+                      setFile(null);
+                      setComparisonResult(null);
+                    }
+                  }}
                   className="hidden"
                 />
 
-                <div className="p-4 bg-surface-container rounded-xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner">
-                  <Upload className="w-8 h-8 text-on-surface-variant" />
+                <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
+                  <Upload className="w-8 h-8 text-on-surface-variant group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
                 </div>
 
+                {/* Select JSON File Button with adjusted scale for hover */}
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={!currentPlaylistInfo}
-                  className="px-6 py-3 bg-primary text-on-primary rounded-xl font-medium shadow-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="group px-6 py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] border border-primary/50 dark:border-primary-dark/50"
                 >
-                  <Upload className="w-5 h-5" />
+                  <Upload className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5" />
                   Select JSON File
                 </button>
 
                 {file && (
-                  <div className="mt-4 p-3 bg-tertiary-container rounded-xl inline-block shadow-md">
+                  <div className="mt-4 p-3 bg-cyan-100/80 dark:bg-cyan-800/80 backdrop-blur-md rounded-2xl inline-block shadow-md border border-cyan-500/50 dark:border-cyan-700/50">
                     <div className="flex items-center gap-2 justify-center">
-                      <FileText className="w-4 h-4 text-on-tertiary-container" />
-                      <span className="text-sm font-medium text-on-tertiary-container">{file.name}</span>
+                      <FileText className="w-4 h-4 text-cyan-800 dark:text-cyan-200" />
+                      <span className="text-sm font-medium text-cyan-800 dark:text-cyan-200">{file.name}</span>
                     </div>
                   </div>
                 )}
               </div>
 
               {error && (
-                <div className="p-4 bg-error-container text-on-error-container rounded-xl shadow-md">
+                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 text-on-error-container rounded-2xl shadow-md border border-error/50 dark:border-error-dark/50 backdrop-blur-md">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5" />
                     <span className="font-medium">{error}</span>
@@ -406,10 +432,11 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                 </div>
               )}
 
+              {/* Compare Files Button with adjusted scale for hover */}
               <button
                 onClick={handleCompare}
                 disabled={!file || !currentPlaylistInfo || isProcessing}
-                className="w-full py-3 bg-secondary text-on-secondary rounded-2xl font-medium hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                className="group w-full py-3 bg-secondary/80 dark:bg-secondary-dark/80 backdrop-blur-sm text-on-secondary rounded-2xl font-medium hover:bg-secondary/90 dark:hover:bg-secondary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 border border-secondary/50 dark:border-secondary-dark/50"
               >
                 {isProcessing ? (
                   <>
@@ -418,61 +445,73 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   </>
                 ) : (
                   <>
-                    <GitCompare className="w-5 h-5" />
+                    <GitCompare className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[360deg]" />
                     Compare Files
                   </>
                 )}
               </button>
             </div>
 
-            {/* Comparison Results View */}
-            {/* Added a key to force re-render/remount on view switch if needed for complex state resets */}
-            <div key={isComparisonView ? "results-view" : "upload-view-placeholder"} className="flex-shrink-0 w-full space-y-6 overflow-y-auto pl-2"> {/* Added overflow-y-auto and pl-2 */}
+            {/* Comparison Results View - Takes full width when visible */}
+            <div className="w-full flex-shrink-0 space-y-6 pl-6 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
               {comparisonResult && (
                 <>
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
                     <div className="flex items-center gap-3">
-                      {comparisonResult.hasNewData && (
+                      {/* Show "Download All" only if new data was found */}
+                      <div className="relative group"> {/* Added group for the tooltip */}
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
+                            Download Merged Playlist
+                        </div>
+                        {comparisonResult.hasNewData && (
+                          <button
+                            onClick={handleDownloadMerged}
+                            className="flex items-center gap-2 px-4 py-2 bg-cyan-600/80 dark:bg-cyan-700/80 backdrop-blur-sm text-white rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-cyan-600/90 dark:hover:bg-cyan-700/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-cyan-500/50 dark:border-cyan-700/50"
+                          >
+                            <Download className="w-4 h-4 transition-transform duration-300 group-hover:scale-110 group-hover:translate-y-0.5" />
+                            Download All ({comparisonResult.mergedVideos.length})
+                          </button>
+                        )}
+                      </div>
+                      
+                      {/* Compare Another Button with adjusted scale for hover */}
+                      <div className="relative group"> {/* Added group for the tooltip */}
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
+                            Upload New File
+                        </div>
                         <button
-                          onClick={handleDownloadNewData}
-                          className="flex items-center gap-2 px-4 py-2 bg-tertiary text-on-tertiary rounded-xl font-medium shadow-md hover:bg-tertiary/90 transition-all duration-200 hover:scale-105 active:scale-95"
+                          onClick={() => {
+                            setComparisonResult(null);
+                            setFile(null);
+                            setError(null);
+                            setIsComparisonView(false);
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = '';
+                            }
+                          }}
+                          className="flex items-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
                         >
-                          <Download className="w-4 h-4" />
-                          Download Recovered Data
+                          <GitCompare className="w-5 h-5 transition-transform duration-500 group-hover:rotate-[360deg]" />
+                          Compare Another
                         </button>
-                      )}
-                      <button
-                        onClick={() => {
-                          setComparisonResult(null);
-                          setFile(null);
-                          setError(null);
-                          setIsComparisonView(false); // Transition back to select file view
-                          if (fileInputRef.current) {
-                            fileInputRef.current.value = '';
-                          }
-                        }}
-                        className="px-4 py-2 bg-surface-container text-on-surface rounded-xl font-medium shadow-md hover:bg-surface-container-high transition-all duration-200 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-                      >
-                        <GitCompare className="w-5 h-5" />
-                        Compare Another
-                      </button>
+                      </div>
                     </div>
                   </div>
 
                   {/* Unavailable Videos Section */}
                   {comparisonResult.unavailableMatches.length > 0 ? (
-                    <div className="bg-primary-container rounded-xl border border-primary shadow-lg">
+                    <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg">
                       <button
                         onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                        className="w-full p-4 flex items-center justify-between hover:bg-primary-container/80 rounded-t-xl transition-all duration-200"
+                        className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
                       >
                         <h4 className="font-medium text-on-primary-container flex items-center gap-2">
-                          <AlertTriangle className="w-5 h-5" />
-                          Unavailable Videos ({comparisonResult.unavailableMatches.length})
+                          <AlertTriangle className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
+                          Recovered Videos ({comparisonResult.unavailableMatches.length})
                           {comparisonResult.hasNewData && (
-                            <span className="ml-2 px-3 py-1 bg-green-500 text-white text-xs font-semibold rounded-xl animate-pulse-fade">
-                              Data Found!
+                            <span className="ml-2 px-3 py-1 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
+                              Titles Found!
                             </span>
                           )}
                         </h4>
@@ -484,14 +523,14 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       <div className={`transition-all duration-300 ease-out overflow-hidden ${
                         showUnavailableVideos ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                       }`}>
-                        <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto">
+                        <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
                           {comparisonResult.unavailableMatches.map((match, index) => (
-                            <div key={index} className="bg-surface rounded-lg p-3 shadow-sm border border-outline-variant transition-all duration-200 hover:scale-[1.02] hover:shadow-md">
+                            <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
                               <div className="flex items-center justify-between mb-1">
                                 <div className="text-sm font-medium text-on-surface">
                                   Index {match.currentIndex} - Index {match.fileIndex}
                                 </div>
-                                <div className="text-xs px-2 py-1 rounded-xl bg-primary text-on-primary">
+                                <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">
                                   100% Match
                                 </div>
                               </div>
@@ -500,7 +539,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                                   <AlertTriangle className="w-3 h-3" />
                                   <span className="truncate">Current: {match.currentTitle}</span>
                                 </div>
-                                <div className="truncate font-medium text-tertiary">Recovered: {match.fileTitle}</div>
+                                <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
                                 <div className="text-xs opacity-75">ID: {match.videoId}</div>
                               </div>
                             </div>
@@ -509,8 +548,8 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center py-8">
-                      <div className="p-4 bg-surface-container rounded-xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-md">
+                    <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                      <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
                         <CheckCircle className="w-8 h-8 text-on-surface-variant" />
                       </div>
                       <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
@@ -521,13 +560,13 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   )}
 
                   {/* All Videos Section */}
-                  <div className="bg-surface-container rounded-xl border border-outline-variant shadow-lg">
+                  <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                     <button
                       onClick={() => setShowAllVideos(!showAllVideos)}
-                      className="w-full p-4 flex items-center justify-between hover:bg-surface-container-high rounded-t-xl transition-all duration-200"
+                      className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
                     >
                       <h4 className="font-medium text-on-surface flex items-center gap-2">
-                        <FileText className="w-5 h-5" />
+                        <FileText className="w-5 h-5 transition-transform duration-300 group-hover:scale-140" />
                         All Videos ({comparisonResult.allVideos.length})
                       </h4>
                       <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}>
@@ -538,15 +577,15 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     <div className={`transition-all duration-300 ease-out overflow-hidden ${
                       showAllVideos ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                     }`}>
-                      <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto">
+                      <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto custom-scrollbar">
                         {comparisonResult.allVideos.map((video, index) => (
-                          <div key={index} className="bg-surface rounded-lg p-3 shadow-sm border border-outline-variant transition-all duration-200 hover:scale-[1.02] hover:shadow-md">
+                          <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
                             <div className="flex items-center justify-between mb-2">
                               <div className="text-sm font-medium text-on-surface">
                                 Index {video.currentIndex}
                                 {video.fileIndex && ` - Index ${video.fileIndex}`}
                               </div>
-                              <div className={`text-xs px-2 py-1 rounded-xl ${getStatusColor(video.status)}`}>
+                              <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>
                                 {getStatusLabel(video.status)}
                               </div>
                             </div>

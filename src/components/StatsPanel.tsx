@@ -47,14 +47,14 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    <div className="bg-surface rounded-3xl shadow-lg border border-outline-variant overflow-hidden elevation-2 animate-fade-in">
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2 animate-fade-in">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
           // Force remove hover state when mouse leaves
           e.currentTarget.blur();
         }}
-        className="w-full p-6 flex items-center justify-between hover:bg-surface-container-low transition-all duration-225 state-layer focus:outline-none"
+        className="w-full p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
         <div className="flex items-center gap-4">
           <div className="p-3 bg-secondary-container rounded-2xl">
@@ -80,7 +80,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-surface-container rounded-2xl p-4 text-center backdrop-blur-sm border border-outline-variant hover:bg-surface-container-high transition-all duration-225"
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225"
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses}`}>
                     <Icon className="w-5 h-5" />

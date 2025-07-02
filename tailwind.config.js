@@ -54,6 +54,9 @@ export default {
         'inverse-surface': 'rgb(var(--md-sys-color-inverse-surface) / <alpha-value>)',
         'on-inverse-surface': 'rgb(var(--md-sys-color-on-inverse-surface) / <alpha-value>)',
         'inverse-primary': 'rgb(var(--md-sys-color-inverse-primary) / <alpha-value>)',
+
+        // This is crucial for the glow. Ensure --md-sys-color-primary-rgb is defined in your CSS.
+        'primary-rgb': 'var(--md-sys-color-primary-rgb)', 
       },
       animation: {
         'fade-in': 'fade-in 225ms cubic-bezier(0.4, 0, 0.2, 1)',
@@ -62,6 +65,10 @@ export default {
         'slide-in-right': 'slide-in-right 225ms cubic-bezier(0.4, 0, 0.2, 1)',
         'bounce-in': 'bounce-in 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         'spin': 'spin 1s linear infinite',
+
+        // New animation for ScrollToTop button icon
+        'bounce-up': 'bounce-up 1s infinite', // For the arrow
+        // Removed 'pulse-primary-glow' animation from here
       },
       keyframes: {
         'fade-in': {
@@ -115,6 +122,12 @@ export default {
             transform: 'scale(1)' 
           },
         },
+        // Keyframes for the bouncy arrow
+        'bounce-up': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' }, 
+        },
+        // Removed 'pulse-primary-glow' keyframes from here
       },
       boxShadow: {
         'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
@@ -122,11 +135,18 @@ export default {
         'elevation-3': '0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)',
         'elevation-4': '0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15)',
         'elevation-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)',
+        
+        // --- NEW GLOW SHADOWS ---
+        // Faint small glow (always on)
+        'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
+        // Larger, more prominent glow (on hover)
+        'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
       },
       transitionDuration: {
         '225': '225ms',
         '195': '195ms',
         '300': '300ms',
+        '500': '500ms', // Added for the button's entrance/exit transition
       },
       transitionTimingFunction: {
         'standard': 'cubic-bezier(0.2, 0, 0, 1)',

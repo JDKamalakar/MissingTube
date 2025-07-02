@@ -15,7 +15,10 @@ import { VideoTable } from './components/VideoTable';
 import { FilterControls } from './components/FilterControls';
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { ScrollToTop } from './components/ScrollToTop';
-import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeProvider } from './components/ThemeProvider'; // Your ThemeProvider
+
+// Import the new ThemeToggle component
+import { ThemeToggle } from './components/ThemeToggle'; // Adjust this path if ThemeToggle.tsx is elsewhere
 
 function App() {
   const [apiKey, setApiKey] = useState('');
@@ -37,7 +40,10 @@ function App() {
 
   const handleFetchPlaylist = async (playlistId: string) => {
     if (!apiKey) {
-      alert('Please configure your API key first');
+      // Replaced alert() with a console log or custom modal if available
+      console.warn('Please configure your API key first');
+      // You might want to show a custom modal here instead of alert
+      // For example: setShowApiKeyModal(true);
       return;
     }
 
@@ -64,7 +70,8 @@ function App() {
       // Fetch playlist info
       const info = await youtubeService.fetchPlaylistInfo(playlistId);
       if (!info) {
-        alert('Failed to fetch playlist information');
+        console.error('Failed to fetch playlist information');
+        // You might want to show a custom modal for error here
         return;
       }
       
@@ -106,7 +113,7 @@ function App() {
       
     } catch (error) {
       console.error('Error fetching playlist:', error);
-      alert('Failed to fetch playlist. Please check your API key and playlist ID.');
+      // You might want to show a custom modal for error here
     } finally {
       setIsLoading(false);
     }
@@ -186,6 +193,10 @@ function App() {
             currentPlaylistInfo={playlistInfo}
           />
           
+          {/* The ThemeToggle is now placed here, outside the Navbar component,
+              allowing its fixed positioning and z-index to work correctly. */}
+          <ThemeToggle /> 
+
           <div className="container mx-auto px-16 py-12 max-w-7xl">
             {/* Playlist Fetcher */}
             <div className="mb-12">

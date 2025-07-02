@@ -9,7 +9,7 @@ interface ViewToggleProps {
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) => {
   return (
-    <div className="relative flex items-center bg-surface-container rounded-2xl p-1 shadow-md border border-outline-variant">
+    <div className="relative flex items-center bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-1 shadow-xl border border-gray-300/30 dark:border-gray-700/30">
       {/* Animated Selector Background */}
       <div 
         className={`absolute top-1 bottom-1 bg-primary-container rounded-2xl transition-all duration-300 ease-out shadow-sm ${

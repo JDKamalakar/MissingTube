@@ -20,7 +20,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   const availableCount = totalCount - unavailableCount;
 
   return (
-    <div className="relative flex items-center bg-surface-container rounded-2xl p-1 shadow-md border border-outline-variant animate-slide-in-left min-w-[600px]">
+    <div className="relative flex items-center bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-1 shadow-xl border border-gray-300/30 dark:border-gray-700/30 animate-slide-in-left min-w-[600px]">
       {/* Animated Selector Background */}
       <div 
         className={`absolute top-1 bottom-1 bg-primary-container rounded-2xl transition-all duration-300 ease-out shadow-sm ${

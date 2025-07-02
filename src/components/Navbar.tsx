@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { Youtube, Key, History, Info, Download, Sun, Moon, Monitor, GitCompare } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Key, History, Info, Download, GitCompare } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
 import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
-import { useTheme } from './ThemeProvider';
 
 interface NavbarProps {
   onApiKeyChange: (apiKey: string) => void;
@@ -15,8 +14,8 @@ interface NavbarProps {
   currentPlaylistInfo?: any;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ 
-  onApiKeyChange, 
+export const Navbar: React.FC<NavbarProps> = ({
+  onApiKeyChange,
   onRestoreComplete,
   onPlaylistSelect,
   currentVideos = [],
@@ -27,106 +26,119 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
-  const { theme, setTheme } = useTheme();
+  
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [canScroll, setCanScroll] = useState(false);
 
-  const themes = [
-    { value: 'light' as const, icon: Sun, label: 'Light' },
-    { value: 'dark' as const, icon: Moon, label: 'Dark' },
-    { value: 'system' as const, icon: Monitor, label: 'System' },
-  ];
+  // Effect to determine if scrolling is even possible with a buffer
+  useEffect(() => {
+    const checkScrollability = () => {
+      setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
+    };
+
+    checkScrollability();
+    window.addEventListener('resize', checkScrollability);
+
+    const observer = new MutationObserver(checkScrollability);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      window.removeEventListener('resize', checkScrollability);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Effect to handle scroll, only if canScroll is true
+  useEffect(() => {
+    const handleScroll = () => {
+      if (canScroll) {
+        if (window.scrollY > 20) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [canScroll]);
 
   return (
     <>
-      <nav className="bg-surface/90 backdrop-blur-xl border-b border-outline-variant sticky top-0 z-40 shadow-lg rounded-b-3xl">
-        <div className="container mx-auto px-12 max-w-7xl">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-error-container rounded-2xl transition-all duration-225 hover:scale-110 hover:rotate-12 active:scale-95">
-                <Youtube className="w-6 h-6 text-error" />
+      <nav className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border-b border-gray-300/30 dark:border-gray-700/30 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
+        <div className={`container mx-auto px-8 max-w-7xl flex transition-all duration-300 ease-in-out
+                       ${isScrolled ? 'py-3 md:flex-row md:justify-between md:items-center md:gap-4' : 'py-4 flex-col items-center'}`}>
+
+          {/* Logo & Site Name - Centered when not scrolled, left-aligned when scrolled */}
+          <div className={`flex items-center gap-4 p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg w-full transition-all duration-300 ease-in-out
+                         ${isScrolled
+                           ? 'rounded-xl border border-gray-300/30 dark:border-gray-700/30 md:w-auto md:flex-shrink-0 justify-start'
+                           : 'rounded-t-xl rounded-b-none border-l border-r border-t border-gray-300/30 dark:border-gray-700/30 justify-center'}`}>
+            
+            {/* Group for Logo and Site Name */}
+            <div className="flex items-center gap-4">
+              {/* Hexagonal Logo */}
+              <div className="relative">
+                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center transform rotate-45 transition-all duration-225 hover:scale-110 hover:rotate-[50deg] active:scale-95">
+                  <div className="w-8 h-8 bg-on-primary rounded-sm transform -rotate-45 flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-on-primary rounded-sm"></div>
+                  </div>
+                </div>
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
-                Playlist Analyzer
+              {/* Site Name */}
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
+                MissingTube
               </h1>
             </div>
+          </div>
 
-            {/* Navigation Items */}
-            <div className="flex items-center gap-3">
-              {/* Theme Toggle - Same height as other buttons */}
-              <div className="relative flex items-center bg-surface-container rounded-2xl p-1 shadow-md border border-outline-variant h-10">
-                <div 
-                  className={`absolute top-1 bottom-1 bg-primary-container rounded-2xl transition-all duration-300 ease-out shadow-sm ${
-                    theme === 'light' 
-                      ? 'left-1 w-[calc(33.333%-4px)]' 
-                      : theme === 'dark'
-                      ? 'left-[33.333%] w-[calc(33.333%-4px)]'
-                      : 'left-[66.666%] w-[calc(33.333%-4px)]'
-                  }`}
-                />
-                
-                {themes.map(({ value, icon: Icon, label }) => (
-                  <button
-                    key={value}
-                    onClick={() => setTheme(value)}
-                    className={`relative z-10 flex items-center gap-1 px-2 py-1.5 rounded-2xl font-medium transition-all duration-225 text-xs min-w-0 ${
-                      theme === value
-                        ? 'text-on-primary-container'
-                        : 'text-on-surface hover:text-primary hover:bg-primary/8'
-                    }`}
-                    title={`Switch to ${label} theme`}
-                  >
-                    <Icon className={`w-3 h-3 transition-all duration-225 ${
-                      theme === value ? 'scale-110' : 'hover:scale-110'
-                    }`} />
-                    <span className={`hidden sm:inline transition-all duration-225 ${
-                      theme === value ? 'font-semibold' : ''
-                    }`}>
-                      {label}
-                    </span>
-                  </button>
-                ))}
-              </div>
+          {/* Navigation Items (Buttons) - Centered when scrolled */}
+          <div className={`flex flex-wrap justify-center p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out
+                         ${isScrolled
+                           ? 'rounded-xl border border-gray-300/30 dark:border-gray-700/30 md:w-auto md:flex-shrink-0'
+                           : 'rounded-b-xl rounded-t-none border-l border-r border-b border-gray-300/30 dark:border-gray-700/30'}`}>
+            <button
+              onClick={() => setShowHistoryPanel(true)}
+              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+            >
+              <History className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12" />
+              <span className="hidden sm:inline">History</span>
+            </button>
 
-              <button
-                onClick={() => setShowHistoryPanel(true)}
-                className="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
-              >
-                <History className="w-4 h-4 transition-transform duration-225 hover:rotate-12" />
-                <span className="hidden sm:inline">History</span>
-              </button>
+            <button
+              onClick={() => setShowApiKeyModal(true)}
+              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+            >
+              <Key className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12" />
+              <span className="hidden sm:inline">API Key</span>
+            </button>
 
-              <button
-                onClick={() => setShowApiKeyModal(true)}
-                className="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
-              >
-                <Key className="w-4 h-4 transition-transform duration-225 hover:rotate-12" />
-                <span className="hidden sm:inline">API Key</span>
-              </button>
+            <button
+              onClick={() => setShowBackupModal(true)}
+              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+            >
+              <Download className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
+              <span className="hidden sm:inline">Download</span>
+            </button>
 
-              <button
-                onClick={() => setShowBackupModal(true)}
-                className="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
-              >
-                <Download className="w-4 h-4 transition-transform duration-225 hover:scale-110" />
-                <span className="hidden sm:inline">Download</span>
-              </button>
+            <button
+              onClick={() => setShowComparisonModal(true)}
+              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+            >
+              <GitCompare className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
+              <span className="hidden sm:inline">Compare</span>
+            </button>
 
-              <button
-                onClick={() => setShowComparisonModal(true)}
-                className="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
-              >
-                <GitCompare className="w-4 h-4 transition-transform duration-225 hover:scale-110" />
-                <span className="hidden sm:inline">Compare</span>
-              </button>
-
-              <button
-                onClick={() => setShowAboutModal(true)}
-                className="flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
-              >
-                <Info className="w-4 h-4 transition-transform duration-225 hover:scale-110" />
-                <span className="hidden sm:inline">About</span>
-              </button>
-            </div>
+            <button
+              onClick={() => setShowAboutModal(true)}
+              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+            >
+              <Info className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
+              <span className="hidden sm:inline">About</span>
+            </button>
           </div>
         </div>
       </nav>

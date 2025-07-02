@@ -100,13 +100,13 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
 
   return (
     <>
-      <div className="bg-surface/95 blur-light rounded-3xl shadow-lg border border-outline-variant overflow-hidden elevation-2">
+      <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-surface-container/95 blur-light">
+            <thead className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl">
               <tr>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container-high transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 select-none relative ${
                     sortField === 'index' ? 'bg-primary-container/20' : ''
                   }`}
                   onClick={() => handleSort('index')}
@@ -124,7 +124,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   Thumbnail
                 </th>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container-high transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 select-none relative ${
                     sortField === 'title' ? 'bg-primary-container/20' : ''
                   }`}
                   onClick={() => handleSort('title')}
@@ -139,7 +139,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   </div>
                 </th>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container-high transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 select-none relative ${
                     sortField === 'channel' ? 'bg-primary-container/20' : ''
                   }`}
                   onClick={() => handleSort('channel')}
@@ -154,7 +154,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   </div>
                 </th>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-surface-container-high transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-on-surface-variant uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 select-none relative ${
                     sortField === 'duration' ? 'bg-primary-container/20' : ''
                   }`}
                   onClick={() => handleSort('duration')}
@@ -177,9 +177,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
               {sortedVideos.map((video, index) => (
                 <tr
                   key={video.id}
-                  className={`hover:bg-surface-container-low transition-all duration-225 ${
+                  className={`hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 ${
                     video.unavailable ? 'opacity-60' : ''
-                  } ${index % 2 === 0 ? 'bg-surface/95' : 'bg-surface-container-lowest/95'}`}
+                  } ${index % 2 === 0 ? 'bg-white/5 dark:bg-gray-800/5' : 'bg-white/10 dark:bg-gray-800/10'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center justify-center w-8 h-8 bg-primary-container text-on-primary-container rounded-lg text-sm font-medium border border-outline-variant shadow-sm">
