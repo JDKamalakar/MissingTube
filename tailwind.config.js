@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class', // Enable class-based dark mode
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Material Design 3 Color System - Light Theme
+        // Ocean-inspired Material Design 3 Color System
         primary: 'rgb(var(--md-sys-color-primary) / <alpha-value>)',
         'on-primary': 'rgb(var(--md-sys-color-on-primary) / <alpha-value>)',
         'primary-container': 'rgb(var(--md-sys-color-primary-container) / <alpha-value>)',
@@ -50,13 +50,11 @@ export default {
         
         scrim: 'rgb(var(--md-sys-color-scrim) / <alpha-value>)',
         
-        // Inverse colors
         'inverse-surface': 'rgb(var(--md-sys-color-inverse-surface) / <alpha-value>)',
         'on-inverse-surface': 'rgb(var(--md-sys-color-on-inverse-surface) / <alpha-value>)',
         'inverse-primary': 'rgb(var(--md-sys-color-inverse-primary) / <alpha-value>)',
 
-        // This is crucial for the glow. Ensure --md-sys-color-primary-rgb is defined in your CSS.
-        'primary-rgb': 'var(--md-sys-color-primary-rgb)', 
+        'primary-rgb': 'var(--md-sys-color-primary-rgb)',
       },
       animation: {
         'fade-in': 'fade-in 225ms cubic-bezier(0.4, 0, 0.2, 1)',
@@ -65,10 +63,9 @@ export default {
         'slide-in-right': 'slide-in-right 225ms cubic-bezier(0.4, 0, 0.2, 1)',
         'bounce-in': 'bounce-in 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         'spin': 'spin 1s linear infinite',
-
-        // New animation for ScrollToTop button icon
-        'bounce-up': 'bounce-up 1s infinite', // For the arrow
-        // Removed 'pulse-primary-glow' animation from here
+        'bounce-up': 'bounce-up 1s infinite',
+        'bounce-short-slow': 'bounce-short-slow 1.5s infinite',
+        'super-fast-bounce': 'super-fast-bounce 0.3s infinite',
       },
       keyframes: {
         'fade-in': {
@@ -122,31 +119,33 @@ export default {
             transform: 'scale(1)' 
           },
         },
-        // Keyframes for the bouncy arrow
         'bounce-up': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-8px)' }, 
         },
-        // Removed 'pulse-primary-glow' keyframes from here
+        'bounce-short-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
+        'super-fast-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
       },
       boxShadow: {
-        'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
-        'elevation-2': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
-        'elevation-3': '0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)',
-        'elevation-4': '0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15)',
-        'elevation-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)',
-        
-        // --- NEW GLOW SHADOWS ---
-        // Faint small glow (always on)
+        'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.05)',
+        'elevation-2': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.08)',
+        'elevation-3': '0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.1)',
+        'elevation-4': '0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.12)',
+        'elevation-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.15)',
         'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
-        // Larger, more prominent glow (on hover)
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
       },
       transitionDuration: {
         '225': '225ms',
         '195': '195ms',
         '300': '300ms',
-        '500': '500ms', // Added for the button's entrance/exit transition
+        '500': '500ms',
       },
       transitionTimingFunction: {
         'standard': 'cubic-bezier(0.2, 0, 0, 1)',
@@ -155,6 +154,9 @@ export default {
         'emphasized': 'cubic-bezier(0.2, 0, 0, 1)',
         'emphasized-decelerate': 'cubic-bezier(0.05, 0.7, 0.1, 1)',
         'emphasized-accelerate': 'cubic-bezier(0.3, 0, 0.8, 0.15)',
+      },
+      fontFamily: {
+        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
     },
   },

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Video, PlaylistInfo, ViewMode, FilterMode } from './types';
 import { YouTubeService } from './services/youtube';
 import { decryptApiKey } from './utils/youtube';
@@ -15,18 +15,17 @@ import { VideoTable } from './components/VideoTable';
 import { FilterControls } from './components/FilterControls';
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { ScrollToTop } from './components/ScrollToTop';
-import { ThemeProvider } from './components/ThemeProvider'; // Your ThemeProvider
-
-// Import the new ThemeToggle component
-import { ThemeToggle } from './components/ThemeToggle'; // Adjust this path if ThemeToggle.tsx is elsewhere
+import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeToggle } from './components/ThemeToggle';
+import { InstallPrompt } from './components/InstallPrompt';
 
 function App() {
   const [apiKey, setApiKey] = useState('');
   const [videos, setVideos] = useState<Video[]>([]);
   const [playlistInfo, setPlaylistInfo] = useState<PlaylistInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>(() => getViewMode()); // Load saved preference
-  const [filterMode, setFilterMode] = useState<FilterMode>(() => getFilterMode()); // Load saved preference
+  const [viewMode, setViewMode] = useState<ViewMode>(() => getViewMode());
+  const [filterMode, setFilterMode] = useState<FilterMode>(() => getFilterMode());
   const [lastPlaylistId, setLastPlaylistId] = useState<string>('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [pendingPlaylistId, setPendingPlaylistId] = useState<string>('');
@@ -40,14 +39,10 @@ function App() {
 
   const handleFetchPlaylist = async (playlistId: string) => {
     if (!apiKey) {
-      // Replaced alert() with a console log or custom modal if available
       console.warn('Please configure your API key first');
-      // You might want to show a custom modal here instead of alert
-      // For example: setShowApiKeyModal(true);
       return;
     }
 
-    // Check if it's the same playlist and ask for confirmation
     if (playlistId === lastPlaylistId && videos.length > 0) {
       setPendingPlaylistId(playlistId);
       setShowConfirmation(true);
@@ -60,29 +55,24 @@ function App() {
   const fetchPlaylistData = async (playlistId: string) => {
     setIsLoading(true);
     
-    // Clear old data immediately when starting new fetch
     setVideos([]);
     setPlaylistInfo(null);
     
     try {
       const youtubeService = new YouTubeService(apiKey);
       
-      // Fetch playlist info
       const info = await youtubeService.fetchPlaylistInfo(playlistId);
       if (!info) {
         console.error('Failed to fetch playlist information');
-        // You might want to show a custom modal for error here
         return;
       }
       
       setPlaylistInfo(info);
       
-      // Fetch videos
       const fetchedVideos = await youtubeService.fetchVideos(playlistId);
       setVideos(fetchedVideos);
       setLastPlaylistId(playlistId);
       
-      // Save to storage with complete video data
       const storedPlaylists = getPlaylists();
       const existingIndex = storedPlaylists.findIndex(p => p.id === playlistId);
       
@@ -92,7 +82,7 @@ function App() {
         thumbnail: info.thumbnail,
         lastAccessed: new Date().toISOString(),
         videoCount: fetchedVideos.length,
-        videos: fetchedVideos, // Store complete video data for backup
+        videos: fetchedVideos,
       };
       
       if (existingIndex >= 0) {
@@ -103,17 +93,8 @@ function App() {
       
       savePlaylists(storedPlaylists);
       
-      console.log('Playlist data fetched and stored:', {
-        playlistId,
-        title: info.title,
-        videoCount: fetchedVideos.length,
-        firstVideo: fetchedVideos[0]?.title,
-        lastVideo: fetchedVideos[fetchedVideos.length - 1]?.title
-      });
-      
     } catch (error) {
       console.error('Error fetching playlist:', error);
-      // You might want to show a custom modal for error here
     } finally {
       setIsLoading(false);
     }
@@ -137,12 +118,10 @@ function App() {
     
     setIsTransitioning(true);
     
-    // Start fade out animation
     setTimeout(() => {
       setViewMode(newViewMode);
-      saveViewMode(newViewMode); // Save preference
+      saveViewMode(newViewMode);
       
-      // Start fade in animation
       setTimeout(() => {
         setIsTransitioning(false);
       }, 50);
@@ -151,11 +130,10 @@ function App() {
 
   const handleFilterModeChange = (newFilterMode: FilterMode) => {
     setFilterMode(newFilterMode);
-    saveFilterMode(newFilterMode); // Save preference
+    saveFilterMode(newFilterMode);
   };
 
-  // Check if API key is stored on mount
-  React.useEffect(() => {
+  useEffect(() => {
     const stored = getApiKey();
     if (stored) {
       setApiKey(decryptApiKey(stored));
@@ -165,25 +143,9 @@ function App() {
   const unavailableCount = videos.filter(v => v.unavailable).length;
   const showViewToggle = unavailableCount > 0 && videos.length > 0;
 
-  // Debug current state for navbar
-  console.log('App state for navbar:', {
-    hasVideos: videos.length > 0,
-    hasPlaylistInfo: !!playlistInfo,
-    videoCount: videos.length,
-    playlistTitle: playlistInfo?.title
-  });
-
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-surface via-surface-container-lowest to-surface-container relative">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 25% 25%, rgb(var(--md-sys-color-primary) / 0.1) 0%, transparent 50%), 
-                             radial-gradient(circle at 75% 75%, rgb(var(--md-sys-color-tertiary) / 0.1) 0%, transparent 50%)`
-          }} />
-        </div>
-
+      <div className="min-h-screen relative">
         <div className="relative z-10">
           <Navbar 
             onApiKeyChange={handleApiKeyChange}
@@ -193,28 +155,25 @@ function App() {
             currentPlaylistInfo={playlistInfo}
           />
           
-          {/* The ThemeToggle is now placed here, outside the Navbar component,
-              allowing its fixed positioning and z-index to work correctly. */}
           <ThemeToggle /> 
+          <InstallPrompt />
 
-          <div className="container mx-auto px-16 py-12 max-w-7xl">
-            {/* Playlist Fetcher */}
+          <div className="container mx-auto px-6 md:px-16 py-12 max-w-7xl">
             <div className="mb-12">
               <PlaylistFetcher onFetch={handleFetchPlaylist} isLoading={isLoading} />
             </div>
 
             {(playlistInfo || isLoading) && (
               <>
-                {/* Playlist Header */}
                 <div className="mb-12">
                   {isLoading ? (
-                    <div className="bg-surface-container/95 blur-light rounded-2xl p-8 animate-pulse">
+                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-8 animate-pulse border border-white/20">
                       <div className="flex items-start gap-6">
-                        <div className="w-32 h-32 bg-surface-container-high rounded-2xl"></div>
+                        <div className="w-32 h-32 bg-white/20 rounded-3xl"></div>
                         <div className="flex-1">
-                          <div className="h-8 bg-surface-container-high rounded-lg mb-4 w-3/4"></div>
-                          <div className="h-4 bg-surface-container-high rounded-lg mb-2 w-1/2"></div>
-                          <div className="h-4 bg-surface-container-high rounded-lg w-1/3"></div>
+                          <div className="h-8 bg-white/20 rounded-2xl mb-4 w-3/4"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl mb-2 w-1/2"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl w-1/3"></div>
                         </div>
                       </div>
                     </div>
@@ -226,17 +185,16 @@ function App() {
                   )}
                 </div>
 
-                {/* Stats Panel */}
                 <div className="mb-12">
                   {isLoading ? (
-                    <div className="bg-surface-container/95 blur-light rounded-2xl p-6 animate-pulse">
-                      <div className="h-6 bg-surface-container-high rounded-lg mb-4 w-1/4"></div>
+                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-6 animate-pulse border border-white/20">
+                      <div className="h-6 bg-white/20 rounded-2xl mb-4 w-1/4"></div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[...Array(4)].map((_, i) => (
-                          <div key={i} className="bg-surface-container-high rounded-2xl p-4">
-                            <div className="h-12 bg-surface-container-highest rounded-lg mb-2"></div>
-                            <div className="h-6 bg-surface-container-highest rounded-lg mb-1"></div>
-                            <div className="h-4 bg-surface-container-highest rounded-lg"></div>
+                          <div key={i} className="bg-white/10 rounded-3xl p-4">
+                            <div className="h-12 bg-white/20 rounded-2xl mb-2"></div>
+                            <div className="h-6 bg-white/20 rounded-2xl mb-1"></div>
+                            <div className="h-4 bg-white/20 rounded-2xl"></div>
                           </div>
                         ))}
                       </div>
@@ -246,7 +204,6 @@ function App() {
                   )}
                 </div>
 
-                {/* Controls */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
                   <div className="flex items-center gap-4 animate-slide-in-left">
                     <FilterControls
@@ -263,18 +220,17 @@ function App() {
                   )}
                 </div>
 
-                {/* Videos Display with Smooth Transitions */}
                 <div className="mb-12">
                   {isLoading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {[...Array(8)].map((_, i) => (
-                        <div key={i} className="bg-surface-container/95 blur-light rounded-2xl p-4 animate-pulse">
-                          <div className="h-48 bg-surface-container-high rounded-lg mb-4"></div>
-                          <div className="h-4 bg-surface-container-high rounded-lg mb-2"></div>
-                          <div className="h-3 bg-surface-container-high rounded-lg mb-4 w-2/3"></div>
+                        <div key={i} className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-4 animate-pulse border border-white/20">
+                          <div className="h-48 bg-white/20 rounded-2xl mb-4"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl mb-2"></div>
+                          <div className="h-3 bg-white/20 rounded-2xl mb-4 w-2/3"></div>
                           <div className="flex gap-2">
-                            <div className="flex-1 h-8 bg-surface-container-high rounded-lg"></div>
-                            <div className="w-8 h-8 bg-surface-container-high rounded-lg"></div>
+                            <div className="flex-1 h-8 bg-white/20 rounded-2xl"></div>
+                            <div className="w-8 h-8 bg-white/20 rounded-2xl"></div>
                           </div>
                         </div>
                       ))}
@@ -296,33 +252,30 @@ function App() {
               </>
             )}
 
-            {/* Loading State */}
             {isLoading && (
               <div className="flex flex-col items-center justify-center py-16">
                 <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-                <p className="text-on-surface-variant text-lg">Analyzing playlist...</p>
+                <p className="text-white/80 text-lg">Analyzing playlist...</p>
               </div>
             )}
 
-            {/* Empty State */}
             {!playlistInfo && !isLoading && (
               <div className="text-center py-16">
-                <div className="p-4 bg-surface-container rounded-full w-24 h-24 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="w-12 h-12 text-on-surface-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div className="p-6 bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-full w-32 h-32 mx-auto mb-6 flex items-center justify-center border border-white/20">
+                  <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-on-surface mb-2">
+                <h3 className="text-2xl font-semibold text-white mb-4">
                   Ready to analyze your playlist
                 </h3>
-                <p className="text-on-surface-variant">
+                <p className="text-white/70 text-lg">
                   Enter your playlist URL above to get started with detailed analysis
                 </p>
               </div>
             )}
           </div>
 
-          {/* Confirmation Modal */}
           <ConfirmationModal
             isOpen={showConfirmation}
             onClose={() => setShowConfirmation(false)}
@@ -334,7 +287,6 @@ function App() {
             type="warning"
           />
 
-          {/* Scroll to Top Button */}
           <ScrollToTop />
         </div>
       </div>

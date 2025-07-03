@@ -24,58 +24,55 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop with more transparency (bg-black/10) and blur */}
+      {/* Enhanced backdrop with better blur */}
       <div
-        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
+        className="fixed inset-0 bg-black/20 backdrop-blur-heavy transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Main Modal Container: Responsible for the single scrollbar, hidden by default */}
+      {/* Main Modal Container with better contrast */}
       <div
-        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-2xl animate-modal-enter elevation-3
+        className="relative bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-2xl border border-white/30 dark:border-white/20 w-full max-w-2xl animate-modal-enter elevation-3
                      max-h-[85vh] overflow-y-auto custom-scrollbar"
         role="dialog"
         aria-modal="true"
       >
-        {/* Title & Button Div: Fixed header with transparency and blur */}
-        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl">
+        {/* Header with better contrast */}
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/30 dark:bg-black/40 backdrop-blur-heavy z-10 rounded-t-3xl border-b border-white/20">
           <div className="flex items-center gap-3">
-            {/* Modal icon with transparency, depth, and scale on hover */}
-            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <Info className="w-6 h-6 text-on-secondary-container" />
+            <div className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
+              <Info className="w-6 h-6 text-primary" />
             </div>
-            <h2 className="text-xl font-semibold text-on-surface">About</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">About</h2>
           </div>
-          {/* Close button with p-3 padding, transparency, depth, and red 'X' - now with spin and scale */}
           <button
             onClick={onClose}
-            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+            className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group border border-white/30 dark:border-white/20"
             aria-label="Close modal"
           >
-            {/* X icon in red, spins and scales on hover */}
             <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
 
-        {/* Content area with p-8 padding for a balanced look */}
+        {/* Content with better contrast */}
         <div className="p-8">
           <div className="space-y-6">
 
             {/* MissingTube Title and Description Card */}
-            <div className="group relative text-center p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h3 className="text-xl font-semibold text-on-surface mb-3">
+            <div className="group relative text-center p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                 MissingTube
               </h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
                 A modern, feature-rich tool to analyze YouTube playlists and recover missing video titles.
                 Built with React, TypeScript, and Tailwind CSS with Material Design 3.
               </p>
             </div>
 
             {/* Features Section Card */}
-            <div className="group relative p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h4 className="font-medium text-on-surface mb-3">Features:</h4>
-              <ul className="text-sm text-on-surface-variant space-y-2">
+            <div className="group relative p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-3">Features:</h4>
+              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Comprehensive playlist analysis
@@ -116,18 +113,18 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
             </div>
 
             {/* Support Development Section Card */}
-            <div className="relative border-t border-gray-300/30 dark:border-700/30 pt-6 p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h4 className="font-medium text-on-surface mb-4 flex items-center gap-2">
+            <div className="relative border-t border-white/20 pt-6 p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <Heart className="w-5 h-5 text-error animate-pulse" />
                 Support Development
               </h4>
 
               <div className="space-y-3">
                 <a
-                  href="https://buymeacoffee.com/developer" // Replace with actual link
+                  href="https://buymeacoffee.com/developer"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 w-full py-3 px-6 bg-warning-container text-on-warning-container rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning-container/90 hover:scale-105 active:scale-95 group"
+                  className="flex items-center justify-center gap-3 w-full py-3 px-6 bg-warning text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning/90 hover:scale-105 active:scale-95 group"
                 >
                   <Coffee className="w-5 h-5 animate-bounce group-hover:animate-super-fast-bounce" />
                   Buy me a coffee
@@ -135,31 +132,30 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
                 <div className="flex gap-3">
                   <a
-                    href="https://github.com/developer/missingtube" // Replace with actual link
+                    href="https://github.com/developer/missingtube"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
                   >
                     <Github className="w-4 h-4 transition-transform duration-500 group-hover:rotate-[360deg]" />
                     GitHub
                   </a>
 
                   <a
-                    href="https://twitter.com/developer" // Replace with actual link
+                    href="https://twitter.com/developer"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
                   >
-                    {/* Increased rotation to group-hover:rotate-45 for more effect */}
                     <Twitter className="w-4 h-4 transition-transform duration-225 group-hover:rotate-45" />
                     Twitter
                   </a>
 
                   <a
-                    href="https://developer-portfolio.com" // Replace with actual link
+                    href="https://developer-portfolio.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-green-600/90 dark:bg-green-700/80 backdrop-blur-md text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-green-600 hover:dark:bg-green-700 hover:scale-105 active:scale-95 group border border-teal-600/50 dark:border-teal-700/50"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50"
                   >
                     <Globe className="w-4 h-4 transition-transform duration-225 group-hover:animate-spin" />
                     Portfolio
@@ -168,7 +164,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </div>
             </div>
 
-            <div className="text-center text-xs text-on-surface-variant">
+            <div className="text-center text-xs text-gray-600 dark:text-gray-400">
               Made with ❤️ for the YouTube community
             </div>
           </div>

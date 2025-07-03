@@ -19,11 +19,26 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
 
+  const handleFilterChange = (newMode: FilterMode) => {
+    if (newMode === filterMode) return;
+    
+    // Add smooth transition animation
+    const container = document.querySelector('[data-filter-container]');
+    if (container) {
+      container.classList.add('animate-pulse');
+      setTimeout(() => {
+        container.classList.remove('animate-pulse');
+      }, 300);
+    }
+    
+    onFilterChange(newMode);
+  };
+
   return (
-    <div className="relative flex items-center bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-1 shadow-xl border border-gray-300/30 dark:border-gray-700/30 animate-slide-in-left min-w-[600px]">
+    <div className="relative flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left min-w-[600px]">
       {/* Animated Selector Background */}
       <div 
-        className={`absolute top-1 bottom-1 bg-primary-container rounded-2xl transition-all duration-300 ease-out shadow-sm ${
+        className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
           filterMode === 'all' 
             ? 'left-1 w-[calc(33.333%-4px)]' 
             : filterMode === 'available'
@@ -33,11 +48,11 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       />
       
       <button
-        onClick={() => onFilterChange('all')}
+        onClick={() => handleFilterChange('all')}
         className={`relative z-10 flex items-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 justify-center ${
           filterMode === 'all'
-            ? 'text-on-primary-container'
-            : 'text-on-surface hover:text-primary hover:bg-primary/8'
+            ? 'text-white'
+            : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
         }`}
       >
         <Filter className={`w-4 h-4 transition-all duration-225 ${
@@ -51,11 +66,11 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </button>
       
       <button
-        onClick={() => onFilterChange('available')}
+        onClick={() => handleFilterChange('available')}
         className={`relative z-10 flex items-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 justify-center ${
           filterMode === 'available'
-            ? 'text-on-primary-container'
-            : 'text-on-surface hover:text-primary hover:bg-primary/8'
+            ? 'text-white'
+            : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
         }`}
       >
         <Eye className={`w-4 h-4 transition-all duration-225 ${
@@ -69,11 +84,11 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </button>
       
       <button
-        onClick={() => onFilterChange('unavailable')}
+        onClick={() => handleFilterChange('unavailable')}
         className={`relative z-10 flex items-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 justify-center ${
           filterMode === 'unavailable'
-            ? 'text-on-primary-container'
-            : 'text-on-surface hover:text-primary hover:bg-primary/8'
+            ? 'text-white'
+            : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
         }`}
       >
         <EyeOff className={`w-4 h-4 transition-all duration-225 ${

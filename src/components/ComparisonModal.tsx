@@ -344,7 +344,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
             <div className="w-full flex-shrink-0 space-y-6 pr-6">
               <div className="text-center">
                 {/* Upload JSON File for Comparison Text in a card - adjusted scale */}
-                <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.01]">
+                <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.04]">
                   <h3 className="text-lg font-semibold text-on-surface mb-2">
                     Upload JSON File for Comparison
                   </h3>
@@ -355,7 +355,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
               </div>
 
               {currentPlaylistInfo ? (
-                <div className="p-4 bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.01]">
+                <div className="p-4 bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.04]">
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircle className="w-5 h-5 text-on-primary-container" />
                     <span className="font-medium text-on-primary-container">Current Playlist Ready</span>
@@ -368,7 +368,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 backdrop-blur-md rounded-2xl border border-error/50 dark:border-error-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.01]">
+                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 backdrop-blur-md rounded-2xl border border-error/50 dark:border-error-dark/50 shadow-md transition-all duration-300 ease-out hover:shadow-lg hover:scale-[1.04]">
                   <div className="flex items-center gap-2 mb-2">
                     <AlertTriangle className="w-5 h-5 text-on-error-container" />
                     <span className="font-medium text-on-error-container">No Playlist Loaded</span>
@@ -490,7 +490,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                               fileInputRef.current.value = '';
                             }
                           }}
-                          className="flex items-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
+                          className="flex items-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
                         >
                           <GitCompare className="w-5 h-5 transition-transform duration-500 group-hover:rotate-[360deg]" />
                           Compare Another
@@ -525,7 +525,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       }`}>
                         <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
                           {comparisonResult.unavailableMatches.map((match, index) => (
-                            <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
+                            <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                               <div className="flex items-center justify-between mb-1">
                                 <div className="text-sm font-medium text-on-surface">
                                   Index {match.currentIndex} - Index {match.fileIndex}
@@ -579,7 +579,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     }`}>
                       <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto custom-scrollbar">
                         {comparisonResult.allVideos.map((video, index) => (
-                          <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.01] hover:shadow-md">
+                          <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                             <div className="flex items-center justify-between mb-2">
                               <div className="text-sm font-medium text-on-surface">
                                 Index {video.currentIndex}

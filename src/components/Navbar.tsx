@@ -26,11 +26,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
-  
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
 
-  // Effect to determine if scrolling is even possible with a buffer
   useEffect(() => {
     const checkScrollability = () => {
       setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
@@ -48,7 +47,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, []);
 
-  // Effect to handle scroll, only if canScroll is true
   useEffect(() => {
     const handleScroll = () => {
       if (canScroll) {
@@ -68,23 +66,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border-b border-gray-300/30 dark:border-gray-700/30 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
+      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
         <div className={`container mx-auto px-8 max-w-7xl flex transition-all duration-300 ease-in-out
-                       ${isScrolled ? 'py-3 md:flex-row md:justify-between md:items-center md:gap-4' : 'py-4 flex-col items-center'}`}>
+                         ${isScrolled ? 'py-3 md:flex-row md:justify-between md:items-center md:gap-4' : 'py-4 flex-col items-center'}`}>
 
-          {/* Logo & Site Name - Centered when not scrolled, left-aligned when scrolled */}
-          <div className={`flex items-center gap-4 p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg w-full transition-all duration-300 ease-in-out
-                         ${isScrolled
-                           ? 'rounded-xl border border-gray-300/30 dark:border-gray-700/30 md:w-auto md:flex-shrink-0 justify-start'
-                           : 'rounded-t-xl rounded-b-none border-l border-r border-t border-gray-300/30 dark:border-gray-700/30 justify-center'}`}>
-            
-            {/* Group for Logo and Site Name */}
+          {/* Logo & Site Name */}
+          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+                            ${isScrolled
+                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-start'
+                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}>
+
             <div className="flex items-center gap-4">
               {/* Hexagonal Logo */}
               <div className="relative">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center transform rotate-45 transition-all duration-225 hover:scale-110 hover:rotate-[50deg] active:scale-95">
-                  <div className="w-8 h-8 bg-on-primary rounded-sm transform -rotate-45 flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-on-primary rounded-sm"></div>
+                <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center transform rotate-45 transition-all duration-225 hover:scale-110 hover:rotate-[50deg] active:scale-95">
+                  <div className="w-8 h-8 bg-white rounded-sm transform -rotate-45 flex items-center justify-center">
+                    <div className="w-4 h-4 border-2 border-primary rounded-sm"></div>
                   </div>
                 </div>
               </div>
@@ -95,49 +92,55 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Navigation Items (Buttons) - Centered when scrolled */}
-          <div className={`flex flex-wrap justify-center p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out
-                         ${isScrolled
-                           ? 'rounded-xl border border-gray-300/30 dark:border-gray-700/30 md:w-auto md:flex-shrink-0'
-                           : 'rounded-b-xl rounded-t-none border-l border-r border-b border-gray-300/30 dark:border-gray-700/30'}`}>
+          {/* Navigation Items */}
+          <div className={`flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+                            ${isScrolled
+                              ? 'rounded-2xl md:w-auto md:flex-shrink-0'
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}>
+
             <button
               onClick={() => setShowHistoryPanel(true)}
-              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+              className="group relative flex items-center gap-2 px-4 py-4 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
             >
-              <History className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12" />
-              <span className="hidden sm:inline">History</span>
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              <History className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:-rotate-[30deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">History</span>
             </button>
 
             <button
               onClick={() => setShowApiKeyModal(true)}
-              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
             >
-              <Key className="w-4 h-4 transition-transform duration-200 group-hover:-rotate-12" />
-              <span className="hidden sm:inline">API Key</span>
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              <Key className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:-rotate-[30deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">API Key</span>
             </button>
 
             <button
               onClick={() => setShowBackupModal(true)}
-              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
             >
-              <Download className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
-              <span className="hidden sm:inline">Download</span>
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              <Download className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">Download</span>
             </button>
 
             <button
               onClick={() => setShowComparisonModal(true)}
-              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
             >
-              <GitCompare className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
-              <span className="hidden sm:inline">Compare</span>
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              <GitCompare className="relative z-10 w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">Compare</span>
             </button>
 
             <button
               onClick={() => setShowAboutModal(true)}
-              className="group flex items-center gap-2 px-3 py-2 text-on-surface-variant hover:text-secondary hover:bg-secondary-container rounded-2xl transition-all duration-225 hover:scale-105 active:scale-95 state-layer h-10"
+              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
             >
-              <Info className="w-4 h-4 transition-transform duration-200 group-hover:scale-125" />
-              <span className="hidden sm:inline">About</span>
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              <Info className="relative z-10 w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">About</span>
             </button>
           </div>
         </div>
