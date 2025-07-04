@@ -141,7 +141,8 @@ function App() {
   }, []);
 
   const unavailableCount = videos.filter(v => v.unavailable).length;
-  const showViewToggle = unavailableCount > 0 && videos.length > 0;
+  const showViewToggle = videos.length > 0; // Show view toggle when there's data
+  const showFilterControls = unavailableCount > 0 && videos.length > 0; // Show filters only when there are unavailable videos
 
   return (
     <ThemeProvider>
@@ -206,12 +207,14 @@ function App() {
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
                   <div className="flex items-center gap-4 animate-slide-in-left">
-                    <FilterControls
-                      filterMode={filterMode}
-                      onFilterChange={handleFilterModeChange}
-                      unavailableCount={unavailableCount}
-                      totalCount={videos.length}
-                    />
+                    {showFilterControls && (
+                      <FilterControls
+                        filterMode={filterMode}
+                        onFilterChange={handleFilterModeChange}
+                        unavailableCount={unavailableCount}
+                        totalCount={videos.length}
+                      />
+                    )}
                   </div>
                   {showViewToggle && (
                     <div className="animate-slide-in-right">

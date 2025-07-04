@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Key, History, Info, Download, GitCompare } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
@@ -30,14 +30,21 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
 
+  // Define a scroll threshold to prevent rapid flickering
+  const SCROLL_THRESHOLD = 80; // Adjust this value as needed (e.g., 50, 100, etc.)
+
   useEffect(() => {
     const checkScrollability = () => {
+      // Check if document height is greater than window height + a buffer
+      // This helps determine if there's enough content to scroll at all
       setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
     };
 
+    // Initial check and re-check on window resize
     checkScrollability();
     window.addEventListener('resize', checkScrollability);
 
+    // Observe DOM changes that might affect scrollability (e.g., content loading)
     const observer = new MutationObserver(checkScrollability);
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -50,31 +57,34 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       if (canScroll) {
-        if (window.scrollY > 20) {
+        if (window.scrollY > SCROLL_THRESHOLD) { // Use the defined threshold
           setIsScrolled(true);
         } else {
           setIsScrolled(false);
         }
       } else {
+        // If not scrollable, always treat as not scrolled
         setIsScrolled(false);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]);
+  }, [canScroll]); // Re-run effect if canScroll changes
 
   return (
     <>
       <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
-        <div className={`container mx-auto px-8 max-w-7xl flex transition-all duration-300 ease-in-out
-                         ${isScrolled ? 'py-3 md:flex-row md:justify-between md:items-center md:gap-4' : 'py-4 flex-col items-center'}`}>
+        <div className={`container mx-auto pl-8 pr-16 max-w-7xl flex transition-all duration-300 ease-in-out
+                          ${isScrolled
+                            ? 'py-3 flex-col md:flex-row md:justify-between md:items-center md:gap-4' // On scroll: flex-row for larger screens, justify-between for logo left/buttons right
+                            : 'py-4 flex-col items-center'}`}> {/* Default: always flex-col and center items */}
 
           {/* Logo & Site Name */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-start'
-                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}>
+                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-start' // On scroll: ensure content starts from left, prevent shrinking
+                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Default: center logo horizontally */}
 
             <div className="flex items-center gap-4">
               {/* Hexagonal Logo */}
@@ -95,8 +105,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Navigation Items */}
           <div className={`flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0'
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}>
+                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center' // On scroll: grow to fill space, then center its contents
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
 
             <button
               onClick={() => setShowHistoryPanel(true)}
