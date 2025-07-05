@@ -22,8 +22,12 @@
     <meta name="msapplication-TileColor" content="#0ea5e9" />
 
     <!-- Icons -->
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/icons/Icon_Light.png" />
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preload logo variants for instant theme switching -->
+    <link rel="preload" href="/icons/Icon_Dark_NB.png" as="image" />
+    <link rel="preload" href="/icons/Icon_Light_NB.png" as="image" />
     
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
@@ -127,6 +131,11 @@
         // Clear the deferred prompt
         deferredPrompt = null;
         window.installPromptEvent = null;
+        
+        // Show installation success notification
+        if (window.showInstallationSuccess) {
+          window.showInstallationSuccess();
+        }
       });
 
       // Manual install trigger

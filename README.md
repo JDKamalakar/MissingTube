@@ -94,9 +94,9 @@ MissingTube can be installed as a Progressive Web App on any device:
 
 ### Mobile (iOS/Android)
 1. Open the website in your browser
-2. Tap the share button
-3. Select "Add to Home Screen"
-4. The app will appear on your home screen
+2. Look for the install icon in the address bar
+3. Click "Install MissingTube"
+4. The app will appear in your applications folder
 
 ### Features When Installed
 - **📱 Native-like experience** - Runs in its own window

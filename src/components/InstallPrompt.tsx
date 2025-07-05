@@ -1,223 +1,118 @@
 import React, { useState, useEffect } from 'react';
-
-import { Download, Smartphone } from 'lucide-react';
-
-import { InstallPopup } from './InstallPopup';
-
-
+import { Download } from 'lucide-react';
+import { InstallPopup } from './InstallPopup'; // Make sure the path is correct
 
 interface BeforeInstallPromptEvent extends Event {
-
-  prompt(): Promise<void>;
-
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-
-
 export const InstallPrompt: React.FC = () => {
-
-  const [showInstallButton, setShowInstallButton] = useState(false);
-
-  const [showInstallPopup, setShowInstallPopup] = useState(false);
-
-  const [isInstalled, setIsInstalled] = useState(false);
-
-  const [isScrolled, setIsScrolled] = useState(false);
-
-
-
-  useEffect(() => {
-
-    // Check if app is already installed
-
-    const checkInstalled = () => {
-
-      if (window.matchMedia('(display-mode: standalone)').matches || 
-
-          (window.navigator as any).standalone === true ||
-
-          document.referrer.includes('android-app://') ||
-
-          localStorage.getItem('pwa-installed') === 'true') {
-
-        setIsInstalled(true);
-
-        return true;
-
-      }
-
-      return false;
-
-    };
-
-
-
-    // Check if user has permanently dismissed the popup
-
-    const isDismissed = localStorage.getItem('pwa-popup-dismissed') === 'true';
-
-
-
-    if (!checkInstalled() && !isDismissed) {
-
-      // Check for install prompt availability
-
-      const checkInstallAvailable = () => {
-
-        if ((window as any).installPromptEvent) {
-
-          setShowInstallButton(true);
-
-          return true;
-
-        }
-
-        return false;
-
-      };
-
-
-
-      checkInstallAvailable();
-
-
-
-      // Listen for beforeinstallprompt event
-
-      const handleBeforeInstallPrompt = (e: Event) => {
-
-        e.preventDefault();
-
-        (window as any).installPromptEvent = e;
-
-        setShowInstallButton(true);
-
-      };
-
-
-
-      // Listen for app installed event
-
-      const handleAppInstalled = () => {
-
-        setIsInstalled(true);
-
-        setShowInstallButton(false);
-
-        localStorage.setItem('pwa-installed', 'true');
-
-      };
-
-
-
-      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-      window.addEventListener('appinstalled', handleAppInstalled);
-
-
-
-      return () => {
-
-        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-        window.removeEventListener('appinstalled', handleAppInstalled);
-
-      };
-
-    }
-
-  }, []);
-
-
-
-  // Handle scroll detection for positioning
-
-  useEffect(() => {
-
-    const handleScroll = () => {
-
-      setIsScrolled(window.scrollY > 20);
-
-    };
-
-
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => window.removeEventListener('scroll', handleScroll);
-
-  }, []);
-
-
-
-  // Don't show if already installed or no install available
-
-  if (isInstalled || !showInstallButton) {
-
-    return null;
-
-  }
-
-
-
-  return (
-
-    <>
-
-      <div
-
-        className={`fixed z-50 transition-all duration-300 ease-in-out ${
-
-          isScrolled
-
-            ? 'top-4 right-20' // Position next to theme toggle when scrolled
-
-            : 'top-6 right-20' // Position next to theme toggle when not scrolled
-
-        }`}
-
-      >
-
-        <button
-
-          onClick={() => setShowInstallPopup(true)}
-
-          className="p-3 rounded-2xl bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 hover:scale-110 group shadow-xl"
-
-          aria-label="Install app"
-
-          title="Install MissingTube as an app"
-
-        >
-
-          <div className="relative w-6 h-6 flex items-center justify-center">
-
-            <Smartphone
-
-              className="transition-all duration-500 ease-out text-blue-500 dark:text-blue-400 group-hover:scale-110 group-hover:animate-pulse"
-
-              size={24}
-
-            />
-
-          </div>
-
-        </button>
-
-      </div>
-
-
-
-      {showInstallPopup && (
-
-        <InstallPopup onClose={() => setShowInstallPopup(false)} />
-
-      )}
-
-    </>
-
-  );
-
+  const [showInstallPopup, setShowInstallPopup] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+  useEffect(() => {
+    const checkInstalled = () => {
+      if (window.matchMedia('(display-mode: standalone)').matches ||
+          (window.navigator as any).standalone === true ||
+          document.referrer.includes('android-app://') ||
+          localStorage.getItem('pwa-installed') === 'true') {
+        setIsInstalled(true);
+        return true;
+      }
+      return false;
+    };
+
+    const isDismissedPermanently = localStorage.getItem('pwa-popup-dismissed') === 'true';
+
+    if (checkInstalled() || isDismissedPermanently) {
+      console.log('InstallPrompt: App already installed or permanently dismissed. Not showing prompt.');
+      return;
+    }
+
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      const event = e as BeforeInstallPromptEvent;
+      (window as any).installPromptEvent = event;
+      setDeferredPrompt(event);
+      setShowInstallPopup(true);
+      console.log('InstallPrompt: beforeinstallprompt fired, showing custom popup.');
+    };
+
+    const handleAppInstalled = () => {
+      console.log('InstallPrompt: App was successfully installed.');
+      setIsInstalled(true);
+      setShowInstallPopup(false);
+      setDeferredPrompt(null);
+      localStorage.setItem('pwa-installed', 'true');
+      (window as any).installPromptEvent = null;
+
+      // Show the success message popup
+      setShowSuccessPopup(true);
+      setTimeout(() => {
+        setShowSuccessPopup(false);
+      }, 4000);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    if (!checkInstalled() && !isDismissedPermanently && (window as any).installPromptEvent) {
+      setDeferredPrompt((window as any).installPromptEvent);
+      setShowInstallPopup(true);
+      console.log('InstallPrompt: Found existing prompt event on mount, showing popup.');
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  // If the app is already installed, render nothing from this component.
+  if (isInstalled) {
+    return null;
+  }
+
+  return (
+    <>
+      {/* Custom Install Popup */}
+      {showInstallPopup && deferredPrompt && (
+        <InstallPopup
+          onClose={(outcome) => {
+            setShowInstallPopup(false); // Hide the popup regardless of outcome
+            if (outcome === 'dismissed' || outcome === 'dismissed-browser') {
+              // If user explicitly dismissed from custom popup OR browser popup, mark as permanently dismissed
+              localStorage.setItem('pwa-popup-dismissed', 'true');
+              console.log('InstallPrompt: User dismissed popup (custom or browser). Permanently dismissed.');
+            } else if (outcome === 'autoclose') {
+              // If it auto-closed, do not mark as permanently dismissed,
+              // as they might want to see it again later if the event re-fires.
+              console.log('InstallPrompt: Popup auto-closed. Will show again if prompt re-fires.');
+            }
+          }}
+          deferredPrompt={deferredPrompt}
+        />
+      )}
+
+      {/* Success Popup - UI shown after successful installation */}
+      {showSuccessPopup && (
+        <div className="fixed bottom-6 left-6 right-6 z-[9999] flex justify-center">
+          <div className="bg-green-500/90 backdrop-blur-xl text-white px-6 py-4 rounded-2xl shadow-2xl border border-green-400/30 animate-fade-in max-w-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <Download className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-semibold">PWA Installed!</div>
+                <div className="text-sm opacity-90">MissingTube is now available as an app</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };

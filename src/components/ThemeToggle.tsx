@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor } from 'lucide-react';
-import { useTheme } from '../components/ThemeProvider'; // Adjust path as needed
+import { useTheme } from '../components/ThemeProvider';
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme, isDark } = useTheme();
@@ -46,12 +46,12 @@ export const ThemeToggle: React.FC = () => {
 
   // Handlers for theme selection
   const handleSystemTheme = () => {
-    setTheme('system'); // Set theme to 'system'
+    setTheme('system');
     setShowOptions(false);
   };
 
   const handleManualTheme = (isDarkModeSelected: boolean) => {
-    setTheme(isDarkModeSelected ? 'dark' : 'light'); // Set theme to 'dark' or 'light'
+    setTheme(isDarkModeSelected ? 'dark' : 'light');
     setShowOptions(false);
   };
 
@@ -60,60 +60,55 @@ export const ThemeToggle: React.FC = () => {
       ref={themeToggleRef}
       className={`fixed z-50 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? 'top-4 right-4' // When scrolled, position next to navbar buttons
-          : 'top-7 right-[4.25rem]' // Using arbitrary value for more precise right spacing
+          ? 'top-4 right-4' // When scrolled, position at top right
+          : 'top-7 right-[4.25rem]' // When not scrolled, position with more spacing
       }`}
     >
       <button
         onClick={() => setShowOptions(!showOptions)}
         className={`p-3 rounded-2xl bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 group shadow-xl
           ${isScrolled
-            ? 'scale-110 hover:scale-112' // **Changed:** Base scale 110% (slightly less than 115%), hover to 112%
-            : 'hover:scale-110'          // Unchanged: base scale 100% (default), hover to 110%
+            ? 'scale-110 hover:scale-112'
+            : 'hover:scale-110'
           }
         `}
         aria-label="Toggle theme"
       >
-        {/* Outer div to handle the 360-degree rotation when popover opens/closes */}
-        {/* Conditional size: w-10 h-10 when scrolled, otherwise w-6 h-6 */}
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out
                           ${isScrolled ? 'w-10 h-10' : 'w-6 h-6'}
                           ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}>
 
-          {/* System Theme Icon - Conditional size & added translate-y-px for centering */}
           <Monitor
             className={`absolute inset-0 transition-all duration-500 ease-out
                         ${isSystemActive
                             ? 'opacity-100 scale-100 rotate-0 group-hover:scale-110 group-hover:animate-pulse'
                             : 'opacity-0 scale-50 rotate-[-90deg]'
                         }
-                        ${isScrolled ? 'translate-y-px' : ''} /* Added for centering adjustment */
+                        ${isScrolled ? 'translate-y-px' : ''}
                         text-blue-500 dark:text-blue-400`}
-            size={isScrolled ? 36 : 24} // Conditional size
+            size={isScrolled ? 36 : 24}
           />
 
-          {/* Light Theme Icon - Conditional size & added translate-y-px for centering */}
           <Sun
             className={`absolute inset-0 transition-all duration-500 ease-out
                         ${isLightActive
                             ? 'opacity-100 scale-100 rotate-0 group-hover:scale-110 group-hover:rotate-180'
                             : 'opacity-0 scale-50 rotate-[90deg]'
                         }
-                        ${isScrolled ? 'translate-y-px' : ''} /* Added for centering adjustment */
+                        ${isScrolled ? 'translate-y-px' : ''}
                         text-yellow-500`}
-            size={isScrolled ? 36 : 24} // Conditional size
+            size={isScrolled ? 36 : 24}
           />
 
-          {/* Dark Theme Icon - Conditional size & added translate-y-px for centering */}
           <Moon
             className={`absolute inset-0 transition-all duration-500 ease-out
                         ${isDarkActive
                             ? 'opacity-100 scale-100 rotate-0 group-hover:scale-110 group-hover:animate-pulse group-hover:rotate-[360deg]'
                             : 'opacity-0 scale-50 rotate-[-90deg]'
                         }
-                        ${isScrolled ? 'translate-y-px' : ''} /* Added for centering adjustment */
+                        ${isScrolled ? 'translate-y-px' : ''}
                         text-blue-400`}
-            size={isScrolled ? 36 : 24} // Conditional size
+            size={isScrolled ? 36 : 24}
           />
         </div>
       </button>
@@ -138,14 +133,12 @@ export const ThemeToggle: React.FC = () => {
             opacity: showOptions ? 1 : 0
           }}
         >
-          {/* Icon always visible, only animates */}
           <Monitor
             size={18}
             className={`text-blue-500 transition-all duration-300
               ${isSystemActive ? 'scale-110' : ''}
               group-hover:rotate-12 group-hover:scale-110`}
           />
-          {/* Span scales on hover */}
           <span className="text-sm font-medium inline-block group-hover:scale-110 transition-transform duration-300">System</span>
         </button>
 
@@ -163,14 +156,12 @@ export const ThemeToggle: React.FC = () => {
             opacity: showOptions ? 1 : 0
           }}
         >
-          {/* Icon always visible, only animates */}
           <Sun
             size={18}
             className={`text-yellow-500 transition-all duration-300
               ${isLightActive ? 'scale-110' : ''}
               group-hover:rotate-180 group-hover:scale-110`}
           />
-          {/* Span scales on hover */}
           <span className="text-sm font-medium inline-block group-hover:scale-110 transition-transform duration-300">Light</span>
         </button>
 
@@ -188,14 +179,12 @@ export const ThemeToggle: React.FC = () => {
             opacity: showOptions ? 1 : 0
           }}
         >
-          {/* Icon always visible, only animates */}
           <Moon
             size={18}
             className={`text-blue-500 dark:text-blue-400 transition-all duration-300
               ${isDarkActive ? 'scale-110' : ''}
               group-hover:rotate-[360deg] group-hover:scale-110`}
           />
-          {/* Span scales on hover */}
           <span className="text-sm font-medium inline-block group-hover:scale-110 transition-transform duration-300">Dark</span>
         </button>
       </div>

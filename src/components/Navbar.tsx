@@ -87,12 +87,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                               : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Default: center logo horizontally */}
 
             <div className="flex items-center gap-4">
-              {/* Hexagonal Logo */}
+              {/* MissingTube Logo with glassmorphism background */}
               <div className="relative">
-                <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center transform rotate-45 transition-all duration-225 hover:scale-110 hover:rotate-[50deg] active:scale-95">
-                  <div className="w-8 h-8 bg-white rounded-sm transform -rotate-45 flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-primary rounded-sm"></div>
-                  </div>
+                <div className="w-12 h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                  <img
+                    src="/icons/Icon_Light_NB.png"
+                    alt="MissingTube Logo"
+                    className="w-8 h-8 object-contain dark:hidden transition-opacity duration-300"
+                  />
+                  <img
+                    src="/icons/Icon_Dark_NB.png"
+                    alt="MissingTube Logo"
+                    className="w-8 h-8 object-contain hidden dark:block transition-opacity duration-300"
+                  />
                 </div>
               </div>
               {/* Site Name */}
