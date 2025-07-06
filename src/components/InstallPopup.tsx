@@ -182,12 +182,12 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
           <div className="relative mx-auto mb-6">
             <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20">
               <img
-                src="/src/icons/Icon_Light_NB.png"
+                src="/assets/Icon_Light_NB.png"
                 alt="MissingTube"
                 className="w-12 h-12 object-contain dark:hidden transform -rotate-12"
               />
               <img
-                src="/src/icons/Icon_Dark_NB.png"
+                src="/assets/Icon_Dark_NB.png"
                 alt="MissingTube"
                 className="w-12 h-12 object-contain hidden dark:block transform -rotate-12"
               />
