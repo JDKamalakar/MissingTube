@@ -170,7 +170,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 </div>
 
                 {/* Duration badge */}
-                <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-medium text-white text-xs px-3 py-1.5 rounded-2xl flex items-center gap-1 border border-white/20">
+                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 dark:bg-gray-800/20 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 px-3 py-1 text-xs">
                   <Clock className="w-3 h-3" />
                   {video.duration}
                 </div>
