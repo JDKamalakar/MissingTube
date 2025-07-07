@@ -264,7 +264,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] item-center justify-center active:scale-95 hover:shadow-lg group"
+                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group"
                         title="View description"
                       >
                         <FileText className="w-4 h-4" />
