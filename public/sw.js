@@ -2,8 +2,8 @@ const CACHE_NAME = 'missingtube-v1.0.0';
 const STATIC_CACHE_URLS = [
   '/',
   '/manifest.json',
-  '/assets/icons/icon-192x192.png',
-  '/assets/icons/icon-512x512.png'
+  '/assets/icon-192x192.png',
+  '/assets/icon-512x512.png'
 ];
 
 // Install event
@@ -88,8 +88,8 @@ self.addEventListener('push', (event) => {
     const data = event.data.json();
     self.registration.showNotification(data.title, {
       body: data.body,
-      icon: '/assets/icons/icon-192x192.png',
-      badge: '/assets/icons/icon-72x72.png'
+      icon: '/assets/icon-192x192.png',
+      badge: '/assets/icon-72x72.png'
     });
   }
 });
