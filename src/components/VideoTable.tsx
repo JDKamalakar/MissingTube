@@ -250,7 +250,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
-                        className="p-2 text-primary hover:bg-primary/20 rounded-2xl transition-all duration-225 hover:scale-110 active:scale-95"
+                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group"
                         title="Open video"
                       >
                         <ExternalLink className="w-4 h-4" />
