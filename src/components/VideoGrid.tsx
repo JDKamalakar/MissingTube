@@ -164,7 +164,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
                   onClick={() => handleVideoClick(video.videoId)}
                 >
-                  <div className="bg-white/30 backdrop-blur-medium rounded-3xl p-4 hover:scale-110 transition-transform duration-225 border border-white/30">
+                  <div className="bg-white/30 backdrop-blur-medium rounded-2xl p-4 hover:scale-110 transition-transform duration-225 border border-white/30">
                     <Play className="w-8 h-8 text-white fill-white" />
                   </div>
                 </div>
