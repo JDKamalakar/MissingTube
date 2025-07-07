@@ -83,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Logo & Site Name */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-start' // On scroll: ensure content starts from left, prevent shrinking
+                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-center' // On scroll: ensure content starts from left, prevent shrinking
                               : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Default: center logo horizontally */}
 
             <div className="flex items-center gap-4">
