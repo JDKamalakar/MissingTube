@@ -184,7 +184,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 )}
 
                 {/* Index number */}
-                <div className="absolute top-2 right-2 flex items-center gap-1 bg-white/20 dark:bg-gray-800/20 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 px-3 py-3 text-xs">
+                <div className="absolute top-2 left-2 flex items-center gap-1 bg-white/20 dark:bg-gray-800/20 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 px-3 py-3 text-xs">
                   #{video.index}
                 </div>
               </div>
