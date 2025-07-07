@@ -75,10 +75,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
-        <div className={`container mx-auto pl-8 pr-16 max-w-7xl flex transition-all duration-300 ease-in-out
+        <div className={`container mx-auto pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
                           ${isScrolled
-                            ? 'py-3 flex-col md:flex-row md:justify-between md:items-center md:gap-4' // On scroll: flex-row for larger screens, justify-between for logo left/buttons right
-                            : 'py-4 flex-col items-center'}`}> {/* Default: always flex-col and center items */}
+                            ? 'py-3 flex-col md:flex-row md:justify-between md:items-center md:gap-4 pr-24' // On scroll: flex-row for larger screens, justify-between for logo left/buttons right, increased right padding
+                            : 'py-4 flex-col items-center pr-8'}`}> {/* Default: always flex-col and center items, base right padding */}
 
           {/* Logo & Site Name */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Navigation Items */}
           <div className={`flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center' // On scroll: grow to fill space, then center its contents
+                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-end' // On scroll: grow to fill space, then move to right
                               : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
 
             <button
@@ -199,4 +199,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
