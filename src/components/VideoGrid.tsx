@@ -177,7 +177,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
                 {/* Unavailable badge */}
                 {video.unavailable && (
-                  <div className="absolute top-2 left-2 bg-error text-white text-xs px-3 py-3 rounded-2xl flex items-center gap-1 animate-pulse backdrop-blur-medium border border-white/20">
+                  <div className="absolute top-2 left-2 bg-error text-white text-xs px-2 py-2 rounded-2xl flex items-center gap-1 animate-pulse backdrop-blur-medium border border-white/20">
                     <AlertTriangle className="w-3 h-3" />
                     Unavailable
                   </div>
