@@ -155,7 +155,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   onClick={() => handleVideoClick(video.videoId)}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = './src/assets/Unavailable.png';
+                    target.src = 'https://via.placeholder.com/320x180/e5e7eb/9ca3af?text=Unavailable';
                   }}
                 />
                 
