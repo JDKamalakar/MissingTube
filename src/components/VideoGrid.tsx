@@ -147,7 +147,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
           >
             {/* Thumbnail Container with Padding */}
             <div className="relative p-4 pb-2">
-              <div className="relative bg-white/20 dark:bg-black/20 rounded-3xl overflow-hidden">
+              <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
                 <img
                   src={video.thumbnail}
                   alt={video.title}
@@ -211,7 +211,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               <div className="flex gap-2 mt-auto">
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
-                  className="flex-1 flex items-center justify-center gap-3 py-3 px-3 bg-secondary text-white rounded-2xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 px-3 bg-secondary text-white rounded-2xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
                 >
                   <Search className="w-3 h-3" />
                   Search
