@@ -165,9 +165,10 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
             <button
               onClick={handleDownloadBackup}
               disabled={!hasCurrentData}
-              className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Download className="w-5 h-5" />
+              {/* Added group-hover:animate-bounce-short-slow to the Download icon */}
+              <Download className="w-5 h-5 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
               {hasCurrentData ? 'Download Current Data' : 'No Data Available'}
             </button>
 
@@ -206,4 +207,4 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
       </div>
     </div>
   );
-};1
+};
