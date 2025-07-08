@@ -165,7 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Menu Button - Significantly Updated */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden"
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden"
                 aria-label="Toggle mobile menu"
               >
                 {/* This div matches the site icon's background and styling */}
