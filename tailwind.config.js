@@ -226,4 +226,10 @@ export default {
     },
   },
   plugins: [],
+  safelist: [
+  'group-hover:-rotate-[30deg]',
+  'group-hover:rotate-[360deg]',
+  'group-hover:animate-bounce-short-slow',
+  // Add any other dynamic classes you might be using
+],
 };
