@@ -127,7 +127,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="w-32 h-24 object-cover rounded-xl flex-shrink-0 shadow-md"
+                className="w-30 h-24 object-cover rounded-xl flex-shrink-0 shadow-md"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = UnavailableImage;
