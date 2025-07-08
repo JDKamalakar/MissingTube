@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false); // State for mobile menu visibility
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
@@ -74,6 +74,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
+
+          // NEW: If mobile menu is open and user scrolls, close the menu
+          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+            setShowMobileMenu(false);
+          }
+
         } else {
           setIsNavbarHidden(false); // Ensure it's never hidden on desktop
         }
@@ -82,12 +88,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       } else {
         setIsScrolled(false);
         setIsNavbarHidden(false);
+        if (showMobileMenu) { // Also close menu if scrollability changes (e.g., content loads)
+          setShowMobileMenu(false);
+        }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]);
+  }, [canScroll, showMobileMenu]); // Added showMobileMenu to dependency array
 
   const navItems = [
     {
@@ -143,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
                   {/* Logo's inner "dive" element - this is the exact style we want to match for the button */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-10 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
                       src="/assets/Icon_Light_NB.png"
                       alt="MissingTube Logo"
@@ -163,11 +172,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button - REFINED */}
+              {/* Mobile Menu Button - REFINED with correct sizing and scroll-to-close logic */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
                 // The button itself just handles basic hover/active states and sizing
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 rounded-2x1 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" // Removed bg, border, shadow from here
+                // Changed w-12 h-10 to w-10 h-10 for consistent rounded-2xl shape
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" 
                 aria-label="Toggle mobile menu"
               >
                 {/* This div *is* the visual representation of the button, mimicking the logo's dive */}
@@ -244,6 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </nav>
 
+      {/* Mobile Menu Backdrop (retained) */}
       {showMobileMenu && (
         <div 
           className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in"
@@ -251,6 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         />
       )}
 
+      {/* Modals (retained) */}
       {showApiKeyModal && (
         <ApiKeyModal
           onClose={() => setShowApiKeyModal(false)}
@@ -286,4 +298,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
