@@ -130,7 +130,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
                 className="w-32 h-24 object-cover rounded-xl flex-shrink-0 shadow-md"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = './src/assets/Unavailable.png';
+                  target.src = UnavailableImage;
                 }}
               />
               <div className="flex-1 min-w-0">
