@@ -105,7 +105,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
           <div className="flex items-center gap-3">
             {/* Header Icon Container with depth, blur, and hover animation */}
             <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <FileText className="w-6 h-6 text-on-secondary-container" />
+              <FileText className="w-6 h-6 text-primary" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Video Details</h2>
           </div>
