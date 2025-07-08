@@ -3,8 +3,7 @@ import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react'
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
-import { AboutModal }
- from './AboutModal';
+import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
 
 interface NavbarProps {
@@ -61,28 +60,22 @@ export const Navbar: React.FC<NavbarProps> = ({
         const currentScrollY = window.scrollY;
         const isDesktop = window.innerWidth >= 640; // sm breakpoint
 
-        // Desktop shrinking logic
-        if (isDesktop) {
-          if (currentScrollY > SHRINK_THRESHOLD) {
-            setIsScrolled(true);
-          } else {
-            setIsScrolled(false);
-          }
-          setIsNavbarHidden(false); // Ensure it's never hidden on desktop
+        // Determine if scrolled for shrinking effect (applies to both desktop/mobile)
+        if (currentScrollY > SHRINK_THRESHOLD) {
+          setIsScrolled(true);
         } else {
-          // Mobile specific shrinking
-          if (currentScrollY > SHRINK_THRESHOLD) {
-            setIsScrolled(true);
-          } else {
-            setIsScrolled(false);
-          }
+          setIsScrolled(false);
+        }
 
-          // Mobile specific hiding/showing
+        // Logic for hiding/showing navbar on mobile when scrolling further down/up
+        if (!isDesktop) { // Apply only for mobile
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
           } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
+        } else {
+          setIsNavbarHidden(false); // Ensure it's never hidden on desktop
         }
         
         lastScrollY.current = currentScrollY;
@@ -136,19 +129,19 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-3 sm:min-h-[64px]' : 'py-4 sm:py-5 sm:min-h-[96px]'}`}> {/* Added min-h for consistent height and py for vertical padding */}
+                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}> {/* py-2 for mobile scrolled, py-3 for mobile unscrolled */}
         
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
                                ? 'sm:flex-row sm:justify-between sm:items-center sm:gap-x-4 lg:gap-x-8' // Desktop Scrolled: row, justify-between, items-center
-                               : 'flex-col items-center sm:items-center'}`}> {/* Desktop Unscrolled: flex-col, items-center */}
+                               : 'flex-col items-center sm:items-center'}`}> 
 
           {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`flex items-center justify-between w-full gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Scrolled: auto width, shrink, center content
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}>
+                              ? 'py-2 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Mobile scrolled py, desktop scrolled
+                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}> {/* Mobile unscrolled py, desktop unscrolled */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -286,4 +279,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};18
+};
