@@ -94,31 +94,31 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: History,
       label: 'History',
       onClick: () => setShowHistoryPanel(true),
-      animation: '-rotate-[30deg]' // Animation from second code
+      animation: '-rotate-[30deg]' 
     },
     {
       icon: Key,
       label: 'API Key',
       onClick: () => setShowApiKeyModal(true),
-      animation: '-rotate-[30deg]' // Animation from second code
+      animation: '-rotate-[30deg]' 
     },
     {
       icon: Download,
       label: 'Download',
       onClick: () => setShowBackupModal(true),
-      animation: 'animate-bounce-short-slow' // Animation from second code
+      animation: 'animate-bounce-short-slow' 
     },
     {
       icon: GitCompare,
       label: 'Compare',
       onClick: () => setShowComparisonModal(true),
-      animation: 'rotate-[360deg]' // Animation from second code
+      animation: 'rotate-[360deg]' 
     },
     {
       icon: Info,
       label: 'About',
       onClick: () => setShowAboutModal(true),
-      animation: 'rotate-[360deg]' // Animation from second code
+      animation: 'rotate-[360deg]' 
     }
   ];
 
@@ -282,4 +282,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};2
+};
