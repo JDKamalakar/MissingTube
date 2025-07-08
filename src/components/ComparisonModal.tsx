@@ -40,7 +40,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
   const [showUnavailableVideos, setShowUnavailableVideos] = useState(true);
   const [showAllVideos, setShowAllVideos] = useState(false);
   const [showContent, setShowContent] = useState(false); // State to control modal entry animation
-  const [isComparisonView, setIsComparisonView] = useState(false);
+  const [isComparisonView, setIsComparisonView] = useState(false); // Controls which view is active
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -236,7 +236,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       });
       setShowUnavailableVideos(true);
       setShowAllVideos(false);
-      setIsComparisonView(true);
+      setIsComparisonView(true); // <-- Set to true after successful comparison
 
     } catch (err) {
       if (err instanceof Error) {
@@ -337,16 +337,15 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
         </div>
 
         {/* Content area with proper overflow handling for slide transition */}
-        {/* MODIFIED: Added flex-col and responsive flex-wrap for mobile responsiveness */}
-        <div className="p-6 flex-grow overflow-hidden relative custom-scrollbar flex flex-col sm:flex-row">
-          {/* Main content wrapper for smooth sliding transition */}
-          {/* MODIFIED: Changed width to full for mobile, added sm:w-1/2 for desktop split */}
-          <div className={`flex flex-col sm:flex-row transition-transform duration-500 ease-in-out ${isComparisonView ? 'sm:-translate-x-full' : 'sm:translate-x-0'}`} style={{ width: isComparisonView ? '200%' : '100%' }}>
-            {/* Select File View - Takes full width on mobile, half on desktop */}
-            {/* MODIFIED: Added w-full for mobile, sm:w-1/2 for desktop */}
-            <div className="w-full sm:w-1/2 flex-shrink-0 space-y-6 sm:pr-3 pb-6 sm:pb-0"> {/* Added padding for spacing */}
+        {/* The main flex container for the "pages" */}
+        <div className="p-6 flex-grow relative overflow-x-hidden custom-scrollbar"> {/* Removed flex-col sm:flex-row here */}
+          <div className={`flex transition-transform duration-500 ease-in-out h-full
+                          ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`}
+               style={{ width: '200%' }}> {/* Always 200% width for the sliding effect */}
+
+            {/* Select File View - Now always takes full width of its container */}
+            <div className="w-full flex-shrink-0 space-y-6 pr-6"> {/* No sm:w-1/2 here */}
               <div className="text-center">
-                {/* Upload JSON File for Comparison Text in a card - adjusted scale */}
                 <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.04]">
                   <h3 className="text-lg font-semibold text-on-surface mb-2">
                     Upload JSON File for Comparison
@@ -458,15 +457,15 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
             </div>
 
             {/* Comparison Results View - Takes full width on mobile, half on desktop */}
-            {/* MODIFIED: Added w-full for mobile, sm:w-1/2 for desktop */}
-            <div className="w-full sm:w-1/2 flex-shrink-0 space-y-6 sm:pl-3 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar"> {/* Added padding for spacing */}
+            {/* NEW: Conditional rendering for desktop vs mobile layout of results */}
+            <div className="w-full flex-shrink-0 space-y-6 pl-6"> {/* No sm:w-1/2 here */}
               {comparisonResult && (
-                <>
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3"> {/* Changed to flex-col on mobile, flex-row on desktop */}
+                <div className="h-full flex flex-col"> {/* Added flex-col and h-full for content inside */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6"> {/* Header row */}
                     <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
-                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"> {/* Changed to flex-col on mobile, flex-row on desktop, added w-full */}
+                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                       {/* Show "Download All" only if new data was found */}
-                      <div className="relative group w-full sm:w-auto"> {/* Added w-full for mobile */}
+                      <div className="relative group w-full sm:w-auto">
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
                             Download Merged Playlist
                         </div>
@@ -483,7 +482,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       </div>
                       
                       {/* Compare Another Button with adjusted scale for hover */}
-                      <div className="relative group w-full sm:w-auto"> {/* Added w-full for mobile */}
+                      <div className="relative group w-full sm:w-auto">
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
                             Upload New File
                         </div>
@@ -492,7 +491,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                             setComparisonResult(null);
                             setFile(null);
                             setError(null);
-                            setIsComparisonView(false);
+                            setIsComparisonView(false); // Go back to upload view
                             if (fileInputRef.current) {
                               fileInputRef.current.value = '';
                             }
@@ -506,109 +505,116 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     </div>
                   </div>
 
-                  {/* Unavailable Videos Section - Subtler hover for the main container */}
-                  {comparisonResult.unavailableMatches.length > 0 ? (
-                    <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
-                      <button
-                        onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                        className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
-                      >
-                        <h4 className="font-medium text-on-primary-container flex items-center gap-2">
-                          <AlertTriangle className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
-                          Recovered Videos ({comparisonResult.unavailableMatches.length})
-                          {comparisonResult.hasNewData && (
-                            <span className="ml-2 px-3 py-1 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
-                              Titles Found!
-                            </span>
-                          )}
-                        </h4>
-                        <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''}`}>
-                          <ChevronDown className="w-5 h-5" />
-                        </div>
-                      </button>
-
-                      <div className={`transition-all duration-300 ease-out overflow-hidden ${
-                        showUnavailableVideos ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                      }`}>
-                        <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
-                          {comparisonResult.unavailableMatches.map((match, index) => (
-                            <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
-                              <div className="flex items-center justify-between mb-1">
-                                <div className="text-sm font-medium text-on-surface">
-                                  Index {match.currentIndex} - Index {match.fileIndex}
-                                </div>
-                                <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">
-                                  100% Match
-                                </div>
-                              </div>
-                              <div className="text-xs text-on-surface-variant space-y-1">
-                                <div className="flex items-center gap-2 text-error">
-                                  <AlertTriangle className="w-3 h-3 transition-transform duration-300 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" /> {/* Added bounce to icon */}
-                                  <span className="truncate">Current: {match.currentTitle}</span>
-                                </div>
-                                <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
-                                <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
-                      <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
-                        <CheckCircle className="w-8 h-8 text-on-surface-variant" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
-                      <p className="text-on-surface-variant">
-                        No unavailable video titles were recovered from the uploaded file.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* All Videos Section - Subtler hover for the main container */}
-                  <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
-                    <button
-                      onClick={() => setShowAllVideos(!showAllVideos)}
-                      className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
-                    >
-                      <h4 className="font-medium text-on-surface flex items-center gap-2">
-                        <FileText className="w-5 h-5 transition-transform duration-300 group-hover:scale-140" />
-                        All Videos ({comparisonResult.allVideos.length})
-                      </h4>
-                      <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}>
-                        <ChevronDown className="w-5 h-5" />
-                      </div>
-                    </button>
-
-                    <div className={`transition-all duration-300 ease-out overflow-hidden ${
-                      showAllVideos ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
-                    }`}>
-                      <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto custom-scrollbar">
-                        {comparisonResult.allVideos.map((video, index) => (
-                          <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="text-sm font-medium text-on-surface">
-                                Index {video.currentIndex}
-                                {video.fileIndex && ` - Index ${video.fileIndex}`}
-                              </div>
-                              <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>
-                                {getStatusLabel(video.status)}
-                              </div>
-                            </div>
-                            <div className="text-xs text-on-surface-variant space-y-1">
-                              <p className="truncate">Current: {video.currentTitle}</p>
-                              {video.fileTitle && (
-                                <p className="truncate">File: {video.fileTitle}</p>
+                  {/* Scrollable content for results, responsive layout */}
+                  <div className="flex flex-col sm:flex-row flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar"> {/* Added flex-grow */}
+                    {/* Unavailable Videos Section - Subtler hover for the main container */}
+                    <div className="w-full sm:w-1/2 flex-shrink-0"> {/* Added width classes for desktop split */}
+                      {comparisonResult.unavailableMatches.length > 0 ? (
+                        <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col"> {/* MODIFIED: Added h-full flex flex-col */}
+                          <button
+                            onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
+                            className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
+                          >
+                            <h4 className="font-medium text-on-primary-container flex items-center gap-2">
+                              <AlertTriangle className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
+                              Recovered Videos ({comparisonResult.unavailableMatches.length})
+                              {comparisonResult.hasNewData && (
+                                <span className="ml-2 px-3 py-1 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
+                                  Titles Found!
+                                </span>
                               )}
-                              <p className="text-xs opacity-75">ID: {video.videoId}</p>
+                            </h4>
+                            <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''}`}>
+                              <ChevronDown className="w-5 h-5" />
+                            </div>
+                          </button>
+
+                          <div className={`transition-all duration-300 ease-out overflow-hidden ${
+                            showUnavailableVideos ? 'max-h-96 opacity-100 flex-grow' : 'max-h-0 opacity-0' // Added flex-grow
+                          }`}>
+                            <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
+                              {comparisonResult.unavailableMatches.map((match, index) => (
+                                <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
+                                  <div className="flex items-center justify-between mb-1">
+                                    <div className="text-sm font-medium text-on-surface">
+                                      Index {match.currentIndex} - Index {match.fileIndex}
+                                    </div>
+                                    <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">
+                                      100% Match
+                                    </div>
+                                  </div>
+                                  <div className="text-xs text-on-surface-variant space-y-1">
+                                    <div className="flex items-center gap-2 text-error">
+                                      <AlertTriangle className="w-3 h-3 transition-transform duration-300 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" /> {/* Added bounce to icon */}
+                                      <span className="truncate">Current: {match.currentTitle}</span>
+                                    </div>
+                                    <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
+                                    <div className="text-xs opacity-75">ID: {match.videoId}</div>
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           </div>
-                        ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col justify-center"> {/* MODIFIED: Added h-full flex flex-col justify-center */}
+                          <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
+                            <CheckCircle className="w-8 h-8 text-on-surface-variant" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
+                          <p className="text-on-surface-variant">
+                            No unavailable video titles were recovered from the uploaded file.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* All Videos Section - Subtler hover for the main container */}
+                    <div className="w-full sm:w-1/2 flex-shrink-0"> {/* Added width classes for desktop split */}
+                      <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col"> {/* MODIFIED: Added h-full flex flex-col */}
+                        <button
+                          onClick={() => setShowAllVideos(!showAllVideos)}
+                          className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
+                        >
+                          <h4 className="font-medium text-on-surface flex items-center gap-2">
+                            <FileText className="w-5 h-5 transition-transform duration-300 group-hover:scale-140" />
+                            All Videos ({comparisonResult.allVideos.length})
+                          </h4>
+                          <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}>
+                            <ChevronDown className="w-5 h-5" />
+                          </div>
+                        </button>
+
+                        <div className={`transition-all duration-300 ease-out overflow-hidden ${
+                          showAllVideos ? 'max-h-[500px] opacity-100 flex-grow' : 'max-h-0 opacity-0' // Added flex-grow
+                        }`}>
+                          <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto custom-scrollbar">
+                            {comparisonResult.allVideos.map((video, index) => (
+                              <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
+                                <div className="flex items-center justify-between mb-2">
+                                  <div className="text-sm font-medium text-on-surface">
+                                    Index {video.currentIndex}
+                                    {video.fileIndex && ` - Index ${video.fileIndex}`}
+                                  </div>
+                                  <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>
+                                    {getStatusLabel(video.status)}
+                                  </div>
+                                </div>
+                                <div className="text-xs text-on-surface-variant space-y-1">
+                                  <p className="truncate">Current: {video.currentTitle}</p>
+                                  {video.fileTitle && (
+                                    <p className="truncate">File: {video.fileTitle}</p>
+                                  )}
+                                  <p className="text-xs opacity-75">ID: {video.videoId}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
@@ -616,4 +622,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};11
+};
