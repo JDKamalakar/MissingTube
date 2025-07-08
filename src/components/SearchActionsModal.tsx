@@ -71,7 +71,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
   };
 
   return (
-    <div className="fixed inset-0 !z-[9999] flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4">
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in !z-[9998]"
         onClick={onClose}
