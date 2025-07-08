@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
@@ -31,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
   const [isNavbarHidden, setIsNavbarHidden] = useState(false);
-  const lastScrollY = React.useRef(0);
+  const lastScrollY = useRef(0);
 
   // Define scroll thresholds
   const SHRINK_THRESHOLD = 80; // When navbar starts shrinking
@@ -131,15 +131,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         {/* Main container: layout and padding from second code, with mobile adaptations */}
         <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
-                             ${isScrolled
-                               ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' // Desktop Scrolled: flex-row, justify-center, items-center, gap, pr-24 (from second code)
-                               : 'py-4 flex-col items-center sm:pr-8'}`}> {/* Desktop Unscrolled: flex-col (default), items-center, pr-8 (from second code) */}
+                              ${isScrolled
+                                ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' // Desktop Scrolled: flex-row, justify-center, items-center, gap, pr-24 (from second code)
+                                : 'py-4 flex-col items-center sm:pr-8'}`}> {/* Desktop Unscrolled: flex-col (default), items-center, pr-8 (from second code) */}
 
           {/* Logo & Site Name Block: styling from second code, with mobile menu button from original */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
-                            ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}> {/* Mobile: rounded-2xl. Desktop: rounded-t-2xl, rounded-b-none */}
+                                ${isScrolled
+                                  ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
+                                  : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}> {/* Mobile: rounded-2xl. Desktop: rounded-t-2xl, rounded-b-none */}
             
             <div className="flex items-center justify-between w-full gap-3 sm:gap-4"> {/* Added justify-between and w-full for mobile button alignment */}
               {/* MissingTube Logo with glassmorphism background */}
@@ -183,9 +183,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Navigation Items: styling and animations from second code, adjusted button size */}
           <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
-                            ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-grow sm:justify-center' // On scroll: grow to fill space, then center its contents
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
+                                ${isScrolled
+                                  ? 'rounded-2xl sm:w-auto sm:flex-grow sm:justify-center' // On scroll: grow to fill space, then center its contents
+                                  : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -193,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={index}
                   onClick={item.onClick}
                   className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-10 overflow-hidden touch-target
-                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} // Conditional hover scale
+                    ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} // Conditional hover scale
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
                   {/* Icon animation from second code, icon size from our previous iterations */}
@@ -282,4 +282,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
