@@ -162,20 +162,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button - Updated */}
+              {/* Mobile Menu Button - Significantly Updated */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20 shadow-lg" // Added shadow-lg for consistency
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden"
                 aria-label="Toggle mobile menu"
               >
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
-                {showMobileMenu ? (
-                  // Red color, 360deg rotate
-                  <X className="relative z-10 w-5 h-5 transition-all duration-500 text-red-500 group-hover:rotate-[360deg]" /> 
-                ) : (
-                  // Menu icon still scales
-                  <Menu className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-110" /> 
-                )}
+                {/* This div matches the site icon's background and styling */}
+                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 group-hover:scale-100 group-active:scale-95">
+                    {/* Inner hover effect, same as other buttons */}
+                    <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
+                </div>
+
+                {/* Menu Icon (3 dashes) */}
+                <Menu 
+                    className={`relative z-10 w-5 h-5 transition-all duration-500 
+                                ${showMobileMenu ? 'opacity-0 rotate-[360deg] scale-0' : 'opacity-100 rotate-0 scale-100'}`} 
+                />
+                
+                {/* X Icon */}
+                <X 
+                    className={`absolute z-10 w-5 h-5 transition-all duration-500 text-red-500 
+                                ${showMobileMenu ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-[360deg] scale-0'}`} 
+                />
               </button>
             </div>
           </div>
@@ -275,4 +284,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};2
+};
