@@ -138,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                                : 'flex-col items-center sm:items-center'}`}> 
 
           {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between w-full gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`flex items-center justify-between w-full gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
                             ${isScrolled
                               ? 'py-2 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Mobile scrolled py, desktop scrolled
                               : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}> {/* Mobile unscrolled py, desktop unscrolled */}
