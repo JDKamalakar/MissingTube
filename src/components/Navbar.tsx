@@ -142,6 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* MissingTube Logo with glassmorphism background */}
               <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
+                  {/* Logo's inner "dive" element - this is the exact style we want to match for the button */}
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
                       src="/assets/Icon_Light_NB.png"
@@ -162,15 +163,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button - Significantly Updated */}
+              {/* Mobile Menu Button - REFINED */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden"
+                // The button itself just handles basic hover/active states and sizing
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-12 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" // Removed bg, border, shadow from here
                 aria-label="Toggle mobile menu"
               >
-                {/* This div matches the site icon's background and styling */}
-                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 group-hover:scale-100 group-active:scale-95">
-                    {/* Inner hover effect, same as other buttons */}
+                {/* This div *is* the visual representation of the button, mimicking the logo's dive */}
+                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225">
+                    {/* The state-layer/ripple effect for hover is inside this specific div */}
                     <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
                 </div>
 
@@ -284,4 +286,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
