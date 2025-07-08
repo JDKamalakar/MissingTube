@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
@@ -30,9 +30,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false); // New state for hiding/showing navbar on mobile scroll
+  const lastScrollY = useRef(0); // Ref to store last scroll position
 
-  // Define a scroll threshold to prevent rapid flickering
-  const SCROLL_THRESHOLD = 80;
+  // Define scroll thresholds
+  const SHRINK_THRESHOLD = 80; // When navbar starts shrinking
+  const HIDE_THRESHOLD = 300; // When navbar starts hiding on mobile (scroll further down)
 
   useEffect(() => {
     const checkScrollability = () => {
@@ -54,19 +57,38 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       if (canScroll) {
-        if (window.scrollY > SCROLL_THRESHOLD) {
+        const currentScrollY = window.scrollY;
+
+        // Determine if scrolled for shrinking effect (applies to both desktop/mobile)
+        if (currentScrollY > SHRINK_THRESHOLD) {
           setIsScrolled(true);
         } else {
           setIsScrolled(false);
         }
+
+        // Logic for hiding/showing navbar on mobile when scrolling further down/up
+        if (window.innerWidth < 640) { // Apply only for mobile (< sm breakpoint)
+          if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
+            // Scrolling down past hide threshold
+            setIsNavbarHidden(true);
+          } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
+            // Scrolling up, or scrolled back near top
+            setIsNavbarHidden(false);
+          }
+        } else {
+          setIsNavbarHidden(false); // Ensure it's never hidden on desktop
+        }
+        
+        lastScrollY.current = currentScrollY; // Update last scroll position
       } else {
         setIsScrolled(false);
+        setIsNavbarHidden(false); // Always visible if not scrollable
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]);
+  }, [canScroll]); // Re-run effect if canScroll changes
 
   const navItems = [
     {
@@ -105,17 +127,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl">
+      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
+                      ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}> {/* Added transform for mobile hide/show */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24'
-                               : 'py-3 sm:py-4 flex-col items-center sm:px-8 sm:pr-8'}`}> {/* Adjusted overall container padding */}
+                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-8 lg:gap-x-12' // Added gap-x for desktop scrolled
+                               : 'py-3 sm:py-4 flex-col items-center sm:px-8 sm:pr-8'}`}>
 
           {/* Logo & Site Name */}
-          <div className={`flex items-center justify-between w-full sm:w-auto gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-center'
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center sm:w-full'}`}> {/* Corrected mobile rounding and desktop width for unscrolled */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center'
+                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center sm:w-full'}`}> {/* Ensured w-full for desktop unscrolled */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -156,10 +179,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Navigation */}
-          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center'
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b sm:w-full'}`}> {/* Adjusted desktop width for unscrolled */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' // Changed justify-center to justify-evenly for more space
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly sm:w-full'}`}> {/* Changed justify-center to justify-evenly for more space */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -253,4 +276,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};4
+};
