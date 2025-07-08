@@ -337,11 +337,14 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
         </div>
 
         {/* Content area with proper overflow handling for slide transition */}
-        <div className="p-6 flex-grow overflow-hidden relative custom-scrollbar">
+        {/* MODIFIED: Added flex-col and responsive flex-wrap for mobile responsiveness */}
+        <div className="p-6 flex-grow overflow-hidden relative custom-scrollbar flex flex-col sm:flex-row">
           {/* Main content wrapper for smooth sliding transition */}
-          <div className={`flex transition-transform duration-500 ease-in-out ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`} style={{ width: '200%' }}>
-            {/* Select File View - Takes full width when visible */}
-            <div className="w-full flex-shrink-0 space-y-6 pr-6">
+          {/* MODIFIED: Changed width to full for mobile, added sm:w-1/2 for desktop split */}
+          <div className={`flex flex-col sm:flex-row transition-transform duration-500 ease-in-out ${isComparisonView ? 'sm:-translate-x-full' : 'sm:translate-x-0'}`} style={{ width: isComparisonView ? '200%' : '100%' }}>
+            {/* Select File View - Takes full width on mobile, half on desktop */}
+            {/* MODIFIED: Added w-full for mobile, sm:w-1/2 for desktop */}
+            <div className="w-full sm:w-1/2 flex-shrink-0 space-y-6 sm:pr-3 pb-6 sm:pb-0"> {/* Added padding for spacing */}
               <div className="text-center">
                 {/* Upload JSON File for Comparison Text in a card - adjusted scale */}
                 <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.04]">
@@ -454,22 +457,23 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
               </button>
             </div>
 
-            {/* Comparison Results View - Takes full width when visible */}
-            <div className="w-full flex-shrink-0 space-y-6 pl-6 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
+            {/* Comparison Results View - Takes full width on mobile, half on desktop */}
+            {/* MODIFIED: Added w-full for mobile, sm:w-1/2 for desktop */}
+            <div className="w-full sm:w-1/2 flex-shrink-0 space-y-6 sm:pl-3 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar"> {/* Added padding for spacing */}
               {comparisonResult && (
                 <>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3"> {/* Changed to flex-col on mobile, flex-row on desktop */}
                     <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"> {/* Changed to flex-col on mobile, flex-row on desktop, added w-full */}
                       {/* Show "Download All" only if new data was found */}
-                      <div className="relative group"> {/* Added group for the tooltip */}
+                      <div className="relative group w-full sm:w-auto"> {/* Added w-full for mobile */}
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
                             Download Merged Playlist
                         </div>
                         {comparisonResult.hasNewData && (
                           <button
                             onClick={handleDownloadMerged}
-                            className="group flex items-center gap-2 px-4 py-2 bg-cyan-600/80 dark:bg-cyan-700/80 backdrop-blur-sm text-white rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-cyan-600/90 dark:hover:bg-cyan-700/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-cyan-500/50 dark:border-cyan-700/50"
+                            className="group w-full flex items-center justify-center gap-2 px-4 py-2 bg-cyan-600/80 dark:bg-cyan-700/80 backdrop-blur-sm text-white rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-cyan-600/90 dark:hover:bg-cyan-700/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-cyan-500/50 dark:border-cyan-700/50"
                           >
                             {/* Download icon with bounce animation on hover */}
                             <Download className="w-4 h-4 transition-transform duration-300 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
@@ -479,7 +483,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       </div>
                       
                       {/* Compare Another Button with adjusted scale for hover */}
-                      <div className="relative group"> {/* Added group for the tooltip */}
+                      <div className="relative group w-full sm:w-auto"> {/* Added w-full for mobile */}
                         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none">
                             Upload New File
                         </div>
@@ -493,7 +497,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                               fileInputRef.current.value = '';
                             }
                           }}
-                          className="flex items-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
                         >
                           <GitCompare className="w-5 h-5 transition-transform duration-500 group-hover:rotate-[360deg]" />
                           Compare Another
@@ -502,9 +506,9 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     </div>
                   </div>
 
-                  {/* Unavailable Videos Section */}
+                  {/* Unavailable Videos Section - Subtler hover for the main container */}
                   {comparisonResult.unavailableMatches.length > 0 ? (
-                    <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg">
+                    <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
                       <button
                         onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
                         className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
@@ -528,7 +532,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       }`}>
                         <div className="p-4 pt-0 space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
                           {comparisonResult.unavailableMatches.map((match, index) => (
-                            <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                            <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
                               <div className="flex items-center justify-between mb-1">
                                 <div className="text-sm font-medium text-on-surface">
                                   Index {match.currentIndex} - Index {match.fileIndex}
@@ -551,7 +555,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                    <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
                       <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
                         <CheckCircle className="w-8 h-8 text-on-surface-variant" />
                       </div>
@@ -562,8 +566,8 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     </div>
                   )}
 
-                  {/* All Videos Section */}
-                  <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                  {/* All Videos Section - Subtler hover for the main container */}
+                  <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl"> {/* MODIFIED: Subtler scale */}
                     <button
                       onClick={() => setShowAllVideos(!showAllVideos)}
                       className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
@@ -582,7 +586,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     }`}>
                       <div className="p-4 pt-0 space-y-2 max-h-[450px] overflow-y-auto custom-scrollbar">
                         {comparisonResult.allVideos.map((video, index) => (
-                          <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                          <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md"> {/* INDIVIDUAL ITEM: Larger scale for emphasis */}
                             <div className="flex items-center justify-between mb-2">
                               <div className="text-sm font-medium text-on-surface">
                                 Index {video.currentIndex}
@@ -612,4 +616,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};1
+};
