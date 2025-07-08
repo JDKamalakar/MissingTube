@@ -296,4 +296,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};
+};10
