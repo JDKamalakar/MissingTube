@@ -184,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto justify-center px-3 py-1.5 mr-8' // Added justify-center, kept py-1.5, mr-8
+                              ? 'rounded-2xl sm:w-auto justify-center px-3 py-1.5 mr-8' // Buttons shrink height (py-1.5) and have right margin (mr-8)
                               : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
@@ -192,8 +192,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={index}
                   onClick={item.onClick}
-                  className="group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-12 overflow-hidden touch-target"
-                >
+                  className="group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-12 overflow-hidden touch-target
+                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}> {/* Conditional hover scale */}
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
                   <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                   <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-base">
@@ -279,4 +279,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};3
+};
