@@ -316,7 +316,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
           <div className="flex items-center gap-3">
             {/* Icon container with transparency, depth, and hover effects - adjusted scale */}
             <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <GitCompare className="w-6 h-6 text-on-secondary-container" />
+              <GitCompare className="w-6 h-6 text-primary" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-on-surface">Compare With Local File</h2>
