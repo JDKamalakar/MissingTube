@@ -3,6 +3,7 @@ import { Video } from '../types';
 import { X, Search, Archive, Twitter } from 'lucide-react';
 import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
 import RedditLogo from '../assets/reddit-logo.png';
+import UnavailableImage from '../assets/Unavailable.png';
 
 interface SearchActionsModalProps {
   video: Video;
@@ -106,7 +107,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                 className="w-20 h-15 object-cover rounded-xl flex-shrink-0 shadow-sm"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = './src/assets/Unavailable.png';
+                  target.src = UnavailableImage;
                 }}
               />
               <div className="flex-1 min-w-0">
