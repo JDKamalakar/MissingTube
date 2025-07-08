@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react'; // Added Menu, X for mobile
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
@@ -26,15 +26,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false); // Retained for mobile
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
-  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
-  const lastScrollY = useRef(0);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false); // Retained for mobile hiding
+  const lastScrollY = React.useRef(0); // Using React.useRef for consistency
 
   // Define scroll thresholds
-  const SHRINK_THRESHOLD = 80; // When navbar starts shrinking / reaches minimum desktop height
+  const SHRINK_THRESHOLD = 80; // When navbar starts shrinking
   const HIDE_THRESHOLD = 300; // When navbar starts hiding on mobile (scroll further down)
 
   useEffect(() => {
@@ -60,15 +60,15 @@ export const Navbar: React.FC<NavbarProps> = ({
         const currentScrollY = window.scrollY;
         const isDesktop = window.innerWidth >= 640; // sm breakpoint
 
-        // Determine if scrolled for shrinking effect (applies to both desktop/mobile)
+        // Standard scroll for shrinking effect (applies to both desktop/mobile base shrink)
         if (currentScrollY > SHRINK_THRESHOLD) {
           setIsScrolled(true);
         } else {
           setIsScrolled(false);
         }
 
-        // Logic for hiding/showing navbar on mobile when scrolling further down/up
-        if (!isDesktop) { // Apply only for mobile
+        // Logic for hiding/showing navbar ONLY on mobile when scrolling further down/up
+        if (!isDesktop) {
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
           } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
@@ -94,31 +94,31 @@ export const Navbar: React.FC<NavbarProps> = ({
       icon: History,
       label: 'History',
       onClick: () => setShowHistoryPanel(true),
-      animation: '-rotate-[30deg]'
+      animation: '-rotate-[30deg]' // Animation from second code
     },
     {
       icon: Key,
       label: 'API Key',
       onClick: () => setShowApiKeyModal(true),
-      animation: '-rotate-[30deg]'
+      animation: '-rotate-[30deg]' // Animation from second code
     },
     {
       icon: Download,
       label: 'Download',
       onClick: () => setShowBackupModal(true),
-      animation: 'animate-bounce-short-slow'
+      animation: 'animate-bounce-short-slow' // Animation from second code
     },
     {
       icon: GitCompare,
       label: 'Compare',
       onClick: () => setShowComparisonModal(true),
-      animation: 'rotate-[360deg]'
+      animation: 'rotate-[360deg]' // Animation from second code
     },
     {
       icon: Info,
       label: 'About',
       onClick: () => setShowAboutModal(true),
-      animation: 'rotate-[360deg]'
+      animation: 'rotate-[360deg]' // Animation from second code
     }
   ];
 
@@ -126,25 +126,23 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      {/* The main nav element defines its overall height and hiding/showing */}
-      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
-                      ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}>
-        
-        {/* Inner container for actual content, manages its own layout */}
-        <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
+      {/* Navbar structure and positioning from second code, with mobile hiding logic */}
+      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out
+                      ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
+        {/* Main container: layout and padding from second code, with mobile adaptations */}
+        <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-8' // Mobile scrolled: justify-center for vertical middle. Desktop scrolled: smaller gap-x, also applied explicit pr-8 here
-                               : 'flex-col items-center sm:flex-col sm:justify-center sm:items-center'}`}>
+                               ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' // Desktop Scrolled: flex-row, justify-center, items-center, gap, pr-24 (from second code)
+                               : 'py-4 flex-col items-center sm:pr-8'}`}> {/* Desktop Unscrolled: flex-col (default), items-center, pr-8 (from second code) */}
 
-          {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
+          {/* Logo & Site Name Block: styling from second code, with mobile menu button from original */}
+          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'py-1.5 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
-                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}> {/* Reverted to w-full for desktop unscrolled */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
+                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Default: center logo horizontally */}
             
             <div className="flex items-center gap-3 sm:gap-4">
-              {/* MissingTube Logo */}
+              {/* MissingTube Logo with glassmorphism background */}
               <div className="relative">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                   <img
@@ -166,7 +164,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </h1>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button (retained) */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               className="sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20"
@@ -181,11 +179,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
-          {/* Desktop Navigation Buttons Block */}
-          <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          {/* Desktop Navigation Items: styling and animations from second code, adjusted button size */}
+          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5' // Buttons shrink height (py-1.5) and have right margin (mr-8)
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}> {/* Reverted to w-full for desktop unscrolled */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-grow sm:justify-center' // On scroll: grow to fill space, then center its contents
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -193,12 +191,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={index}
                   onClick={item.onClick}
                   className={`group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-12 overflow-hidden touch-target
-                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}
+                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} // Conditional hover scale (retained)
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-                  {/* Removed group-hover:text-black if it was implicitly applied causing color change */}
+                  {/* Icon animation from second code, icon size from our previous iterations */}
                   <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold"> {/* Removed mobile-text-base for desktop only */}
+                  {/* Text size from our previous iterations, ensuring no black text on hover */}
+                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">
                     {item.label}
                   </span>
                 </button>
@@ -207,7 +206,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation Menu (retained) */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
@@ -237,7 +236,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </nav>
 
-      {/* Mobile Menu Backdrop */}
+      {/* Mobile Menu Backdrop (retained) */}
       {showMobileMenu && (
         <div 
           className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in"
@@ -245,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         />
       )}
 
-      {/* Modals */}
+      {/* Modals (retained) */}
       {showApiKeyModal && (
         <ApiKeyModal
           onClose={() => setShowApiKeyModal(false)}
@@ -281,4 +280,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};22
+};
