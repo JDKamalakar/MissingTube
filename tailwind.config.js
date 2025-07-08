@@ -230,6 +230,24 @@ export default {
   'group-hover:-rotate-[30deg]',
   'group-hover:rotate-[360deg]',
   'group-hover:animate-bounce-short-slow',
-  // Add any other dynamic classes you might be using
+ 
+    // Visibility for tooltips
+    'invisible',
+    'group-hover:visible',
+    'group-hover:opacity-100', // Tooltip opacity
+    'group-hover:-top-16',   // Tooltip position
+
+    // Collapsible sections (if they behave oddly)
+    'max-h-0',
+    'max-h-screen', // For the collapsible content containers
+
+    // Specific scales if they are generated dynamically
+    'hover:scale-[1.005]', // Subtler scale for main sections
+    'hover:scale-[1.04]',  // Stronger scale for individual video items
+    'hover:shadow-xl',     // Shadow for main sections
+    'hover:shadow-md',     // Shadow for individual items
+
+    // Also add other transition-related classes just to be safe if they cause issues
+    // e.g., 'transition-all', 'duration-200', 'duration-300', 'duration-500', etc.
 ],
 };
