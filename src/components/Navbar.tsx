@@ -152,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
                   {/* Logo's inner "dive" element - this is the exact style we want to match for the button */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                  <div className="w-12 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
                       src="/assets/Icon_Light_NB.png"
                       alt="MissingTube Logo"
@@ -177,7 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
                 // The button itself just handles basic hover/active states and sizing
                 // Changed w-12 h-10 to w-10 h-10 for consistent rounded-2xl shape
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" 
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" 
                 aria-label="Toggle mobile menu"
               >
                 {/* This div *is* the visual representation of the button, mimicking the logo's dive */}
