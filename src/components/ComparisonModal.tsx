@@ -344,7 +344,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                style={{ width: '200%' }}> {/* Always 200% width for the sliding effect */}
 
             {/* Select File View - Now always takes full width of its container */}
-            <div className="w-full flex-shrink-0 space-y-6 px-6"> {/* Changed pr-6 to px-6 */}
+            <div className="w-full flex-shrink-0 space-y-6 px-6">
               <div className="text-center">
                 <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.04]">
                   <h3 className="text-lg font-semibold text-on-surface mb-2">
@@ -457,7 +457,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
             </div>
 
             {/* Comparison Results View - Takes full width on mobile, half on desktop */}
-            <div className="w-full flex-shrink-0 space-y-6 px-6"> {/* Changed pl-6 to px-6 */}
+            <div className="w-full flex-shrink-0 space-y-6 px-6">
               {comparisonResult && (
                 <div className="h-full flex flex-col">
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
@@ -465,7 +465,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                       {/* Show "Download All" only if new data was found */}
                       <div className="relative group w-full sm:w-auto">
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none invisible group-hover:visible"> {/* ADDED INVISIBLE / GROUP-HOVER:VISIBLE */}
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none invisible group-hover:visible">
                             Download Merged Playlist
                         </div>
                         {comparisonResult.hasNewData && (
@@ -482,7 +482,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       
                       {/* Compare Another Button with adjusted scale for hover */}
                       <div className="relative group w-full sm:w-auto">
-                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none invisible group-hover:visible"> {/* ADDED INVISIBLE / GROUP-HOVER:VISIBLE */}
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-xl shadow-md border border-gray-300/30 dark:border-gray-700/30 py-2 px-4 text-center text-on-surface-variant text-sm whitespace-nowrap transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:-top-16 pointer-events-none invisible group-hover:visible">
                             Upload New File
                         </div>
                         <button
@@ -507,7 +507,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   {/* Scrollable content for results, responsive layout */}
                   <div className="flex flex-col sm:flex-row flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
                     {/* Unavailable Videos Section - Subtler hover for the main container */}
-                    <div className="w-full sm:w-1/2 flex-shrink-0">
+                    <div className="w-full sm:flex-1 flex-shrink-0">
                       {comparisonResult.unavailableMatches.length > 0 ? (
                         <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col">
                           <button
@@ -529,9 +529,9 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                           </button>
 
                           <div className={`transition-all duration-300 ease-out overflow-hidden ${
-                            showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0' /* MODIFIED: max-h-screen, removed opacity-0 */
+                            showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'
                           }`}>
-                            <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar"> {/* REMOVED max-h-80 */}
+                            <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar">
                               {comparisonResult.unavailableMatches.map((match, index) => (
                                 <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                                   <div className="flex items-center justify-between mb-1">
@@ -569,7 +569,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                     </div>
 
                     {/* All Videos Section - Subtler hover for the main container */}
-                    <div className="w-full sm:w-1/2 flex-shrink-0">
+                    <div className="w-full sm:flex-1 flex-shrink-0">
                       <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col">
                         <button
                           onClick={() => setShowAllVideos(!showAllVideos)}
@@ -585,9 +585,9 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                         </button>
 
                         <div className={`transition-all duration-300 ease-out overflow-hidden ${
-                          showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0' /* MODIFIED: max-h-screen, removed opacity-0 */
+                          showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'
                         }`}>
-                          <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar"> {/* REMOVED max-h-[450px] */}
+                          <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar">
                             {comparisonResult.allVideos.map((video, index) => (
                               <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                                 <div className="flex items-center justify-between mb-2">
@@ -621,4 +621,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};1
+};
