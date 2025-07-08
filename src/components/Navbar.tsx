@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Reduced desktop gap-x for scrolled
+                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-6' // Reduced desktop gap-x for scrolled
                                : 'py-3 sm:py-4 flex-col items-center sm:px-8 sm:pr-8'}`}>
 
           {/* Logo & Site Name */}
