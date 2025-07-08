@@ -435,7 +435,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
               </div>
 
               {error && (
-                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 text-on-error-container rounded-2xl shadow-md border border-error/50 dark:border-error-dark/50 backdrop-blur-md">
+                <div className="p-4 bg-error-container/80 dark:bg-error-dark-container/80 text-on-error-container rounded-2xl shadow-md border border-error/50 dark:border-error/50 backdrop-blur-md">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5" />
                     <span className="font-medium">{error}</span>
@@ -519,21 +519,24 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                         <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col">
                           <button
                             onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                            className="group w-full p-4 pb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
+                            // MODIFIED: Changed flex-col to flex-wrap for proper alignment of arrow
+                            className="group w-full p-4 pb-2 flex flex-wrap items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
                           >
-                            <h4 className="font-medium text-on-primary-container flex items-center gap-2">
+                            {/* Inner flex for title and icon */}
+                            <h4 className="font-medium text-on-primary-container flex items-center gap-2 order-1"> {/* order-1 to ensure it appears first in flex-wrap */}
                               <AlertTriangle className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
                               Recovered Videos ({comparisonResult.unavailableMatches.length})
                             </h4>
-                            {/* MODIFIED: Titles Found blinker smaller & below */}
+                            {/* ChevronDown should always be last, so order-3 */}
+                            <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''} order-3`}>
+                              <ChevronDown className="w-5 h-5" />
+                            </div>
+                            {/* Titles Found blinker, order-2 to appear after title but before arrow on wrap */}
                             {comparisonResult.hasNewData && (
-                              <span className="ml-0 sm:ml-2 mt-1 sm:mt-0 px-2 py-0.5 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
+                              <span className="ml-0 sm:ml-2 mt-1 sm:mt-0 px-2 py-0.5 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md order-2">
                                 Titles Found!
                               </span>
                             )}
-                            <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''} sm:absolute sm:top-4 sm:right-4`}> {/* Added sm:absolute positioning for desktop */}
-                              <ChevronDown className="w-5 h-5" />
-                            </div>
                           </button>
 
                           <div className={`transition-all duration-300 ease-out overflow-hidden ${
@@ -581,13 +584,16 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                       <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col">
                         <button
                           onClick={() => setShowAllVideos(!showAllVideos)}
-                          className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
+                          // MODIFIED: Changed flex-col to flex-wrap for proper alignment of arrow
+                          className="group w-full p-4 flex flex-wrap items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
                         >
-                          <h4 className="font-medium text-on-surface flex items-center gap-2">
+                          {/* Inner flex for title and icon */}
+                          <h4 className="font-medium text-on-surface flex items-center gap-2 order-1"> {/* order-1 to ensure it appears first in flex-wrap */}
                             <FileText className="w-5 h-5 transition-transform duration-300 group-hover:scale-140" />
                             All Videos ({comparisonResult.allVideos.length})
                           </h4>
-                          <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}>
+                          {/* ChevronDown should always be last, so order-3 */}
+                          <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''} order-3`}>
                             <ChevronDown className="w-5 h-5" />
                           </div>
                         </button>
@@ -629,4 +635,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};44
+};
