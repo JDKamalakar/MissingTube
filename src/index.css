@@ -866,8 +866,16 @@
 
 /* Mobile-specific touch targets */
 .touch-target {
-  min-height: 44px;
-  min-width: 44px;
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Ensure proper spacing for mobile */
+@media (max-width: 640px) {
+  .touch-target {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
 }
 
 /* Mobile-optimized button styles */

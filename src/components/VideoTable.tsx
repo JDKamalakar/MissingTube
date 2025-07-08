@@ -151,10 +151,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     {getSortIcon('title')}
                   </div>
                 </th>
-                <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                <th className="hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
                     sortField === 'channel' ? 'bg-primary/20' : ''
-                  }`}
+                  }"
                   onClick={() => handleSort('channel')}
                 >
                   {sortField === 'channel' && (
@@ -179,7 +178,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     {getSortIcon('duration')}
                   </div>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -237,7 +236,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {video.channelTitle || 'Unknown Channel'}
                     </span>
@@ -248,28 +247,28 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       {video.duration}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-1 sm:gap-2">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
-                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group"
+                        className="flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
-                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group"
+                        className="flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4" />
+                        <Search className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                        className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group"
+                        className="hidden sm:flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="View description"
                       >
-                        <FileText className="w-4 h-4" />
+                        <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                     </div>
                   </td>

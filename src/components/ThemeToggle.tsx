@@ -58,11 +58,15 @@ export const ThemeToggle: React.FC = () => {
   return (
     <div
       ref={themeToggleRef}
-      className={`fixed z-50 transition-all duration-300 ease-in-out safe-top safe-right ${
+      className={`fixed z-50 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? 'top-4 right-4' // When scrolled, position at top right
-          : 'top-6 right-6 sm:top-7 sm:right-[4.25rem]' // When not scrolled, position with more spacing
+          ? 'top-4 right-4' // When scrolled, position at top right with safe spacing
+          : 'top-6 right-6 sm:top-7 sm:right-20' // When not scrolled, position with more spacing to avoid hamburger
       }`}
+      style={{
+        paddingTop: 'var(--mobile-safe-area-top)',
+        paddingRight: 'var(--mobile-safe-area-right)'
+      }}
     >
       <button
         onClick={() => setShowOptions(!showOptions)}

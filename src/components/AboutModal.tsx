@@ -120,45 +120,47 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </h4>
 
               <div className="space-y-3">
-                <a
-                  href="https://buymeacoffee.com/developer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 w-full py-3 px-6 bg-warning text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning/90 hover:scale-105 active:scale-95 group"
-                >
-                  <Coffee className="w-5 h-5 animate-bounce group-hover:animate-super-fast-bounce" />
-                  Buy me a coffee
-                </a>
+                <div className="w-full">
+                  <a
+                    href="https://buymeacoffee.com/developer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full py-3 px-4 sm:px-6 bg-warning text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning/90 hover:scale-105 active:scale-95 group mobile-text-sm"
+                  >
+                    <Coffee className="w-4 h-4 sm:w-5 sm:h-5 animate-bounce group-hover:animate-super-fast-bounce" />
+                    <span className="truncate">Buy me a coffee</span>
+                  </a>
+                </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href="https://github.com/developer/missingtube"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-3 sm:px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20 mobile-text-sm"
                   >
-                    <Github className="w-4 h-4 transition-transform duration-500 group-hover:rotate-[360deg]" />
-                    GitHub
+                    <Github className="w-4 h-4 transition-transform duration-500 group-hover:rotate-[360deg] flex-shrink-0" />
+                    <span className="truncate">GitHub</span>
                   </a>
 
                   <a
                     href="https://twitter.com/developer"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-3 sm:px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20 mobile-text-sm"
                   >
-                    <Twitter className="w-4 h-4 transition-transform duration-225 group-hover:rotate-45" />
-                    Twitter
+                    <Twitter className="w-4 h-4 transition-transform duration-225 group-hover:rotate-45 flex-shrink-0" />
+                    <span className="truncate">Twitter</span>
                   </a>
 
                   <a
                     href="https://developer-portfolio.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 px-3 sm:px-4 bg-primary text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 mobile-text-sm"
                   >
-                    <Globe className="w-4 h-4 transition-transform duration-225 group-hover:animate-spin" />
-                    Portfolio
+                    <Globe className="w-4 h-4 transition-transform duration-225 group-hover:animate-spin flex-shrink-0" />
+                    <span className="truncate">Portfolio</span>
                   </a>
                 </div>
               </div>
