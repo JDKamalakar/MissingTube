@@ -129,12 +129,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}> {/* py-2 for mobile scrolled, py-3 for mobile unscrolled */}
+                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}>
         
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-8' // Mobile scrolled: justify-center for vertical middle. Desktop scrolled: smaller gap-x, also applied explicit pr-8 here
+                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-4' // Desktop Scrolled: sm:pr-4 for right space
                                : 'flex-col items-center sm:items-center'}`}> 
 
           {/* Logo & Site Name Block */}
@@ -184,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto justify-center px-3 py-1.5 mr-8' // Buttons shrink height (py-1.5) and have right margin (mr-8)
+                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5' // sm:flex-grow re-added to take available width, py-1.5 for height shrink
                               : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
@@ -193,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={index}
                   onClick={item.onClick}
                   className={`group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-12 overflow-hidden touch-target
-                  ${isScrolled ? 'hover:scale-[1.00]' : 'hover:scale-[1.08]'}`} // Conditional hover scale
+                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
                   <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
@@ -280,4 +280,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};6
+};
