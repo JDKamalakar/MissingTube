@@ -22,7 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentPlaylistInfo = null
 }) => {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-  const [showBackupModal, setShowBackupAppModal] = useState(false); // Renamed for clarity with modal naming
+  const [showBackupModal, setShowBackupModal] = useState(false);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
@@ -84,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     {
       icon: Download,
       label: 'Download',
-      onClick: () => setShowBackupAppModal(true), // Use the renamed state setter
+      onClick: () => setShowBackupModal(true),
       animation: 'animate-bounce-short-slow'
     },
     {
@@ -105,17 +105,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl"> {/* Added rounded-b-3xl */}
+      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl">
         <div className={`container mx-auto pl-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
-                            ${isScrolled
-                                ? 'py-2 sm:py-3 flex-row justify-between items-center pr-4 sm:pr-24' // Adjusted for smaller padding on scroll and increased desktop padding
-                                : 'py-3 sm:py-4 flex-col sm:flex-row sm:justify-between sm:items-center pr-4 sm:pr-8'}`}> {/* Adjusted for smaller padding on scroll and increased desktop padding */}
+                             ${isScrolled
+                               ? 'py-2 sm:py-3 flex-row justify-between items-center pr-4 sm:pr-24'
+                               : 'py-3 sm:py-4 flex-col items-center pr-4 sm:pr-8'}`}> {/* Adjusted desktop padding and flex for unscrolled */}
 
           {/* Logo & Site Name */}
           <div className={`flex items-center justify-between w-full sm:w-auto gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
-                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center sm:mb-0'}`}> {/* Adjusted desktop centering, removed mobile margin-bottom */}
+                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-center'
+                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Adjusted desktop rounding and centering for unscrolled */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -158,8 +158,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation */}
           <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center' // On scroll: grow to fill space, then center its contents
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Adjusted width and centering for desktop */}
+                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center'
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Adjusted desktop rounding and width for unscrolled */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -170,7 +170,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
                   <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-sm"> {/* Changed hidden lg:inline to hidden sm:inline */}
+                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-sm">
                     {item.label}
                   </span>
                 </button>
@@ -227,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {showBackupModal && (
         <BackupManager
-          onClose={() => setShowBackupAppModal(false)} // Use the renamed state setter
+          onClose={() => setShowBackupModal(false)}
           currentVideos={currentVideos}
           currentPlaylistInfo={currentPlaylistInfo}
         />
@@ -253,4 +253,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};2
+};
