@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pr-8' // Mobile scrolled: justify-center for vertical middle, Desktop scrolled: smaller gap-x, added pr-8
+                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-4 sm:items-center sm:pr-8' // Mobile scrolled: justify-center for vertical middle, Desktop scrolled: smaller gap-x, added pr-8
                                : 'flex-col items-center sm:items-center'}`}> 
 
           {/* Logo & Site Name Block */}
