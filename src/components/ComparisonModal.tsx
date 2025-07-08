@@ -622,4 +622,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};
+};1
