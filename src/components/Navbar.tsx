@@ -80,7 +80,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           }
           setIsNavbarHidden(false); // Ensure it's never hidden on desktop
         } else {
-          // Mobile specific shrinking
+          // Mobile specific shrinking (height changes, but width remains full)
+          // For mobile, the `isScrolled` state primarily affects the py-value in the class list
           if (currentScrollY > SHRINK_THRESHOLD) {
             setIsScrolled(true);
           } else {
@@ -105,7 +106,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]); // Dependency array needs to be complete for accurate behavior
+  }, [canScroll]);
 
   const navItems = [
     {
@@ -148,16 +149,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         {/* Main container for navbar content */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
-                             ${isScrolled // This is now primarily for mobile layout and desktop "fully shrunk" state
-                               ? 'py-2 sm:py-[var(--dynamic-py)] flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop: shrunk (uses dynamic var), row, justify-between, gap
-                               : 'py-3 sm:py-[var(--dynamic-py)] flex-col items-center sm:flex-row sm:justify-center sm:gap-x-8 sm:px-8 sm:pr-8'}`} // Desktop Unscrolled: row, center content, gap between blocks
-             style={{ '--dynamic-py': `${dynamicPy}rem` } as React.CSSProperties}> {/* Apply dynamic padding */}
+                             ${isScrolled
+                               ? 'py-2 sm:py-[var(--dynamic-py)] sm:flex-row sm:justify-between sm:items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop Scrolled: row, justify-between, gap
+                               : 'py-3 sm:py-[var(--dynamic-py)] flex-col items-center sm:items-center sm:px-8 sm:pr-8 sm:gap-y-4'}`} // Desktop Unscrolled: flex-col, items-center (to center content), with gap-y
+             style={{ '--dynamic-py': `${dynamicPy}rem` } as React.CSSProperties}>
 
           {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
                               ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Scrolled: auto width, shrink, center content
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full sm:w-auto'}`}> {/* Unscrolled: mobile full width, desktop auto width, center content */}
+                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full sm:w-auto'}`}> {/* Mobile: w-full and rounded-2xl, Desktop: w-auto, center, specific rounding */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -201,7 +202,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
                               ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' // Scrolled: auto width, grow, spread buttons
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full sm:w-auto'}`}> {/* Unscrolled: mobile full width, desktop auto width, spread buttons */}
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full sm:w-auto'}`}> {/* Mobile: w-full, Desktop: w-auto, spread buttons */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -295,4 +296,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};10
+};
