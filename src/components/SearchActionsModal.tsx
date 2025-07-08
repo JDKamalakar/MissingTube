@@ -71,14 +71,14 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
   };
 
   return (
-    <div className="flex items-center justify-center p-4">
+    <div className="fixed inset-0 !z-[9999] flex items-center justify-center p-4">
       <div
-        className="bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
+        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in !z-[0]"
         onClick={onClose}
       />
 
       <div
-        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
+        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col !z-[9999]"
         role="dialog"
         aria-modal="true"
       >
@@ -169,4 +169,4 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
       </div>
     </div>
   );
-};1
+};
