@@ -129,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2 sm:py-2 sm:min-h-[56px]' : 'py-3 sm:py-5 sm:min-h-[96px]'}`}> {/* Adjusted py on nav, and sm:min-h for desktop scrolled height */}
+                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}> {/* py-2 for mobile scrolled, py-3 for mobile unscrolled */}
         
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Logo & Site Name Block */}
           <div className={`flex items-center justify-between w-full gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
                             ${isScrolled
-                              ? 'py-1.5 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Reduced py for smaller height when scrolled
+                              ? 'py-1.5 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
                               : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}>
             
             <div className="flex items-center gap-3 sm:gap-4">
@@ -184,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto justify-evenly px-3 py-1.5 mr-8' // Reduced py to 1.5 for more height shrinking, increased mr to 8
+                              ? 'rounded-2xl sm:w-auto justify-center px-3 py-1.5 mr-8' // Added justify-center, kept py-1.5, mr-8
                               : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
@@ -279,4 +279,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};3
+};
