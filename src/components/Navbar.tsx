@@ -68,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         }
 
         // Logic for hiding/showing navbar ONLY on mobile when scrolling further down/up
-        if (!isDesktop) {
+        if (!isDesktop) { // Apply only for mobile
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
           } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
@@ -128,9 +128,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       {/* Navbar structure and positioning from second code, with mobile hiding logic */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out
-                      ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
+                      ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
+                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}>
+        
         {/* Main container: layout and padding from second code, with mobile adaptations */}
-        <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
+        <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
                                ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' // Desktop Scrolled: flex-row, justify-center, items-center, gap, pr-24 (from second code)
                                : 'py-4 flex-col items-center sm:pr-8'}`}> {/* Desktop Unscrolled: flex-col (default), items-center, pr-8 (from second code) */}
@@ -139,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
                               ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}> {/* Mobile: rounded-2xl. Desktop: rounded-t-2xl, rounded-b-none */}
+                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Mobile: rounded-2xl. Desktop: rounded-t-2xl, rounded-b-none */}
             
             <div className="flex items-center justify-between w-full gap-3 sm:gap-4"> {/* Added justify-between and w-full for mobile button alignment */}
               {/* MissingTube Logo with glassmorphism background */}
@@ -196,9 +198,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} // Conditional hover scale
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-                  {/* Icon animation from second code, icon size from our previous iterations */}
-                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} /> {/* Restored w-4 h-4 as per second code */}
-                  {/* Text size from second code, ensuring no black text on hover */}
+                  {/* Icon animation from second code, icon size w-4 h-4 */}
+                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                  {/* Text size from second code */}
                   <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">
                     {item.label}
                   </span>
@@ -282,4 +284,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
