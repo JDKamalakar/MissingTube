@@ -167,7 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
                 // The button itself just handles basic hover/active states and sizing
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" // Removed bg, border, shadow from here
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 rounded-2x1 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" // Removed bg, border, shadow from here
                 aria-label="Toggle mobile menu"
               >
                 {/* This div *is* the visual representation of the button, mimicking the logo's dive */}
