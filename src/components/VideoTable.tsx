@@ -206,7 +206,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         onClick={() => handleVideoClick(video.videoId)}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = './src/assets/Unavailable.png';
+                          target.src = UnavailableImage;
                         }}
                       />
                       <div
