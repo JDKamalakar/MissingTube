@@ -130,21 +130,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
                               ${isScrolled
-                                ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24'
+                                ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' 
                                 : 'py-4 flex-col items-center sm:pr-8'}`}>
 
-          {/* Logo & Site Name Block */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                                 ${isScrolled
                                   ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center'
                                   : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}>
             
-            {/* THIS IS THE SECTION TO ADJUST FOR CENTERING */}
-            <div className="flex items-center justify-between w-full gap-3 sm:gap-4">
-              {/* To horizontally center the logo and title, we'll wrap them in a div that can grow and then set its content to center. */}
-              {/* This `flex-grow` div ensures the logo/title group takes available space, and `justify-center` centers its children. */}
-              <div className="flex items-center gap-3 sm:gap-4 flex-grow sm:flex-grow-0 justify-center"> {/* Added flex-grow and justify-center */}
-                {/* MissingTube Logo with glassmorphism background */}
+            {/* MODIFIED: Changed this div to only use justify-between on non-sm screens (mobile) */}
+            <div className="flex items-center w-full gap-3 sm:gap-4 sm:justify-center"> {/* Added sm:justify-center */}
+              {/* MissingTube Logo with glassmorphism background */}
+              {/* MODIFIED: Added w-full for consistent centering, or sm:w-auto to shrink on desktop */}
+              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center"> {/* Added w-full sm:w-auto justify-center */}
                 <div className="relative">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
@@ -166,10 +164,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button (retained and pushed to right) */}
+              {/* Mobile Menu Button (retained and pushed to right using ml-auto on mobile) */}
+              {/* MODIFIED: Added ml-auto for mobile to push it right, removed sm:hidden as a direct class here to ensure proper flex behavior */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20"
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20"
                 aria-label="Toggle mobile menu"
               >
                 <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
@@ -182,11 +181,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Desktop Navigation Items */}
           <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                                 ${isScrolled
-                                  ? 'rounded-2xl sm:w-auto sm:flex-grow sm:justify-center'
-                                  : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}>
+                                  ? 'rounded-2xl sm:w-auto sm:flex-grow sm:justify-center' 
+                                  : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> 
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -194,10 +192,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={index}
                   onClick={item.onClick}
                   className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-10 overflow-hidden touch-target
-                    ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}
+                    ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} 
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} /> 
                   <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">
                     {item.label}
                   </span>
@@ -207,7 +205,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
@@ -237,7 +234,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </nav>
 
-      {/* Mobile Menu Backdrop */}
       {showMobileMenu && (
         <div 
           className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in"
@@ -245,7 +241,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         />
       )}
 
-      {/* Modals */}
       {showApiKeyModal && (
         <ApiKeyModal
           onClose={() => setShowApiKeyModal(false)}
@@ -281,4 +276,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
