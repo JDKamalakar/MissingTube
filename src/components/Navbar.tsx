@@ -134,14 +134,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-4' // Desktop Scrolled: sm:pr-4 for right space
-                               : 'flex-col items-center sm:items-center'}`}> 
+                               ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-8' // Mobile scrolled: justify-center for vertical middle. Desktop scrolled: smaller gap-x, also applied explicit pr-8 here
+                               : 'flex-col items-center sm:flex-col sm:justify-center sm:items-center'}`}> {/* Desktop Unscrolled: flex-col, justify-center, items-center to center both blocks */}
 
           {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between w-full gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
+          <div className={`flex items-center justify-between gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
                             ${isScrolled
                               ? 'py-1.5 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
-                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}>
+                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center sm:w-auto'}`}> {/* Removed w-full on sm: for centering */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -184,8 +184,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5' // sm:flex-grow re-added to take available width, py-1.5 for height shrink
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}>
+                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5 mr-8' 
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly sm:w-auto p-3'}`}> {/* Removed w-full on sm: for centering */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -280,4 +280,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};7
+};
