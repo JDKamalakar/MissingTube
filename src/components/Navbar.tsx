@@ -31,17 +31,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
   const [isNavbarHidden, setIsNavbarHidden] = useState(false);
-  const [dynamicPy, setDynamicPy] = useState(4); // Initial desktop py-4 for inner container when unscrolled
+  const [dynamicPy, setDynamicPy] = useState(0); // This will represent the additional vertical space *within* the container
   const lastScrollY = useRef(0);
 
   // Define scroll thresholds
   const SHRINK_THRESHOLD = 80; // When navbar starts shrinking / reaches minimum desktop height
   const HIDE_THRESHOLD = 300; // When navbar starts hiding on mobile (scroll further down)
 
-  // Desktop unscrolled base padding for the INNER container
-  const DESKTOP_UNSCROLLED_INNER_PY = 4; // Corresponds to py-4
-  // Desktop scrolled minimum padding for the INNER container
-  const DESKTOP_SCROLLED_INNER_PY = 3; // Corresponds to py-3
+  // Desktop unscrolled base padding for the INNER container's dynamic portion
+  // This value will be added on top of a fixed base padding
+  const DESKTOP_UNSCROLLED_DYNAMIC_PY = 1.5; // Corresponds to approx py-3 for inner content
+  // Desktop scrolled minimum padding for the INNER container's dynamic portion
+  const DESKTOP_SCROLLED_DYNAMIC_PY = 0; // Effectively no extra padding from dynamicPy for inner content
 
   useEffect(() => {
     const checkScrollability = () => {
@@ -69,25 +70,24 @@ export const Navbar: React.FC<NavbarProps> = ({
         // Desktop shrinking and single-line transition
         if (isDesktop) {
           if (currentScrollY <= SHRINK_THRESHOLD) {
-            // Interpolate padding for the inner container
             const progress = currentScrollY / SHRINK_THRESHOLD; // 0 to 1
-            const newPy = DESKTOP_UNSCROLLED_INNER_PY - (DESKTOP_UNSCROLLED_INNER_PY - DESKTOP_SCROLLED_INNER_PY) * progress;
-            setDynamicPy(Math.max(newPy, DESKTOP_SCROLLED_INNER_PY));
-            setIsScrolled(false); // Only set true once it's fully shrunk
+            const newDynamicPy = DESKTOP_UNSCROLLED_DYNAMIC_PY - (DESKTOP_UNSCROLLED_DYNAMIC_PY - DESKTOP_SCROLLED_DYNAMIC_PY) * progress;
+            setDynamicPy(Math.max(newDynamicPy, DESKTOP_SCROLLED_DYNAMIC_PY));
+            setIsScrolled(false); 
           } else {
-            setDynamicPy(DESKTOP_SCROLLED_INNER_PY);
-            setIsScrolled(true); // Navbar is fully shrunk and in single-line mode
+            setDynamicPy(DESKTOP_SCROLLED_DYNAMIC_PY);
+            setIsScrolled(true); 
           }
-          setIsNavbarHidden(false); // Ensure it's never hidden on desktop
+          setIsNavbarHidden(false); 
         } else {
           // Mobile specific shrinking (height changes, but width remains full)
+          // For mobile, the `isScrolled` state affects the outer `nav`'s py-value
           if (currentScrollY > SHRINK_THRESHOLD) {
             setIsScrolled(true);
           } else {
             setIsScrolled(false);
           }
-          setDynamicPy(isScrolled ? 2 : 3); // Mobile's specific py values, py-3 when unscrolled, py-2 when scrolled
-
+          setDynamicPy(0); // Dynamic padding isn't used on mobile for this effect
           // Mobile specific hiding/showing
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
@@ -100,13 +100,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       } else {
         setIsScrolled(false);
         setIsNavbarHidden(false);
-        setDynamicPy(DESKTOP_UNSCROLLED_INNER_PY); // Reset inner padding if not scrollable
+        setDynamicPy(DESKTOP_UNSCROLLED_DYNAMIC_PY); // Reset dynamic padding if not scrollable
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, isScrolled]); // Added isScrolled to dependency array for mobile py update
+  }, [canScroll]); // Removed isScrolled from dependency array, as it's set *inside* this effect
 
   const navItems = [
     {
@@ -145,23 +145,33 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      {/* The main nav element should define its own padding or height */}
+      {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2' : 'py-3 sm:py-4'}`}> {/* Adjusted py directly on the nav for overall height */}
+                      ${isScrolled ? 'py-2' : 'py-3 sm:py-5'}`}> {/* Increased initial py-5 for more height on desktop */}
         
         {/* Inner container for actual content, manages its own dynamic height/layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
                                ? 'sm:flex-row sm:justify-between sm:items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop Scrolled: row, justify-between, gap
                                : 'flex-col items-center sm:items-center sm:px-8 sm:pr-8'}`} // Desktop Unscrolled: flex-col, items-center
-             style={{ '--dynamic-py': `${dynamicPy}rem` } as React.CSSProperties}> {/* This div manages inner block spacing */}
+             style={{ '--dynamic-py': `${dynamicPy}rem` } as React.CSSProperties}>
+          
+          {/* Apply dynamic padding only when NOT scrolled on desktop */}
+          {!isScrolled && window.innerWidth >= 640 && (
+            <div className="absolute inset-x-0 bottom-0 top-0 pointer-events-none" 
+                 style={{ 
+                   paddingTop: `${dynamicPy}rem`, 
+                   paddingBottom: `${dynamicPy}rem` 
+                 }}
+            />
+          )}
 
           {/* Logo & Site Name Block */}
           <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Scrolled: auto width, shrink, center content
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}> {/* Unscrolled: w-full for both mobile and desktop */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
+                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}>
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -204,8 +214,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' // Scrolled: auto width, grow, spread buttons
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full'}`}> {/* Unscrolled: w-full for both mobile and desktop */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' 
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
