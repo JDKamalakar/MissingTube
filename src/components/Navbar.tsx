@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
                   {/* Logo's inner "dive" element - this is the exact style we want to match for the button */}
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                  <div className="w-10 h-10 sm:w-12 sm:h-10 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
                       src="/assets/Icon_Light_NB.png"
                       alt="MissingTube Logo"
