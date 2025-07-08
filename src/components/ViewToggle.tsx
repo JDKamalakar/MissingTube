@@ -27,7 +27,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
   };
 
   return (
-    <div className="relative flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20">
+    <div className="relative flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-full sm:w-auto">
       {/* Animated Selector Background */}
       <div 
         className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
@@ -39,7 +39,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('grid')}
-        className={`relative z-10 flex items-center gap-2 px-6 py-2 rounded-2xl font-medium transition-all duration-225 ${
+        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm ${
           viewMode === 'grid'
             ? 'text-white'
             : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
@@ -57,7 +57,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('table')}
-        className={`relative z-10 flex items-center gap-2 px-6 py-2 rounded-2xl font-medium transition-all duration-225 ${
+        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm ${
           viewMode === 'table'
             ? 'text-white'
             : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'

@@ -66,6 +66,9 @@ export default {
         'bounce-up': 'bounce-up 1s infinite',
         'bounce-short-slow': 'bounce-short-slow 1.5s infinite',
         'super-fast-bounce': 'super-fast-bounce 0.3s infinite',
+        'swipe-in-left': 'swipe-in-left 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'swipe-in-right': 'swipe-in-right 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'slide-up': 'slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         'fade-in': {
@@ -131,6 +134,36 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-6px)' },
         },
+        'swipe-in-left': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(-100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)' 
+          },
+        },
+        'swipe-in-right': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)' 
+          },
+        },
+        'slide-up': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateY(100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateY(0)' 
+          },
+        },
       },
       boxShadow: {
         'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.05)',
@@ -157,6 +190,38 @@ export default {
       },
       fontFamily: {
         'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
+      // Mobile-specific responsive breakpoints
+      screens: {
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      // Mobile-optimized spacing
+      spacing: {
+        'safe-top': 'var(--mobile-safe-area-top)',
+        'safe-bottom': 'var(--mobile-safe-area-bottom)',
+        'safe-left': 'var(--mobile-safe-area-left)',
+        'safe-right': 'var(--mobile-safe-area-right)',
+      },
+      // Mobile-optimized heights
+      height: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+      },
+      minHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+      },
+      maxHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
       },
     },
   },

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Key, History, Info, Download, GitCompare } from 'lucide-react';
+import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
@@ -26,25 +26,22 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
 
   // Define a scroll threshold to prevent rapid flickering
-  const SCROLL_THRESHOLD = 80; // Adjust this value as needed (e.g., 50, 100, etc.)
+  const SCROLL_THRESHOLD = 80;
 
   useEffect(() => {
     const checkScrollability = () => {
-      // Check if document height is greater than window height + a buffer
-      // This helps determine if there's enough content to scroll at all
       setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
     };
 
-    // Initial check and re-check on window resize
     checkScrollability();
     window.addEventListener('resize', checkScrollability);
 
-    // Observe DOM changes that might affect scrollability (e.g., content loading)
     const observer = new MutationObserver(checkScrollability);
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -57,111 +54,163 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       if (canScroll) {
-        if (window.scrollY > SCROLL_THRESHOLD) { // Use the defined threshold
+        if (window.scrollY > SCROLL_THRESHOLD) {
           setIsScrolled(true);
         } else {
           setIsScrolled(false);
         }
       } else {
-        // If not scrollable, always treat as not scrolled
         setIsScrolled(false);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]); // Re-run effect if canScroll changes
+  }, [canScroll]);
+
+  const navItems = [
+    {
+      icon: History,
+      label: 'History',
+      onClick: () => setShowHistoryPanel(true),
+      animation: '-rotate-[30deg]'
+    },
+    {
+      icon: Key,
+      label: 'API Key',
+      onClick: () => setShowApiKeyModal(true),
+      animation: '-rotate-[30deg]'
+    },
+    {
+      icon: Download,
+      label: 'Download',
+      onClick: () => setShowBackupModal(true),
+      animation: 'animate-bounce-short-slow'
+    },
+    {
+      icon: GitCompare,
+      label: 'Compare',
+      onClick: () => setShowComparisonModal(true),
+      animation: 'rotate-[360deg]'
+    },
+    {
+      icon: Info,
+      label: 'About',
+      onClick: () => setShowAboutModal(true),
+      animation: 'rotate-[360deg]'
+    }
+  ];
+
+  const closeMobileMenu = () => setShowMobileMenu(false);
 
   return (
     <>
-      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out">
-        <div className={`container mx-auto pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
+      <nav className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top">
+        <div className={`container mx-auto px-4 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out
                           ${isScrolled
-                            ? 'py-3 flex-col md:flex-row md:justify-center md:items-center md:gap-4 pr-24' // On scroll: flex-row for larger screens, justify-center for all content, increased right padding
-                            : 'py-4 flex-col items-center pr-8'}`}> {/* Default: always flex-col and center items, base right padding */}
+                            ? 'py-2 sm:py-3 flex-row justify-between items-center' 
+                            : 'py-3 sm:py-4 flex-col sm:flex-row sm:justify-between sm:items-center'}`}>
 
           {/* Logo & Site Name */}
-          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
-                            ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-shrink-0 justify-center' // On scroll: ensure content is centered, prevent shrinking
-                              : 'rounded-t-2xl rounded-b-none border-l border-r border-t justify-center'}`}> {/* Default: center logo horizontally */}
-
-            <div className="flex items-center gap-4">
-              {/* MissingTube Logo with glassmorphism background */}
+          <div className={`flex items-center justify-between w-full sm:w-auto gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 rounded-2xl
+                            ${isScrolled ? '' : 'mb-3 sm:mb-0'}`}>
+            
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* MissingTube Logo */}
               <div className="relative">
-                <div className="w-12 h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                   <img
                     src="/assets/Icon_Light_NB.png"
                     alt="MissingTube Logo"
-                    className="w-8 h-8 object-contain dark:hidden transition-opacity duration-300"
+                    className="w-6 h-6 sm:w-8 sm:h-8 object-contain dark:hidden transition-opacity duration-300"
                   />
                   <img
                     src="/assets/Icon_Dark_NB.png"
                     alt="MissingTube Logo"
-                    className="w-8 h-8 object-contain hidden dark:block transition-opacity duration-300"
+                    className="w-6 h-6 sm:w-8 sm:h-8 object-contain hidden dark:block transition-opacity duration-300"
                   />
                 </div>
               </div>
+              
               {/* Site Name */}
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
                 MissingTube
               </h1>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20"
+              aria-label="Toggle mobile menu"
+            >
+              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+              {showMobileMenu ? (
+                <X className="relative z-10 w-5 h-5 transition-all duration-300 group-hover:rotate-90" />
+              ) : (
+                <Menu className="relative z-10 w-5 h-5 transition-all duration-300 group-hover:scale-110" />
+              )}
+            </button>
           </div>
 
-          {/* Navigation Items */}
-          <div className={`flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
-                            ${isScrolled
-                              ? 'rounded-2xl md:w-auto md:flex-grow md:justify-center' // On scroll: grow to fill space, then center its contents
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}> {/* Default: full width, center contents */}
+          {/* Desktop Navigation */}
+          <div className="hidden sm:flex items-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 rounded-2xl">
+            {navItems.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={index}
+                  onClick={item.onClick}
+                  className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden touch-target"
+                >
+                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                  <span className="relative z-10 hidden lg:inline transition-all duration-300 group-hover:font-semibold mobile-text-sm">
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-            <button
-              onClick={() => setShowHistoryPanel(true)}
-              className="group relative flex items-center gap-2 px-4 py-4 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-              <History className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:-rotate-[30deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">History</span>
-            </button>
-
-            <button
-              onClick={() => setShowApiKeyModal(true)}
-              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-              <Key className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:-rotate-[30deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">API Key</span>
-            </button>
-
-            <button
-              onClick={() => setShowBackupModal(true)}
-              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-              <Download className="relative z-10 w-4 h-4 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">Download</span>
-            </button>
-
-            <button
-              onClick={() => setShowComparisonModal(true)}
-              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-              <GitCompare className="relative z-10 w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">Compare</span>
-            </button>
-
-            <button
-              onClick={() => setShowAboutModal(true)}
-              className="group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-10 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-              <Info className="relative z-10 w-4 h-4 transition-all duration-700 group-hover:rotate-[360deg] group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-              <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">About</span>
-            </button>
+        {/* Mobile Navigation Menu */}
+        <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="px-4 pb-4">
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
+              {navItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      item.onClick();
+                      closeMobileMenu();
+                    }}
+                    className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
+                  >
+                    <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                    <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                    <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
+                      {item.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Backdrop */}
+      {showMobileMenu && (
+        <div 
+          className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in"
+          onClick={closeMobileMenu}
+        />
+      )}
 
       {/* Modals */}
       {showApiKeyModal && (

@@ -56,6 +56,12 @@
 
     /* RGB values for glow effects */
     --md-sys-color-primary-rgb: 14, 165, 233;
+
+    /* Mobile-specific variables */
+    --mobile-safe-area-top: env(safe-area-inset-top, 0px);
+    --mobile-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --mobile-safe-area-left: env(safe-area-inset-left, 0px);
+    --mobile-safe-area-right: env(safe-area-inset-right, 0px);
   }
 
   /* Dark theme colors */
@@ -118,6 +124,11 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    
+    /* Mobile optimizations */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    touch-action: manipulation;
   }
   
   body {
@@ -126,6 +137,20 @@
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    
+    /* Mobile-specific styles */
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* Safe area support */
+    padding-top: var(--mobile-safe-area-top);
+    padding-bottom: var(--mobile-safe-area-bottom);
+    padding-left: var(--mobile-safe-area-left);
+    padding-right: var(--mobile-safe-area-right);
     
     /* Beautiful ocean-inspired gradient background with animated flares */
     background: linear-gradient(135deg, 
@@ -138,6 +163,7 @@
     background-size: 400% 400%;
     animation: oceanGradient 20s ease infinite;
     min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
     position: relative;
   }
 
@@ -203,6 +229,20 @@
     background-size: 200px 100px;
     animation: sparkles 40s linear infinite;
   }
+
+  /* Mobile-specific text selection */
+  ::selection {
+    background-color: rgba(14, 165, 233, 0.3);
+    color: rgb(var(--md-sys-color-on-primary-container));
+  }
+
+  /* Allow text selection for inputs and content areas */
+  input, textarea, [contenteditable] {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+  }
 }
 
 /* Keyframe animations for the beautiful background */
@@ -267,122 +307,122 @@
   z-index: 10;
 }
 
-/* Material Design 3 Typography Scale */
+/* Material Design 3 Typography Scale - Mobile Optimized */
 @layer components {
   .display-large {
-    font-size: 57px;
-    line-height: 64px;
+    font-size: clamp(36px, 8vw, 57px);
+    line-height: 1.12;
     font-weight: 400;
     letter-spacing: -0.25px;
   }
   
   .display-medium {
-    font-size: 45px;
-    line-height: 52px;
+    font-size: clamp(32px, 7vw, 45px);
+    line-height: 1.16;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .display-small {
-    font-size: 36px;
-    line-height: 44px;
+    font-size: clamp(28px, 6vw, 36px);
+    line-height: 1.22;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .headline-large {
-    font-size: 32px;
-    line-height: 40px;
+    font-size: clamp(24px, 5vw, 32px);
+    line-height: 1.25;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .headline-medium {
-    font-size: 28px;
-    line-height: 36px;
+    font-size: clamp(22px, 4.5vw, 28px);
+    line-height: 1.29;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .headline-small {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: clamp(20px, 4vw, 24px);
+    line-height: 1.33;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .title-large {
-    font-size: 22px;
-    line-height: 28px;
+    font-size: clamp(18px, 3.5vw, 22px);
+    line-height: 1.27;
     font-weight: 400;
     letter-spacing: 0px;
   }
   
   .title-medium {
     font-size: 16px;
-    line-height: 24px;
+    line-height: 1.5;
     font-weight: 500;
     letter-spacing: 0.15px;
   }
   
   .title-small {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 1.43;
     font-weight: 500;
     letter-spacing: 0.1px;
   }
   
   .label-large {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 1.43;
     font-weight: 500;
     letter-spacing: 0.1px;
   }
   
   .label-medium {
     font-size: 12px;
-    line-height: 16px;
+    line-height: 1.33;
     font-weight: 500;
     letter-spacing: 0.5px;
   }
   
   .label-small {
     font-size: 11px;
-    line-height: 16px;
+    line-height: 1.45;
     font-weight: 500;
     letter-spacing: 0.5px;
   }
   
   .body-large {
     font-size: 16px;
-    line-height: 24px;
+    line-height: 1.5;
     font-weight: 400;
     letter-spacing: 0.15px;
   }
   
   .body-medium {
     font-size: 14px;
-    line-height: 20px;
+    line-height: 1.43;
     font-weight: 400;
     letter-spacing: 0.25px;
   }
   
   .body-small {
     font-size: 12px;
-    line-height: 16px;
+    line-height: 1.33;
     font-weight: 400;
     letter-spacing: 0.4px;
   }
 }
 
-/* Custom scrollbar with beautiful ocean theme */
+/* Mobile-optimized scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(14, 165, 233, 0.3) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 6px; /* Thinner for mobile */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -410,7 +450,7 @@
   display: none;
 }
 
-/* Material Design 3 Motion System */
+/* Material Design 3 Motion System - Mobile Optimized */
 @layer utilities {
   .motion-standard {
     transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
@@ -473,7 +513,7 @@
     0px 0px 0px 1px rgba(14, 165, 233, 0.15);
 }
 
-/* Enhanced animations */
+/* Mobile-optimized animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -596,6 +636,40 @@
   }
 }
 
+/* Mobile-specific swipe animations */
+@keyframes swipe-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes swipe-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Animation classes */
 .animate-fade-in {
   animation: fade-in 225ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -641,6 +715,18 @@
   animation: super-fast-bounce 0.3s infinite;
 }
 
+.animate-swipe-in-left {
+  animation: swipe-in-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-swipe-in-right {
+  animation: swipe-in-right 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slide-up {
+  animation: slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Enhanced blur effect utilities */
 .blur-light {
   backdrop-filter: blur(8px) saturate(180%);
@@ -662,7 +748,7 @@
   -webkit-backdrop-filter: blur(6px) saturate(150%);
 }
 
-/* Material Design 3 State Layers with ocean theme */
+/* Material Design 3 State Layers with ocean theme - Mobile Optimized */
 .state-layer {
   position: relative;
   overflow: hidden;
@@ -694,6 +780,12 @@
   opacity: 0.16;
 }
 
+/* Mobile touch feedback */
+.state-layer:active {
+  transform: scale(0.98);
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Loading states with ocean theme */
 .loading-shimmer {
   background: linear-gradient(
@@ -713,12 +805,6 @@
   100% {
     background-position: 200% 0;
   }
-}
-
-/* Text selection with ocean colors */
-::selection {
-  background-color: rgba(14, 165, 233, 0.3);
-  color: rgb(var(--md-sys-color-on-primary-container));
 }
 
 /* Line clamp utilities */
@@ -759,21 +845,150 @@
   scroll-behavior: smooth;
 }
 
-/* PWA-specific styles */
+/* PWA-specific styles - Enhanced for mobile */
 @media (display-mode: standalone) {
   body {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
   }
+  
+  /* Hide status bar on iOS */
+  .ios-status-bar-height {
+    height: var(--mobile-safe-area-top);
+  }
 }
 
-/* Focus styles following Material Design 3 with ocean theme */
+/* Focus styles following Material Design 3 with ocean theme - Mobile Optimized */
 .focus-ring {
   @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
 }
 
-/* Install prompt styles */
+/* Mobile-specific touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mobile-optimized button styles */
+.mobile-button {
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-button:active {
+  transform: scale(0.96);
+}
+
+/* Mobile-specific spacing utilities */
+.mobile-padding {
+  padding: 16px;
+}
+
+.mobile-margin {
+  margin: 16px;
+}
+
+.mobile-gap {
+  gap: 16px;
+}
+
+/* Mobile-optimized modal styles */
+.mobile-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .mobile-modal {
+    align-items: center;
+    padding: 16px;
+  }
+}
+
+.mobile-modal-content {
+  width: 100%;
+  max-height: 90vh;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .mobile-modal-content {
+    width: auto;
+    max-width: 90vw;
+    border-radius: 24px;
+  }
+}
+
+/* Mobile-specific grid layouts */
+.mobile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .mobile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .mobile-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Mobile-optimized text sizes */
+.mobile-text-xs { font-size: 12px; line-height: 16px; }
+.mobile-text-sm { font-size: 14px; line-height: 20px; }
+.mobile-text-base { font-size: 16px; line-height: 24px; }
+.mobile-text-lg { font-size: 18px; line-height: 28px; }
+.mobile-text-xl { font-size: 20px; line-height: 28px; }
+.mobile-text-2xl { font-size: 24px; line-height: 32px; }
+.mobile-text-3xl { font-size: 30px; line-height: 36px; }
+
+/* Mobile-specific responsive utilities */
+@media (max-width: 640px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-text-center {
+    text-align: center !important;
+  }
+  
+  .mobile-flex-col {
+    flex-direction: column !important;
+  }
+  
+  .mobile-items-stretch {
+    align-items: stretch !important;
+  }
+}
+
+/* Install prompt styles - Mobile optimized */
 .install-prompt {
   position: fixed;
   bottom: 20px;
@@ -794,4 +1009,63 @@
 .install-prompt.show {
   transform: translateY(0);
   opacity: 1;
+}
+
+/* Mobile-specific safe area utilities */
+.safe-top {
+  padding-top: var(--mobile-safe-area-top);
+}
+
+.safe-bottom {
+  padding-bottom: var(--mobile-safe-area-bottom);
+}
+
+.safe-left {
+  padding-left: var(--mobile-safe-area-left);
+}
+
+.safe-right {
+  padding-right: var(--mobile-safe-area-right);
+}
+
+/* Mobile-optimized pull-to-refresh */
+.pull-to-refresh {
+  overscroll-behavior-y: contain;
+}
+
+/* Mobile-specific swipe gestures */
+.swipe-container {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile-optimized loading states */
+.mobile-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(14, 165, 233, 0.1) 0%,
+    rgba(6, 182, 212, 0.2) 50%,
+    rgba(14, 165, 233, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+
+/* Mobile-specific haptic feedback simulation */
+.haptic-light:active {
+  animation: haptic-pulse 100ms ease-out;
+}
+
+@keyframes haptic-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+/* Mobile-optimized focus states */
+@media (max-width: 768px) {
+  .focus-ring {
+    @apply focus:outline-none focus:ring-4 focus:ring-primary/50;
+  }
 }

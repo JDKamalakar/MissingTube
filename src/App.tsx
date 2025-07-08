@@ -141,12 +141,12 @@ function App() {
   }, []);
 
   const unavailableCount = videos.filter(v => v.unavailable).length;
-  const showViewToggle = videos.length > 0; // Show view toggle when there's data
-  const showFilterControls = unavailableCount > 0 && videos.length > 0; // Show filters only when there are unavailable videos
+  const showViewToggle = videos.length > 0;
+  const showFilterControls = unavailableCount > 0 && videos.length > 0;
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen relative">
+      <div className="min-h-screen min-h-dvh relative">
         <div className="relative z-10">
           <Navbar 
             onApiKeyChange={handleApiKeyChange}
@@ -159,22 +159,22 @@ function App() {
           <ThemeToggle /> 
           <InstallPrompt />
 
-          <div className="container mx-auto px-6 md:px-16 py-12 max-w-7xl">
-            <div className="mb-12">
+          <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 py-6 sm:py-8 lg:py-12 max-w-7xl mobile-padding">
+            <div className="mb-8 sm:mb-12">
               <PlaylistFetcher onFetch={handleFetchPlaylist} isLoading={isLoading} />
             </div>
 
             {(playlistInfo || isLoading) && (
               <>
-                <div className="mb-12">
+                <div className="mb-8 sm:mb-12">
                   {isLoading ? (
-                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-8 animate-pulse border border-white/20">
-                      <div className="flex items-start gap-6">
-                        <div className="w-32 h-32 bg-white/20 rounded-3xl"></div>
-                        <div className="flex-1">
-                          <div className="h-8 bg-white/20 rounded-2xl mb-4 w-3/4"></div>
-                          <div className="h-4 bg-white/20 rounded-2xl mb-2 w-1/2"></div>
-                          <div className="h-4 bg-white/20 rounded-2xl w-1/3"></div>
+                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-6 sm:p-8 animate-pulse border border-white/20 mobile-skeleton">
+                      <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
+                        <div className="w-full sm:w-32 h-24 sm:h-32 bg-white/20 rounded-3xl mobile-skeleton"></div>
+                        <div className="flex-1 w-full">
+                          <div className="h-6 sm:h-8 bg-white/20 rounded-2xl mb-4 w-full sm:w-3/4 mobile-skeleton"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl mb-2 w-full sm:w-1/2 mobile-skeleton"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl w-full sm:w-1/3 mobile-skeleton"></div>
                         </div>
                       </div>
                     </div>
@@ -186,16 +186,16 @@ function App() {
                   )}
                 </div>
 
-                <div className="mb-12">
+                <div className="mb-8 sm:mb-12">
                   {isLoading ? (
-                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-6 animate-pulse border border-white/20">
-                      <div className="h-6 bg-white/20 rounded-2xl mb-4 w-1/4"></div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-4 sm:p-6 animate-pulse border border-white/20 mobile-skeleton">
+                      <div className="h-6 bg-white/20 rounded-2xl mb-4 w-1/4 mobile-skeleton"></div>
+                      <div className="mobile-grid">
                         {[...Array(4)].map((_, i) => (
-                          <div key={i} className="bg-white/10 rounded-3xl p-4">
-                            <div className="h-12 bg-white/20 rounded-2xl mb-2"></div>
-                            <div className="h-6 bg-white/20 rounded-2xl mb-1"></div>
-                            <div className="h-4 bg-white/20 rounded-2xl"></div>
+                          <div key={i} className="bg-white/10 rounded-3xl p-4 mobile-skeleton">
+                            <div className="h-8 sm:h-12 bg-white/20 rounded-2xl mb-2 mobile-skeleton"></div>
+                            <div className="h-4 sm:h-6 bg-white/20 rounded-2xl mb-1 mobile-skeleton"></div>
+                            <div className="h-3 sm:h-4 bg-white/20 rounded-2xl mobile-skeleton"></div>
                           </div>
                         ))}
                       </div>
@@ -205,35 +205,37 @@ function App() {
                   )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
-                  <div className="flex items-center gap-4 animate-slide-in-left">
-                    {showFilterControls && (
-                      <FilterControls
-                        filterMode={filterMode}
-                        onFilterChange={handleFilterModeChange}
-                        unavailableCount={unavailableCount}
-                        totalCount={videos.length}
-                      />
+                <div className="flex flex-col gap-4 sm:gap-6 mb-8 sm:mb-12">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-6">
+                    <div className="flex-1 animate-slide-in-left">
+                      {showFilterControls && (
+                        <FilterControls
+                          filterMode={filterMode}
+                          onFilterChange={handleFilterModeChange}
+                          unavailableCount={unavailableCount}
+                          totalCount={videos.length}
+                        />
+                      )}
+                    </div>
+                    {showViewToggle && (
+                      <div className="animate-slide-in-right">
+                        <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+                      </div>
                     )}
                   </div>
-                  {showViewToggle && (
-                    <div className="animate-slide-in-right">
-                      <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
-                    </div>
-                  )}
                 </div>
 
-                <div className="mb-12">
+                <div className="mb-8 sm:mb-12">
                   {isLoading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="mobile-grid">
                       {[...Array(8)].map((_, i) => (
-                        <div key={i} className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-4 animate-pulse border border-white/20">
-                          <div className="h-48 bg-white/20 rounded-2xl mb-4"></div>
-                          <div className="h-4 bg-white/20 rounded-2xl mb-2"></div>
-                          <div className="h-3 bg-white/20 rounded-2xl mb-4 w-2/3"></div>
+                        <div key={i} className="bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-3xl p-3 sm:p-4 animate-pulse border border-white/20 mobile-skeleton">
+                          <div className="h-36 sm:h-48 bg-white/20 rounded-2xl mb-4 mobile-skeleton"></div>
+                          <div className="h-4 bg-white/20 rounded-2xl mb-2 mobile-skeleton"></div>
+                          <div className="h-3 bg-white/20 rounded-2xl mb-4 w-2/3 mobile-skeleton"></div>
                           <div className="flex gap-2">
-                            <div className="flex-1 h-8 bg-white/20 rounded-2xl"></div>
-                            <div className="w-8 h-8 bg-white/20 rounded-2xl"></div>
+                            <div className="flex-1 h-8 bg-white/20 rounded-2xl mobile-skeleton"></div>
+                            <div className="w-8 h-8 bg-white/20 rounded-2xl mobile-skeleton"></div>
                           </div>
                         </div>
                       ))}
@@ -256,23 +258,23 @@ function App() {
             )}
 
             {isLoading && (
-              <div className="flex flex-col items-center justify-center py-16">
-                <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-                <p className="text-white/80 text-lg">Analyzing playlist...</p>
+              <div className="flex flex-col items-center justify-center py-12 sm:py-16">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+                <p className="text-white/80 mobile-text-lg">Analyzing playlist...</p>
               </div>
             )}
 
             {!playlistInfo && !isLoading && (
-              <div className="text-center py-16">
-                <div className="p-6 bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-full w-32 h-32 mx-auto mb-6 flex items-center justify-center border border-white/20">
-                  <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="text-center py-12 sm:py-16">
+                <div className="p-4 sm:p-6 bg-white/10 dark:bg-black/20 backdrop-blur-light rounded-full w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-6 flex items-center justify-center border border-white/20">
+                  <svg className="w-12 h-12 sm:w-16 sm:h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-semibold text-white mb-4">
+                <h3 className="mobile-text-xl sm:text-2xl font-semibold text-white mb-4">
                   Ready to analyze your playlist
                 </h3>
-                <p className="text-white/70 text-lg">
+                <p className="text-white/70 mobile-text-lg">
                   Enter your playlist URL above to get started with detailed analysis
                 </p>
               </div>
