@@ -138,11 +138,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                                   ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center'
                                   : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}>
             
-            {/* MODIFIED: Changed this div to only use justify-between on non-sm screens (mobile) */}
-            <div className="flex items-center w-full gap-3 sm:gap-4 sm:justify-center"> {/* Added sm:justify-center */}
+            <div className="flex items-center w-full gap-3 sm:gap-4 sm:justify-center">
               {/* MissingTube Logo with glassmorphism background */}
-              {/* MODIFIED: Added w-full for consistent centering, or sm:w-auto to shrink on desktop */}
-              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center"> {/* Added w-full sm:w-auto justify-center */}
+              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
@@ -164,18 +162,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button (retained and pushed to right using ml-auto on mobile) */}
-              {/* MODIFIED: Added ml-auto for mobile to push it right, removed sm:hidden as a direct class here to ensure proper flex behavior */}
+              {/* Mobile Menu Button - Updated */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20"
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20 shadow-lg" // Added shadow-lg for consistency
                 aria-label="Toggle mobile menu"
               >
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div> {/* Added rounded-2xl */}
                 {showMobileMenu ? (
-                  <X className="relative z-10 w-5 h-5 transition-all duration-300 group-hover:rotate-90" />
+                  <X className="relative z-10 w-5 h-5 transition-all duration-500 text-red-500 group-hover:rotate-[360deg]" /> {/* Red color, 360deg rotate */}
                 ) : (
-                  <Menu className="relative z-10 w-5 h-5 transition-all duration-300 group-hover:scale-110" />
+                  <Menu className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-110" /> {/* Menu icon still scales */}
                 )}
               </button>
             </div>
@@ -276,4 +273,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
