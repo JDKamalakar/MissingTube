@@ -129,17 +129,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
-        {/* Main container for navbar content */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop: shrunk, row, justify-between, gap
-                               : 'py-3 sm:py-4 flex-col items-center sm:flex-row sm:justify-center sm:gap-x-8 sm:px-8 sm:pr-8'}`}> {/* Desktop Unscrolled: row, center content, gap between blocks */}
+                               ? 'py-2 sm:py-3 flex-row justify-between items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-6' // Reduced desktop gap-x for scrolled
+                               : 'py-3 sm:py-4 flex-col items-center sm:px-8 sm:pr-8'}`}>
 
-          {/* Logo & Site Name Block */}
-          <div className={`flex items-center justify-between gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          {/* Logo & Site Name */}
+          <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Scrolled: auto width, shrink, center content
-                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full sm:w-auto'}`}> {/* Unscrolled: mobile full width, desktop auto width, center content */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center'
+                              : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center sm:w-full'}`}>
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -179,22 +178,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
-          {/* Desktop Navigation Buttons Block */}
-          <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          {/* Desktop Navigation */}
+          <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' // Scrolled: auto width, grow, spread buttons
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full sm:w-auto'}`}> {/* Unscrolled: mobile full width, desktop auto width, spread buttons */}
+                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly'
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly sm:w-full'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
                 <button
                   key={index}
                   onClick={item.onClick}
-                  className="group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-12 overflow-hidden touch-target"
+                  className="group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.08] active:scale-95 state-layer h-12 overflow-hidden touch-target" // Increased height to h-12 and py-3
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-                  <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-base">
+                  <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} /> {/* Increased icon size */}
+                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-base"> {/* Adjusted text size */}
                     {item.label}
                   </span>
                 </button>
