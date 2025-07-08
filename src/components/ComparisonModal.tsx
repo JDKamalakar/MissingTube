@@ -319,9 +319,16 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
               <GitCompare className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-on-surface">Compare With Local File</h2>
+              {/* MODIFIED: Title and Playlist Info for Mobile View */}
+              <h2 className="text-xl sm:text-lg font-semibold text-on-surface leading-tight">
+                Compare With Local File
+              </h2>
               {currentPlaylistInfo && (
-                <p className="text-sm text-on-surface-variant">Currently viewing: {currentPlaylistInfo.title}</p>
+                <p className="text-sm text-on-surface-variant leading-tight">
+                  <span className="sm:hidden">Currently viewing:</span>
+                  <span className="hidden sm:inline">Currently viewing: </span>
+                  {currentPlaylistInfo.title}
+                </p>
               )}
             </div>
           </div>
@@ -512,18 +519,19 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                         <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg transition-all duration-200 hover:scale-[1.005] hover:shadow-xl h-full flex flex-col">
                           <button
                             onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                            className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
+                            className="group w-full p-4 pb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
                           >
                             <h4 className="font-medium text-on-primary-container flex items-center gap-2">
                               <AlertTriangle className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
                               Recovered Videos ({comparisonResult.unavailableMatches.length})
-                              {comparisonResult.hasNewData && (
-                                <span className="ml-2 px-3 py-1 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
-                                  Titles Found!
-                                </span>
-                              )}
                             </h4>
-                            <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''}`}>
+                            {/* MODIFIED: Titles Found blinker smaller & below */}
+                            {comparisonResult.hasNewData && (
+                              <span className="ml-0 sm:ml-2 mt-1 sm:mt-0 px-2 py-0.5 bg-cyan-500 text-white text-xs rounded-lg animate-pulse shadow-md">
+                                Titles Found!
+                              </span>
+                            )}
+                            <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''} sm:absolute sm:top-4 sm:right-4`}> {/* Added sm:absolute positioning for desktop */}
                               <ChevronDown className="w-5 h-5" />
                             </div>
                           </button>
@@ -621,4 +629,4 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
       </div>
     </div>
   );
-};2
+};
