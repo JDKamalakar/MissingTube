@@ -192,8 +192,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={index}
                   onClick={item.onClick}
-                  className="group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-12 overflow-hidden touch-target
-                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}> {/* Conditional hover scale */}
+                  className={`group relative flex items-center gap-2 px-3 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-12 overflow-hidden touch-target
+                  ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} // Conditional hover scale
+                >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
                   <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                   <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-base">
@@ -279,4 +280,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};4
+};
