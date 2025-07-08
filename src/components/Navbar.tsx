@@ -73,15 +73,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             const progress = currentScrollY / SHRINK_THRESHOLD; // 0 to 1
             const newDynamicPy = DESKTOP_UNSCROLLED_DYNAMIC_PY - (DESKTOP_UNSCROLLED_DYNAMIC_PY - DESKTOP_SCROLLED_DYNAMIC_PY) * progress;
             setDynamicPy(Math.max(newDynamicPy, DESKTOP_SCROLLED_DYNAMIC_PY));
-            setIsScrolled(false); 
+            setIsScrolled(false);
           } else {
             setDynamicPy(DESKTOP_SCROLLED_DYNAMIC_PY);
-            setIsScrolled(true); 
+            setIsScrolled(true);
           }
-          setIsNavbarHidden(false); 
+          setIsNavbarHidden(false);
         } else {
           // Mobile specific shrinking (height changes, but width remains full)
-          // For mobile, the `isScrolled` state affects the outer `nav`'s py-value
           if (currentScrollY > SHRINK_THRESHOLD) {
             setIsScrolled(true);
           } else {
@@ -106,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]); // Removed isScrolled from dependency array, as it's set *inside* this effect
+  }, [canScroll]);
 
   const navItems = [
     {
@@ -148,29 +147,19 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-4' : 'py-5 sm:py-6'}`}> {/* Increased initial py-5 for more height on desktop */}
+                      ${isScrolled ? 'py-3' : 'py-4 sm:py-5'}`}> {/* Adjusted py on the nav itself */}
         
         {/* Inner container for actual content, manages its own dynamic height/layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
                              ${isScrolled
-                               ? 'sm:flex-row sm:justify-between sm:items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop Scrolled: row, justify-between, gap
+                               ? 'sm:flex-row sm:justify-between sm:items-center sm:pl-8 sm:pr-24 sm:gap-x-4 lg:gap-x-8' // Desktop Scrolled: row, justify-between, items-center
                                : 'flex-col items-center sm:items-center sm:px-8 sm:pr-8'}`} // Desktop Unscrolled: flex-col, items-center
-             style={{ '--dynamic-py': `${dynamicPy}rem` } as React.CSSProperties}>
+             style={window.innerWidth >= 640 && !isScrolled ? { paddingTop: `${dynamicPy}rem`, paddingBottom: `${dynamicPy}rem` } : {}}>
           
-          {/* Apply dynamic padding only when NOT scrolled on desktop */}
-          {!isScrolled && window.innerWidth >= 640 && (
-            <div className="absolute inset-x-0 bottom-0 top-0 pointer-events-none" 
-                 style={{ 
-                   paddingTop: `${dynamicPy}rem`, 
-                   paddingBottom: `${dynamicPy}rem` 
-                 }}
-            />
-          )}
-
           {/* Logo & Site Name Block */}
           <div className={`flex items-center justify-between w-full gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
+                              ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' // Scrolled: auto width, shrink, center content
                               : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}>
             
             <div className="flex items-center gap-3 sm:gap-4">
@@ -214,7 +203,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly' 
+                              ? 'rounded-2xl sm:w-auto sm:flex-grow justify-evenly'
                               : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full'}`}>
             {navItems.map((item, index) => {
               const Icon = item.icon;
@@ -309,4 +298,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};15
+};
