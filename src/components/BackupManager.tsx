@@ -206,4 +206,4 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
       </div>
     </div>
   );
-};
+};1
