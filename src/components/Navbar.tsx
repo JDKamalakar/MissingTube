@@ -135,13 +135,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
                              ${isScrolled
                                ? 'flex-col justify-center items-center sm:flex-row sm:justify-between sm:gap-x-2 sm:items-center sm:pl-8 sm:pr-8' // Mobile scrolled: justify-center for vertical middle. Desktop scrolled: smaller gap-x, also applied explicit pr-8 here
-                               : 'flex-col items-center sm:flex-col sm:justify-center sm:items-center'}`}> {/* Desktop Unscrolled: flex-col, justify-center, items-center to center both blocks */}
+                               : 'flex-col items-center sm:flex-col sm:justify-center sm:items-center'}`}>
 
           {/* Logo & Site Name Block */}
           <div className={`flex items-center justify-between gap-4 backdrop-blur-lg transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 px-4
                             ${isScrolled
                               ? 'py-1.5 bg-white/20 dark:bg-black/20 rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center' 
-                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center sm:w-auto'}`}> {/* Removed w-full on sm: for centering */}
+                              : 'py-3 bg-white/30 dark:bg-black/30 rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center w-full'}`}> {/* Reverted to w-full for desktop unscrolled */}
             
             <div className="flex items-center gap-3 sm:gap-4">
               {/* MissingTube Logo */}
@@ -184,8 +184,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Buttons Block */}
           <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5 mr-8' 
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly sm:w-auto p-3'}`}> {/* Removed w-full on sm: for centering */}
+                              ? 'rounded-2xl sm:flex-grow justify-center px-3 py-1.5' // Buttons shrink height (py-1.5) and have right margin (mr-8)
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}> {/* Reverted to w-full for desktop unscrolled */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -196,8 +196,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}
                 >
                   <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                  {/* Removed group-hover:text-black if it was implicitly applied causing color change */}
                   <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold mobile-text-base">
+                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold"> {/* Removed mobile-text-base for desktop only */}
                     {item.label}
                   </span>
                 </button>
