@@ -168,11 +168,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 state-layer overflow-hidden bg-white/20 dark:bg-black/20 backdrop-blur-lg border border-white/30 dark:border-white/20 shadow-lg" // Added shadow-lg for consistency
                 aria-label="Toggle mobile menu"
               >
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div> {/* Added rounded-2xl */}
+                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
                 {showMobileMenu ? (
-                  <X className="relative z-10 w-5 h-5 transition-all duration-500 text-red-500 group-hover:rotate-[360deg]" /> {/* Red color, 360deg rotate */}
+                  // Red color, 360deg rotate
+                  <X className="relative z-10 w-5 h-5 transition-all duration-500 text-red-500 group-hover:rotate-[360deg]" /> 
                 ) : (
-                  <Menu className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-110" /> {/* Menu icon still scales */}
+                  // Menu icon still scales
+                  <Menu className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-110" /> 
                 )}
               </button>
             </div>
@@ -273,4 +275,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};2
+};
