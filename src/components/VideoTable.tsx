@@ -4,7 +4,7 @@ import { Video, FilterMode } from '../types';
 import { getVideoUrl } from '../utils/youtube';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
-import UnavailableImage from "../src/assets/Unavailable.png""
+import UnavailableImage from "../src/assets/Unavailable.png";
 
 
 interface VideoTableProps {
