@@ -148,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2' : 'py-3 sm:py-5'}`}> {/* Increased initial py-5 for more height on desktop */}
+                      ${isScrolled ? 'py-4' : 'py-5 sm:py-6'}`}> {/* Increased initial py-5 for more height on desktop */}
         
         {/* Inner container for actual content, manages its own dynamic height/layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex transition-all duration-300 ease-in-out
