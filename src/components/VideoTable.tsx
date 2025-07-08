@@ -111,7 +111,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
   return (
     <>
       <div 
-        data-view-container
+        data-filter-container
         className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 ${
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
@@ -206,7 +206,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         onClick={() => handleVideoClick(video.videoId)}
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
-                          target.src = UnavailableImage;
+                          target.src = 'https://via.placeholder.com/320x180/e5e7eb/9ca3af?text=Unavailable';
                         }}
                       />
                       <div

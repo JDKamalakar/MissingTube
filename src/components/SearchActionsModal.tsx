@@ -71,27 +71,27 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
   };
 
   return (
-    <div className="fixed inset-0 !z-[8] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in !z-[8]"
+        className="fixed inset-0 bg-black/20 backdrop-blur-heavy transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
       <div
-        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col !z-[8]"
+        className="relative bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-2xl border border-white/30 dark:border-white/20 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl">
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/30 dark:bg-black/40 backdrop-blur-heavy z-10 rounded-t-3xl border-b border-white/30 dark:border-white/20">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
+            <div className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
               <Search className="w-6 h-6 text-primary" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Search Actions</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+            className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
             <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
@@ -100,14 +100,14 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
         <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-sm">
+            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
               <img
                 src={video.thumbnail}
                 alt={video.title}
                 className="w-20 h-15 object-cover rounded-xl flex-shrink-0 shadow-sm"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = UnavailableImage;
+                  target.src = 'https://via.placeholder.com/320x180/e5e7eb/9ca3af?text=Unavailable';
                 }}
               />
               <div className="flex-1 min-w-0">
@@ -133,14 +133,14 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                       href={action.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-gray-300/30 dark:border-gray-700/30
+                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
                                 shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
                     >
                       <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} />
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
-                          className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-700 ease-in-out
+                          className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
                             group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (

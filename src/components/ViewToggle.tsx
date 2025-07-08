@@ -12,15 +12,18 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
     if (newMode === viewMode) return;
     
     // Add smooth transition animation
-    const container = document.querySelector('[data-view-container]');
+    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
     if (container) {
-      container.classList.add('animate-pulse');
+      container.classList.add('opacity-50', 'scale-95');
       setTimeout(() => {
-        container.classList.remove('animate-pulse');
-      }, 300);
+        onViewModeChange(newMode);
+        setTimeout(() => {
+          container.classList.remove('opacity-50', 'scale-95');
+        }, 150);
+      }, 150);
+    } else {
+      onViewModeChange(newMode);
     }
-    
-    onViewModeChange(newMode);
   };
 
   return (

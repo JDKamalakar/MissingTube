@@ -23,15 +23,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
     if (newMode === filterMode) return;
     
     // Add smooth transition animation
-    const container = document.querySelector('[data-filter-container]');
+    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
     if (container) {
-      container.classList.add('animate-pulse');
+      container.classList.add('opacity-50', 'scale-95');
       setTimeout(() => {
-        container.classList.remove('animate-pulse');
-      }, 300);
+        onFilterChange(newMode);
+        setTimeout(() => {
+          container.classList.remove('opacity-50', 'scale-95');
+        }, 150);
+      }, 150);
+    } else {
+      onFilterChange(newMode);
     }
-    
-    onFilterChange(newMode);
   };
 
   return (

@@ -136,7 +136,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       </div>
 
       <div 
-        data-view-container
+        data-filter-container
         className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-300 ${
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
@@ -156,7 +156,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   onClick={() => handleVideoClick(video.videoId)}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = UnavailableImage;
+                    target.src = 'https://via.placeholder.com/320x180/e5e7eb/9ca3af?text=Unavailable';
                   }}
                 />
                 
@@ -171,13 +171,13 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 </div>
 
                 {/* Duration badge */}
-                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-gray-600/20 dark:bg-gray-800/20 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 px-3 py-3 text-sm">
+                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-black/60 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 elevation-2 px-3 py-3 text-sm">
                   <Clock className="w-3 h-3" />
                   {video.duration}
                 </div>
 
                 {/* Index number */}
-                <div className="absolute top-2 left-2 flex items-center gap-1 bg-gray-600/20 dark:bg-gray-800/20 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 px-3 py-3 text-xs">
+                <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 elevation-2 px-3 py-3 text-xs">
                   #{video.index}
                 </div>
               </div>
