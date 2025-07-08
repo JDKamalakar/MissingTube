@@ -129,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* The main nav element defines its overall height and hiding/showing */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl transition-all duration-300 ease-in-out safe-top rounded-b-3xl
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}
-                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}> {/* py-2 for mobile scrolled, py-3 for mobile unscrolled */}
+                      ${isScrolled ? 'py-2 sm:py-3' : 'py-3 sm:py-5'}`}>
         
         {/* Inner container for actual content, manages its own layout */}
         <div className={`container mx-auto px-4 max-w-7xl flex h-full transition-all duration-300 ease-in-out
@@ -182,10 +182,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Navigation Buttons Block */}
-          <div className={`hidden sm:flex flex-wrap p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
+          <div className={`hidden sm:flex flex-wrap bg-white/30 dark:bg-black/30 backdrop-blur-lg gap-2 lg:gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                             ${isScrolled
-                              ? 'rounded-2xl sm:w-auto justify-evenly pr-8' // Removed sm:flex-grow to allow shrinking, added pr-8
-                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full'}`}>
+                              ? 'rounded-2xl sm:w-auto justify-evenly px-3 py-2 mr-4' // Shrink height (py-2) and add right margin (mr-4)
+                              : 'rounded-b-2xl rounded-t-none border-l border-r border-b justify-evenly w-full p-3'}`}> {/* Default p-3 (px-3 py-3) */}
             {navItems.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -279,4 +279,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};2
+};
