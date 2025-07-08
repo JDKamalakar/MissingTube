@@ -95,7 +95,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
             <div className="flex items-center gap-3">
               {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
               <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-                <Key className="w-6 h-6 text-on-secondary-container" />
+                <Key className="w-6 h-6 text-primary" />
               </div>
               <h2 className="text-xl font-semibold text-on-surface">YouTube API Key</h2>
             </div>
