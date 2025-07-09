@@ -64,59 +64,61 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
         onClick={onClose}
       />
 
-      {/* Main Modal Container: Adjusted max-width for mobile */}
+      {/* Main Modal Container: Increased max-width and handles its own max-height and scrolling */}
       <div
-        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-xs sm:max-w-3xl animate-modal-enter elevation-3
-                     max-h-[85vh] overflow-y-auto" // Changed max-w-sm to max-w-xs for very small screens
+        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-3xl animate-modal-enter elevation-3
+                     max-h-[85vh] overflow-y-auto" // Adjusted max-w for mobile
         role="dialog"
         aria-modal="true"
       >
-        {/* Title & Button Div: Fixed header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl">
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Modal icon */}
-            <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+        {/* Title & Button Div: Fixed header, no separator */}
+        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl"> {/* Adjusted padding for mobile */}
+          <div className="flex items-center gap-2 sm:gap-3"> {/* Adjusted gap for mobile */}
+            {/* Modal icon with transparency, depth, and scale on hover */}
+            <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg"> {/* Adjusted padding for mobile */}
+              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /> {/* Adjusted icon size for mobile */}
             </div>
-            <h2 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist History</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist History</h2> {/* Adjusted text size for mobile */}
           </div>
-          {/* Close button */}
+          {/* Close button with p-3 padding, transparency, depth, and red 'X' - now with spin and scale */}
           <button
             onClick={onClose}
-            className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+            className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group class
             aria-label="Close modal"
           >
+            {/* X icon in red, spins and scales on hover */}
             <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
 
         {/* Content area for history items */}
-        <div className="p-4 sm:p-8">
+        <div className="p-4 sm:p-8"> {/* Adjusted padding for mobile */}
           {playlists.length === 0 ? (
             <div className="text-center py-12">
               <div className="p-4 bg-surface-container rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Clock className="w-8 h-8 text-on-surface-variant" />
               </div>
-              <h3 className="text-lg font-semibold text-on-surface mb-2">No History Yet</h3>
-              <p className="text-sm text-on-surface-variant">
+              <h3 className="text-lg font-semibold text-on-surface mb-2">No History Yet</h3> {/* Adjusted text size */}
+              <p className="text-sm text-on-surface-variant"> {/* Adjusted text size */}
                 Analyzed playlists will appear here for quick access
               </p>
             </div>
           ) : (
-            <div className="grid gap-3 sm:gap-4">
+            <div className="grid gap-3 sm:gap-4"> {/* Adjusted gap for mobile */}
               {playlists.map((playlist) => (
                 <div
                   key={playlist.id}
                   onClick={() => handlePlaylistClick(playlist.id)}
+                  // Added default shadow-sm and transition for shadow change
                   className="group relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-3 sm:p-4 transition-all duration-300 ease-out cursor-pointer border border-gray-300/30 dark:border-gray-700/30
-                             shadow-sm hover:bg-white/30 hover:dark:bg-gray-700/30 hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10"
+                             shadow-sm hover:bg-white/30 hover:dark:bg-gray-700/30 hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10" // Adjusted padding for mobile
                 >
-                  <div className="flex items-center gap-3 sm:gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4"> {/* Adjusted gap for mobile */}
                     <div className="flex-shrink-0">
                       <img
                         src={playlist.thumbnail}
                         alt={playlist.title}
-                        className="w-16 h-12 sm:w-20 sm:h-15 object-cover rounded-xl shadow-sm"
+                        className="w-16 h-12 sm:w-20 sm:h-15 object-cover rounded-xl shadow-sm" // Adjusted thumbnail size for mobile
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = 'https://via.placeholder.com/120x90/e5e7eb/9ca3af?text=No+Image';
@@ -124,35 +126,35 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                       />
                     </div>
 
-                    {/* MODIFIED: Ensure text content can shrink and wrap */}
-                    <div className="flex-1 min-w-0 pr-2"> {/* Added pr-2 to create space before action buttons */}
-                      <h3 className="font-medium text-on-surface truncate group-hover:text-primary transition-colors duration-225 text-base sm:text-lg">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-on-surface truncate group-hover:text-primary transition-colors duration-225 text-base sm:text-lg"> {/* Adjusted text size for mobile */}
                         {playlist.title}
                       </h3>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-4 mt-1 text-xs sm:text-sm text-on-surface-variant">
-                        <span className="truncate">{playlist.videoCount} videos</span>
-                        <span className="hidden sm:inline">•</span>
-                        <span className="truncate">{formatDate(playlist.lastAccessed)}</span>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-4 mt-1 text-xs sm:text-sm text-on-surface-variant"> {/* Adjusted text size, gap, and stacking for mobile */}
+                        <span className="truncate">{playlist.videoCount} videos</span> {/* Ensure truncate for long text */}
+                        <span className="hidden sm:inline">•</span> {/* Only show dot on larger screens */}
+                        <span className="truncate">{formatDate(playlist.lastAccessed)}</span> {/* Ensure truncate for long text */}
                       </div>
                     </div>
 
-                    {/* Action buttons, ensure they don't force width and handle truncation */}
-                    <div className="flex flex-shrink-0 items-center gap-1 sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-225">
+                    <div className="flex flex-shrink-0 items-center gap-1 sm:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-225"> {/* Adjusted gap for mobile */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
+                          // Corrected URL structure for YouTube playlist
                           window.open(`https://www.youtube.com/playlist?list=${playlist.id}`, '_blank');
                         }}
-                        className="w-8 h-8 p-2 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95"
+                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-full transition-all duration-300 hover:scale-125 active:scale-95" // Adjusted padding for mobile
                         title="Open in YouTube"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </button>
                       <button
                         onClick={(e) => handleDeletePlaylist(playlist.id, e)}
-                        className="w-8 h-8 p-2 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95 group/delete"
+                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-all duration-300 hover:scale-125 active:scale-95 group/delete" // Added group/delete for specific hover scope
                         title="Remove from history"
                       >
+                        {/* Added bounce animation to Trash2 icon */}
                         <Trash2 className="w-4 h-4 transition-all duration-500 group-hover/delete:animate-bounce-short-slow group-hover/delete:scale-[1.1] group-hover/delete:stroke-[2.5px]" />
                       </button>
                     </div>
@@ -165,4 +167,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       </div>
     </div>
   );
-};11
+};
