@@ -23,7 +23,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
 
     const storedPlaylists = getPlaylists();
     // Sort by last accessed date (most recent first)
-    const sortedPlaylists = storedPlay playlists.sort((a, b) =>
+    const sortedPlaylists = storedPlaylists.sort((a, b) =>
       new Date(b.lastAccessed).getTime() - new Date(a.lastAccessed).getTime()
     );
     setPlaylists(sortedPlaylists);
@@ -142,9 +142,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                         onClick={(e) => {
                           e.stopPropagation();
                           // Corrected URL structure for YouTube playlist
-                          window.open(`http://youtube.com/playlist?list=${playlist.id}`, '_blank'); // Corrected URL structure
+                          window.open(`https://www.youtube.com/playlist?list=${playlist.id}`, '_blank'); // Corrected URL format
                         }}
-                        // MODIFIED: Added w-8 h-8 to force square, p-2 to center icon, removed direct rounded-2xl from button, rely on hover
                         className="w-8 h-8 p-2 flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95"
                         title="Open in YouTube"
                       >
@@ -152,7 +151,6 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                       </button>
                       <button
                         onClick={(e) => handleDeletePlaylist(playlist.id, e)}
-                        // MODIFIED: Added w-8 h-8 to force square, p-2 to center icon, removed direct rounded-2xl from button, rely on hover
                         className="w-8 h-8 p-2 flex items-center justify-center text-on-surface-variant hover:text-error hover:bg-error-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95 group/delete"
                         title="Remove from history"
                       >
@@ -169,4 +167,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       </div>
     </div>
   );
-};4
+};
