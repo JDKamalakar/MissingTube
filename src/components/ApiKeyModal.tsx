@@ -102,7 +102,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
             {/* Close Button: Same effect as ConfirmationModal's X button */}
             <button
               onClick={onClose}
-              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group
+              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
               aria-label="Close modal"
             >
               {/* X icon in red, spins and scales on hover */}
@@ -176,7 +176,8 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                 {/* Clear API Key button: Now with bounce animation on Trash2 icon */}
                 <button
                   onClick={() => setShowConfirmClear(true)}
-                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50"
+                  // MODIFIED: Added shadow-lg, hover:shadow-xl, and elevation-3
+                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50 elevation-3"
                 >
                   {/* Trash icon with bounce animation, scale, and stroke increase */}
                   <Trash2 className="w-5 h-5 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
@@ -215,4 +216,4 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
       />
     </>
   );
-};1
+};
