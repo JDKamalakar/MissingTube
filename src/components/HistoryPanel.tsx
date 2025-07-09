@@ -144,14 +144,14 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                           // Corrected URL structure for YouTube playlist
                           window.open(`https://www.youtube.com/playlist?list=${playlist.id}`, '_blank'); // Corrected URL structure
                         }}
-                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95" // MODIFIED: Changed rounded-full to rounded-2xl
+                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95" // MODIFIED: Changed hover:rounded-full to rounded-2xl
                         title="Open in YouTube"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </button>
                       <button
                         onClick={(e) => handleDeletePlaylist(playlist.id, e)}
-                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95 group/delete" // MODIFIED: Changed rounded-full to rounded-2xl
+                        className="p-1.5 sm:p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-2xl transition-all duration-300 hover:scale-125 active:scale-95 group/delete" // MODIFIED: Changed hover:rounded-full to rounded-2xl
                         title="Remove from history"
                       >
                         {/* Added bounce animation to Trash2 icon */}
@@ -167,4 +167,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       </div>
     </div>
   );
-};3
+};
