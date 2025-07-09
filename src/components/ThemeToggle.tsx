@@ -60,8 +60,8 @@ export const ThemeToggle: React.FC = () => {
       ref={themeToggleRef}
       className={`fixed z-50 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? 'top-4 right-4' // When scrolled, position at top right with safe spacing
-          : 'top-6 right-6 sm:top-7 sm:right-20' // When not scrolled, position with more spacing to avoid hamburger
+          ? 'top-4 right-4 sm:right-20' // When scrolled, position at top right with safe spacing (increased for mobile)
+          : 'top-6 right-6 sm:right-20' // When not scrolled, position with more spacing to avoid hamburger (increased for mobile)
       }`}
       style={{
         paddingTop: 'var(--mobile-safe-area-top)',
@@ -79,8 +79,8 @@ export const ThemeToggle: React.FC = () => {
         aria-label="Toggle theme"
       >
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out
-                          ${isScrolled ? 'w-8 h-8 sm:w-10 sm:h-10' : 'w-6 h-6'}
-                          ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}>
+                            ${isScrolled ? 'w-6 h-6 sm:w-10 sm:h-10' : 'w-6 h-6'} // Smaller on mobile (w-6 h-6)
+                            ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}>
 
           <Monitor
             className={`absolute inset-0 transition-all duration-500 ease-out
@@ -90,7 +90,7 @@ export const ThemeToggle: React.FC = () => {
                         }
                         ${isScrolled ? 'translate-y-px' : ''}
                         text-blue-500 dark:text-blue-400`}
-            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 28) : 24}
+            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 24) : 24} // Size 24 for mobile, 36 for sm and above when scrolled
           />
 
           <Sun
@@ -101,7 +101,7 @@ export const ThemeToggle: React.FC = () => {
                         }
                         ${isScrolled ? 'translate-y-px' : ''}
                         text-yellow-500`}
-            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 28) : 24}
+            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 24) : 24} // Size 24 for mobile, 36 for sm and above when scrolled
           />
 
           <Moon
@@ -112,7 +112,7 @@ export const ThemeToggle: React.FC = () => {
                         }
                         ${isScrolled ? 'translate-y-px' : ''}
                         text-blue-400`}
-            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 28) : 24}
+            size={isScrolled ? (window.innerWidth >= 640 ? 36 : 24) : 24} // Size 24 for mobile, 36 for sm and above when scrolled
           />
         </div>
       </button>
@@ -194,4 +194,4 @@ export const ThemeToggle: React.FC = () => {
       </div>
     </div>
   );
-};1
+};
