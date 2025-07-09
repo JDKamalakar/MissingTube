@@ -334,4 +334,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
 
   );
 
-};
+};1
