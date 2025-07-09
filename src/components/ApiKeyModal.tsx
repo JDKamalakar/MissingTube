@@ -173,13 +173,13 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                   <span className="text-emerald-800 dark:text-emerald-200 font-medium">API Key Is Configured</span>
                 </div>
 
-                {/* Clear API Key button: Same effect as ConfirmationModal's Trash button */}
+                {/* Clear API Key button: Now with bounce animation on Trash2 icon */}
                 <button
                   onClick={() => setShowConfirmClear(true)}
-                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50" // Added group
+                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50"
                 >
-                  {/* Trash icon with translateY and scale on group-hover */}
-                  <Trash2 className="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-110" />
+                  {/* Trash icon with bounce animation, scale, and stroke increase */}
+                  <Trash2 className="w-5 h-5 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
                   Clear API Key
                 </button>
               </div>
@@ -215,4 +215,4 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
       />
     </>
   );
-};1
+};
