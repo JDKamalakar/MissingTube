@@ -54,13 +54,14 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     : 'bg-tertiary-container hover:bg-tertiary-container/90 text-on-tertiary-container';
 
   const getConfirmIcon = () => {
+    // Shared animation classes for confirm button icons
+    const animationClasses = "transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]";
+
     if (confirmText.toLowerCase().includes('clear') || confirmText.toLowerCase().includes('delete')) {
-      // Trash icon with translateY and scale on group-hover
-      return <Trash2 className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-110" />;
+      return <Trash2 className={`w-4 h-4 ${animationClasses}`} />; // Added animationClasses
     }
-    if (confirmText.toLowerCase().includes('refetch')) {
-      // RefreshCw icon with spin and scale on group-hover
-      return <RefreshCw className="w-4 h-4 transition-transform duration-200 group-hover:rotate-45 group-hover:scale-110" />;
+    if (confirmText.toLowerCase().includes('refetch') || confirmText.toLowerCase().includes('refresh')) { // Added 'refresh' for completeness
+      return <RefreshCw className={`w-4 h-4 ${animationClasses}`} />; // Added animationClasses
     }
     return null;
   };
@@ -96,7 +97,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" /> {/* X icon in red, spins and scales on hover */}
+            {/* X icon in red, spins and scales on hover */}
+            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
 
@@ -112,7 +114,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               onClick={onClose}
               className="flex-1 py-3 px-6 bg-surface-container/80 dark:bg-gray-700/80 backdrop-blur-sm text-on-surface rounded-2xl font-medium hover:bg-surface-container-high/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-outline-variant/50"
             >
-              <X className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 group-hover:scale-110" /> {/* X icon spins and scales more */}
+              {/* MODIFIED: X icon is red and rotates slowly */}
+              <X className="w-4 h-4 text-error transition-transform duration-500 group-hover:rotate-[360deg] group-hover:scale-110" />
               {cancelText}
             </button>
             {/* Confirm button: With transparency, shadow, depth, and hover effects including icon animation */}
@@ -128,4 +131,4 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       </div>
     </div>
   );
-};11
+};
