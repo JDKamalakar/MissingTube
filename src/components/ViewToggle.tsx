@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid3X3, List } from 'lucide-react';
-import { ViewMode } = from '../types';
+import { ViewMode } from '../types';
 
 interface ViewToggleProps {
   viewMode: ViewMode;
