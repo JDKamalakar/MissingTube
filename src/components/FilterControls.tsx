@@ -50,11 +50,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Calculate values for the selector
-        const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
-        const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
-        const selectorWidth = activeRect.width;
-        const selectorHeight = activeRect.height;
+        // NEW: Define a small, consistent inset for the selector
+        const SELECTOR_VISUAL_INSET = 2; // Adjust this value (e.g., 1, 2, or 3) for visual balance
+
+        // Calculate values for the selector, including the inset
+        const selectorTopPos = (activeRect.top - innerContainerElem.getBoundingClientRect().top) + SELECTOR_VISUAL_INSET;
+        const selectorLeftPos = (activeRect.left - innerContainerElem.getBoundingClientRect().left) + SELECTOR_VISUAL_INSET;
+        const selectorWidth = activeRect.width - (2 * SELECTOR_VISUAL_INSET);
+        const selectorHeight = activeRect.height - (2 * SELECTOR_VISUAL_INSET);
 
         // Set CSS variables on the innerButtonsContainerRef for the selector
         innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
@@ -118,23 +121,22 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       
       <div 
         ref={innerButtonsContainerRef} 
-        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" // p-1 here provides the consistent border
+        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" 
       > 
-        {/* Animated Selector Background - MODIFIED: Use calculated width/height from JS vars */}
+        {/* Animated Selector Background - Styling uses CSS variables from JS */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
-            top: 'var(--selector-top, 4px)', // Fallback to p-1 offset
-            left: 'var(--selector-left, 4px)', // Fallback to p-1 offset
-            width: 'var(--selector-width, calc(33.333% - 8px))', // Fallback for 33.333%
-            height: 'var(--selector-height, calc(33.333% - 8px))', // Fallback for 33.333%
+            top: 'var(--selector-top, 4px)', // Using fallback to p-1 top offset
+            left: 'var(--selector-left, 4px)', // Using fallback to p-1 left offset
+            width: 'var(--selector-width, calc(33.333% - 8px))', // Using fallback
+            height: 'var(--selector-height, calc(33.333% - 8px))', // Using fallback
           }}
         />
         
         <button
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
-          // Buttons have gap-2 and px-4 sm:px-6 py-2 sm:py-3 (matching ViewToggle)
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'all' 
               ? 'text-white'
@@ -145,7 +147,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Filter className={`w-5 h-5 transition-all duration-225 ${
             currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED TEXT SIZE: (matching ViewToggle) */}
           <span className={`transition-all duration-225 whitespace-nowrap ${ 
             currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -166,7 +167,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Eye className={`w-5 h-5 transition-all duration-225 ${
             currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED TEXT SIZE: (matching ViewToggle) */}
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -187,7 +187,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <EyeOff className={`w-5 h-5 transition-all duration-225 ${
             currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED TEXT SIZE: (matching ViewToggle) */}
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -197,4 +196,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
