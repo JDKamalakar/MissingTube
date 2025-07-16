@@ -64,7 +64,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'hover:scale-110'
+          viewMode === 'table' ? 'scale-110' : 'hover:rotate-12' // MODIFIED: Changed hover:scale-110 to hover:rotate-12
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'table' ? 'font-semibold' : ''
@@ -74,4 +74,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       </button>
     </div>
   );
-};1
+};
