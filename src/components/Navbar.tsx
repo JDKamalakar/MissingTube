@@ -67,30 +67,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           setIsScrolled(false);
         }
 
-        // Logic for hiding/showing navbar ONLY on mobile when scrolling further down/up
+        // --- MODIFIED LOGIC FOR MOBILE NAVBAR VISIBILITY ---
         if (!isDesktop) {
-          // If scrolling down significantly, hide the navbar
-          if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
+          // If scrolling down AND past a certain threshold, hide the navbar
+          if (currentScrollY > lastScrollY.current && currentScrollY > HIDE_THRESHOLD) {
             setIsNavbarHidden(true);
-            // Close mobile menu immediately if navbar hides on scroll down
+            // Close mobile menu if navbar hides on scroll down
             if (showMobileMenu) {
               setShowMobileMenu(false);
             }
           } 
-          // If scrolling up or near the top, show the navbar
-          else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
+          // If scrolling up, or near the very top, always show the navbar
+          else if (currentScrollY < lastScrollY.current || currentScrollY <= 0) { // Changed SHRINK_THRESHOLD to 0 for immediate show on scroll up
             setIsNavbarHidden(false);
           }
 
-          // **MODIFIED LOGIC HERE:**
-          // Only close mobile menu if scrolling DOWN significantly AND it's open.
-          // Or if scrollability changes (e.g., content loads/unloads).
+          // Close mobile menu if user scrolls down while it's open (past SHRINK_THRESHOLD)
+          // This allows scrolling up slightly to open the menu without it immediately closing
           if (showMobileMenu && currentScrollY > lastScrollY.current && currentScrollY > SHRINK_THRESHOLD) {
               setShowMobileMenu(false);
           }
-          // The critical change: Do NOT close menu just for scrolling up if the navbar is shown.
-          // The button should be clickable if the navbar is visible.
-
 
         } else {
           // Ensure navbar is always visible on desktop
@@ -115,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]); // Keep dependencies as they are
+  }, [canScroll, showMobileMenu]);
 
   const navItems = [
     {
@@ -319,4 +315,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
