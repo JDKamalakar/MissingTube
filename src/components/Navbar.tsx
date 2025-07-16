@@ -26,7 +26,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false); // State for mobile menu visibility
+  const [showMobileMenu, setShowMobileMenu] = useState(false); 
+  const [ignoreNextScrollClose, setIgnoreNextScrollClose] = useState(false); // NEW STATE
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
@@ -34,8 +35,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const lastScrollY = useRef(0);
 
   // Define scroll thresholds
-  const SHRINK_THRESHOLD = 80; // When navbar starts shrinking
-  const HIDE_THRESHOLD = 300; // When navbar starts hiding on mobile (scroll further down)
+  const SHRINK_THRESHOLD = 80;
+  const HIDE_THRESHOLD = 300;
 
   useEffect(() => {
     const checkScrollability = () => {
@@ -58,16 +59,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       if (canScroll) {
         const currentScrollY = window.scrollY;
-        const isDesktop = window.innerWidth >= 640; // sm breakpoint in TailwindCSS
+        const isDesktop = window.innerWidth >= 640;
 
-        // Logic for shrinking effect (applies to both desktop/mobile)
         if (currentScrollY > SHRINK_THRESHOLD) {
           setIsScrolled(true);
         } else {
           setIsScrolled(false);
         }
 
-        // --- MODIFIED LOGIC FOR MOBILE NAVBAR VISIBILITY & MENU CLOSING ---
         if (!isDesktop) {
           // Rule 1: Hide navbar if scrolling down significantly past HIDE_THRESHOLD
           if (currentScrollY > lastScrollY.current && currentScrollY > HIDE_THRESHOLD) {
@@ -75,6 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             // If navbar hides, forcefully close the menu
             if (showMobileMenu) {
               setShowMobileMenu(false);
+              setIgnoreNextScrollClose(false); // Reset the flag
             }
           } 
           // Rule 2: Show navbar if scrolling up OR at the very top (scrollY 0)
@@ -82,21 +82,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             setIsNavbarHidden(false);
           }
 
-          // Rule 3: Close mobile menu if it's open AND user scrolls significantly DOWN
-          // This prevents accidental closing from minor scrolls when just tapping
-          // or from scrolling up to reveal the navbar.
-          // We only close if scrolling DOWN and past the initial shrink threshold.
+          // **MODIFIED MENU CLOSING LOGIC**
+          // Only close mobile menu if it's open AND user scrolls significantly DOWN
+          // AND we are NOT ignoring this scroll event for closing.
           if (showMobileMenu && currentScrollY > lastScrollY.current && currentScrollY > SHRINK_THRESHOLD) {
-              setShowMobileMenu(false);
+              if (ignoreNextScrollClose) {
+                  setIgnoreNextScrollClose(false); // Consume the flag
+              } else {
+                  setShowMobileMenu(false);
+              }
           }
-          // IMPORTANT: Do NOT add a condition here that closes the menu if currentScrollY !== lastScrollY.current
-          // as this causes the immediate close on button click.
 
         } else {
           // Desktop behavior: Navbar always visible, close mobile menu if resized to desktop
           setIsNavbarHidden(false); 
           if (showMobileMenu) {
             setShowMobileMenu(false);
+            setIgnoreNextScrollClose(false); // Reset the flag
           }
         }
         
@@ -107,13 +109,29 @@ export const Navbar: React.FC<NavbarProps> = ({
         setIsNavbarHidden(false);
         if (showMobileMenu) {
           setShowMobileMenu(false);
+          setIgnoreNextScrollClose(false); // Reset the flag
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]); // showMobileMenu is a dependency because the `if (showMobileMenu)` condition depends on its latest value.
+  }, [canScroll, showMobileMenu, ignoreNextScrollClose]); // Add ignoreNextScrollClose to dependencies
+
+  // MODIFIED onClick handler for the mobile menu button
+  const toggleMobileMenu = useCallback(() => {
+    setShowMobileMenu(prev => {
+      if (!prev) { // If menu is about to open
+        setIgnoreNextScrollClose(true); // Set flag to ignore immediate scroll close
+      }
+      return !prev;
+    });
+  }, []);
+
+  const closeMobileMenu = useCallback(() => {
+    setShowMobileMenu(false);
+    setIgnoreNextScrollClose(false); // Reset flag when menu is closed manually
+  }, []);
 
   const navItems = [
     {
@@ -148,12 +166,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   ];
 
-  const closeMobileMenu = useCallback(() => {
-    setShowMobileMenu(false);
-  }, []);
-
   return (
     <>
+      {/* MODIFIED: Add a transform to the mobile menu to offset navbar's transform */}
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
@@ -190,9 +205,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Button - onClick uses the new toggleMobileMenu */}
               <button
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                onClick={toggleMobileMenu} // Use the new toggle function
                 className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
                 aria-label="Toggle mobile menu"
               >
@@ -238,10 +253,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
-        <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}>
+        {/* Mobile Menu Dropdown - MODIFIED POSITIONING */}
+        <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out
+          ${showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+          ${isNavbarHidden ? 'transform translate-y-[-100%]' : 'transform translate-y-0'} `}
+          // The above line is key for fixing position when navbar is hidden
+          // Adding a new className for easier targeting if needed: `mobile-menu-dropdown`
+          // We removed `sticky top-0` from this section as it's already handled by the main nav
+          // And removed the `absolute` positioning, assuming it's flowing naturally within the nav.
+          // If this menu needs to be absolutely positioned relative to the viewport, it should be outside the <nav>
+          // or its `top` should be calculated dynamically.
+          // For now, let's keep it flowing within the `nav` and use transform to offset.
+          >
           <div className="px-4 pb-4">
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
               {navItems.map((item, index) => {
@@ -317,4 +340,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
