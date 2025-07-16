@@ -83,11 +83,11 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   });
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <ArrowUpDown className="w-4 h-4 opacity-50" />;
-    // MODIFIED: Sort arrow white in light mode when sorted, primary in dark mode
+    if (sortField !== field) return <ArrowUpDown className="w-6 h-6 opacity-50 text-gray-900 dark:text-white" />; // MODIFIED: w-6 h-6, text-gray-900 dark:text-white
+    // MODIFIED: Sort arrow white in light mode when sorted, black in dark mode
     return sortDirection === 'asc' ?
-      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> : 
-      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />;
+      <ArrowUp className="w-6 h-6 text-white dark:text-gray-900" /> : // MODIFIED: w-6 h-6, dark:text-gray-900
+      <ArrowDown className="w-6 h-6 text-white dark:text-gray-900" />; // MODIFIED: w-6 h-6, dark:text-gray-900
   };
 
   const handleVideoClick = (videoId: string) => {
@@ -123,15 +123,15 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             <button
               key={field}
               onClick={() => handleSort(field)}
-              // MODIFIED: Sort buttons shape similar to main sort div (rounded-3xl)
-              className={`flex items-center justify-center gap-2 px-3 py-2 mobile-text-sm font-medium transition-all duration-225 hover:scale-105 active:scale-95 touch-target mobile-button ${
+              // MODIFIED: Sort buttons height-16, px-4 py-3, and rounded-3xl
+              className={`flex items-center justify-center gap-2 px-4 py-3 h-16 mobile-text-base font-medium transition-all duration-225 hover:scale-105 active:scale-95 touch-target mobile-button ${
                 sortField === field
                   ? 'bg-primary text-white rounded-3xl shadow-md' // MODIFIED: rounded-3xl
                   : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-3xl border border-white/30 dark:border-white/20' // MODIFIED: rounded-3xl
               }`}
             >
-              {/* MODIFIED: Ensure sort names don't cut in mobile view */}
-              <span className="inline-block">{label}</span> {/* Changed to inline-block to allow wrapping */}
+              {/* MODIFIED: Ensure sort names don't cut in mobile view & text size */}
+              <span className="inline-block text-base">{label}</span> {/* Modified text-base */}
               {getSortIcon(field)}
             </button>
           ))}
@@ -246,4 +246,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
