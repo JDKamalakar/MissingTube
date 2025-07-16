@@ -192,7 +192,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group"> {/* Corrected items-center justify-center */}
+                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
                       {video.index}
                     </div>
                   </td>
@@ -242,7 +242,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20`}> {/* MODIFIED: px-3 py-3 */}
+                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20`}>
                       <Clock className="w-3 h-3" />
                       {video.duration}
                     </span>
@@ -254,21 +254,21 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
+                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce" /> {/* MODIFIED: group-hover:animate-bounce */}
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
                         className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:scale-110" /> {/* MODIFIED: Icon animation */}
+                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> {/* MODIFIED: group-hover:rotate-[360deg] and transition */}
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
                         className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="View description"
                       >
-                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
+                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" />
                       </button>
                     </div>
                   </td>
@@ -301,4 +301,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1
+};
