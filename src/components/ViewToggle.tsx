@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid3X3, List } from 'lucide-react';
-import { ViewMode } from '../types';
+import { ViewMode } = from '../types';
 
 interface ViewToggleProps {
   viewMode: ViewMode;
@@ -40,17 +40,17 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         onClick={() => handleViewChange('grid')}
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'grid'
-            ? 'text-white' // Active button: white text
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // Inactive button: default text, hover color and shadow
+            ? 'text-white'
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg'
           }`}
       >
         <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12' // Active: scale. Inactive: rotate on group hover.
+          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12'
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'grid' 
-            ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant' // Inactive: default text, bold & color on group hover.
+            ? 'font-semibold text-white'
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant'
         }`}>
           Grid
         </span>
@@ -60,17 +60,17 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         onClick={() => handleViewChange('table')}
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'table'
-            ? 'text-white' // Active button: white text
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // Inactive button: default text, hover color and shadow
+            ? 'text-white'
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg'
           }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'group-hover:rotate-12' // Active: scale. Inactive: rotate on group hover.
+          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12' // MODIFIED: Changed group-hover:rotate-12 to group-hover:-rotate-12
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'table' 
-            ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant' // Inactive: default text, bold & color on group hover.
+            ? 'font-semibold text-white'
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant'
         }`}>
           Table
         </span>
