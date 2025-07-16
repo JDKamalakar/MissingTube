@@ -77,13 +77,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               setShowMobileMenu(false);
             }
           } 
-          // If scrolling up, or near the very top, always show the navbar
-          else if (currentScrollY < lastScrollY.current || currentScrollY <= 0) { // Changed SHRINK_THRESHOLD to 0 for immediate show on scroll up
+          // NEW: If scrolling up at ANY point, or at the very top, show the navbar.
+          // This makes the navbar immediately visible on any upward scroll.
+          else if (currentScrollY < lastScrollY.current || currentScrollY <= 0) {
             setIsNavbarHidden(false);
           }
 
           // Close mobile menu if user scrolls down while it's open (past SHRINK_THRESHOLD)
-          // This allows scrolling up slightly to open the menu without it immediately closing
           if (showMobileMenu && currentScrollY > lastScrollY.current && currentScrollY > SHRINK_THRESHOLD) {
               setShowMobileMenu(false);
           }
@@ -315,4 +315,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
