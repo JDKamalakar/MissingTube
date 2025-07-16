@@ -174,6 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <img
                       src="/assets/Icon_Dark_NB.png"
                       alt="MissingTube Logo"
+                      alt="MissingTube Logo"
                       className="w-6 h-6 sm:w-8 sm:h-8 object-contain hidden dark:block transition-opacity duration-300"
                     />
                   </div>
@@ -185,27 +186,21 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button - MODIFIED */}
+              {/* Mobile Menu Button */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                // Increased width (w-12) to make it more like a rounded square horizontally.
-                // Height (h-10) is kept to balance the look with rounded-2xl.
                 className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
                 aria-label="Toggle mobile menu"
               >
-                {/* This inner div provides the visual glassmorphism effect and contains the overflow-hidden */}
                 <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 overflow-hidden">
-                    {/* The state-layer/ripple effect for hover */}
                     <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
                 </div>
 
-                {/* Menu Icon (3 dashes) */}
                 <Menu 
                     className={`relative z-10 w-5 h-5 transition-all duration-500 
                                 ${showMobileMenu ? 'opacity-0 rotate-[360deg] scale-0' : 'opacity-100 rotate-0 scale-100'}`} 
                 />
                 
-                {/* X Icon */}
                 <X 
                     className={`absolute z-10 w-5 h-5 transition-all duration-500 text-red-500 
                                 ${showMobileMenu ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-[360deg] scale-0'}`} 
@@ -248,23 +243,25 @@ export const Navbar: React.FC<NavbarProps> = ({
               {navItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <React.Fragment key={index}> {/* Use Fragment for conditional separator */}
+                  <React.Fragment key={index}>
                     <button
                       onClick={() => {
                         item.onClick();
-                        closeMobileMenu(); // Close menu after an item is clicked
+                        closeMobileMenu();
                       }}
+                      // Apply `rounded-full` for pill shape on hover/active
                       className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
                     >
-                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                      {/* Change `rounded-2xl` to `rounded-full` for the hover state layer */}
+                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-full"></div>
                       <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                       <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
                         {item.label}
                       </span>
                     </button>
-                    {/* Add separator if it's not the last item */}
+                    {/* Separator - `w-full` and `mx-0` for full width, `my-1` for spacing */}
                     {index < navItems.length - 1 && (
-                      <div className="mx-2 my-1 border-t border-white/30 dark:border-white/20"></div>
+                      <div className="w-full my-1 border-t border-white/30 dark:border-white/20"></div>
                     )}
                   </React.Fragment>
                 );
@@ -318,4 +315,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
