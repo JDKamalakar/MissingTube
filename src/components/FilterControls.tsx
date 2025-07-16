@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Import useRef
 import { Filter, Eye, EyeOff } from 'lucide-react';
 import { FilterMode } from '../types';
 
@@ -19,6 +19,69 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
 
+  // Refs for each button
+  const allButtonRef = useRef<HTMLButtonElement>(null);
+  const availableButtonRef = useRef<HTMLButtonElement>(null);
+  const unavailableButtonRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // Ref for the main container to set CSS variables
+
+  // State to hold calculated positions/widths
+  const [selectorStyles, setSelectorStyles] = useState<{
+    mobileTop: string;
+    mobileHeight: string;
+    desktopLeft: string;
+    desktopWidth: string;
+  }>({
+    mobileTop: '0px',
+    mobileHeight: '0px',
+    desktopLeft: '0px',
+    desktopWidth: '0px',
+  });
+
+  // Calculate and update selector styles on mount, filterMode change, or resize
+  useEffect(() => {
+    const calculateStyles = () => {
+      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && containerRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const allRect = allButtonRef.current.getBoundingClientRect();
+        const availableRect = availableButtonRef.current.getBoundingClientRect();
+        const unavailableRect = unavailableButtonRef.current.getBoundingClientRect();
+
+        // Determine current active button rect
+        let activeRect = allRect;
+        if (filterMode === 'available') activeRect = availableRect;
+        if (filterMode === 'unavailable') activeRect = unavailableRect;
+
+        // Mobile (vertical stack) calculations
+        const mobileActiveTop = activeRect.top - containerRect.top;
+        const mobileActiveHeight = activeRect.height; // Height of the button
+        
+        // Desktop (horizontal row) calculations
+        const desktopActiveLeft = activeRect.left - containerRect.left;
+        const desktopActiveWidth = activeRect.width; // Width of the button
+
+        setSelectorStyles({
+          mobileTop: `${mobileActiveTop}px`,
+          mobileHeight: `${mobileActiveHeight}px`,
+          desktopLeft: `${desktopActiveLeft}px`,
+          desktopWidth: `${desktopActiveWidth}px`,
+        });
+      }
+    };
+
+    // Recalculate on mount, filterMode change, and window resize
+    calculateStyles();
+    window.addEventListener('resize', calculateStyles);
+
+    // Set a small timeout after initial render to account for DOM reflow
+    const timeoutId = setTimeout(calculateStyles, 100); 
+
+    return () => {
+      window.removeEventListener('resize', calculateStyles);
+      clearTimeout(timeoutId);
+    };
+  }, [filterMode, totalCount, unavailableCount]); // Add totalCount/unavailableCount as dependencies if they change layout dynamically
+
   const handleFilterChange = (newMode: FilterMode) => {
     if (newMode === filterMode) return;
     
@@ -38,36 +101,32 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // MODIFIED: Ensure outer div allows content to dictate width more flexibly
-    <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
+    // MODIFIED: Added ref to container div
+    <div ref={containerRef} className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
       {/* Mobile: Stack vertically, Desktop: Horizontal */}
-      {/* Ensure this inner flex container dictates the overall width for desktop */}
       <div className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"> 
-        {/* Animated Selector Background - MODIFIED for dynamic positioning */}
+        {/* Animated Selector Background - MODIFIED to use inline styles / CSS variables*/}
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm
-            top-1 bottom-1
-            ${
-              // Mobile vertical positioning
-              filterMode === 'all'
-                ? 'left-1 right-1 h-[calc(33.333%-4px)]'
-                : filterMode === 'available'
-                ? 'left-1 right-1 h-[calc(33.333%-4px)] top-[calc(33.333%+1px)]' // Adjusted top for consistency
-                : 'left-1 right-1 h-[calc(33.333%-4px)] top-[calc(66.666%+1px)]' // Adjusted top for consistency
+          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
+          style={{
+            // Mobile styles
+            top: selectorStyles.mobileTop,
+            left: '4px', // From p-1 (4px)
+            right: '4px', // From p-1 (4px)
+            height: selectorStyles.mobileHeight,
+            // Desktop overrides
+            sm: {
+                top: '4px', // From p-1 (4px)
+                bottom: '4px', // From p-1 (4px)
+                height: 'auto',
+                left: selectorStyles.desktopLeft,
+                width: selectorStyles.desktopWidth,
             }
-            sm:top-1 sm:bottom-1 sm:h-auto sm:w-[calc(33.333%-4px)]
-            ${
-              // Desktop horizontal positioning
-              filterMode === 'all'
-                ? 'sm:left-1'
-                : filterMode === 'available'
-                ? 'sm:left-[33.333%]'
-                : 'sm:left-[66.666%]'
-            }
-          `}
+          }}
         />
         
         <button
+          ref={allButtonRef} // Add ref
           onClick={() => handleFilterChange('all')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'all'
@@ -86,6 +145,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         </button>
         
         <button
+          ref={availableButtonRef} // Add ref
           onClick={() => handleFilterChange('available')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'available'
@@ -104,6 +164,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         </button>
         
         <button
+          ref={unavailableButtonRef} // Add ref
           onClick={() => handleFilterChange('unavailable')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'unavailable'
@@ -123,4 +184,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};3
+};
