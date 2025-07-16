@@ -50,25 +50,25 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Calculate values for the selector
-        // NEW: These are now directly the button's position and size relative to its parent
-        const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
-        const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
-        const selectorWidth = activeRect.width;
-        const selectorHeight = activeRect.height;
+        // NEW: Selector will now have fixed 4px (p-1 equivalent) inset on all sides
+        // Calculate values for the selector based on button size,
+        // but its position will be handled by top-1 bottom-1 left-1 right-1 from parent
+        const selectorWidth = activeRect.width; 
+        const selectorHeight = activeRect.height; 
 
         // Set CSS variables on the innerButtonsContainerRef for the selector
-        innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
+        // These are still needed if we use complex calc() for fallback or if we need these values for other things
+        // But the selector itself will use simple top-1 bottom-1 etc.
+        innerContainerElem.style.setProperty('--selector-top', `${activeRect.top - innerContainerElem.getBoundingClientRect().top}px`);
         innerContainerElem.style.setProperty('--selector-height', `${selectorHeight}px`);
-        innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
+        innerContainerElem.style.setProperty('--selector-left', `${activeRect.left - innerContainerElem.getBoundingClientRect().left}px`);
         innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
+
 
         // Calculate the exact size of the *outer blur div* to match the inner content
         const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
         const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
 
-        // NEW: No longer adding 8px here, as outer div's p-1 is removed.
-        // The outer div will perfectly wrap innerContainerRenderedWidth/Height.
         const outerDesiredWidth = innerContainerRenderedWidth; 
         const outerDesiredHeight = innerContainerRenderedHeight; 
 
@@ -116,28 +116,26 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // Outer div (blur one) - MODIFIED: Removed p-1 from here!
-    // The inner container will dictate the size, and the selector will use inset.
     <div ref={outerContainerRef} 
          className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
       
-      {/* Inner div containing the buttons - MODIFIED: Added p-1 to this div! */}
+      {/* Inner div containing the buttons - MODIFIED: Added p-1. Selector is relative to this. */}
       <div 
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" // Added p-1 here
       > 
-        {/* Animated Selector Background - MODIFIED: Uses 'inset-px' or specific px values */}
+        {/* Animated Selector Background - MODIFIED: Removed inline style prop, using fixed inset like ViewToggle */}
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm inset-px`} // NEW: inset-px
-          style={{
-            // Removed explicit top/left/width/height here as inset-px handles it relative to its parent (innerButtonsContainerRef)
-          }}
+          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm
+            top-1 bottom-1 left-1 right-1 // Fixed 4px inset from all sides
+          `}
         />
         
         <button
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Matched ViewToggle's padding and gap
+          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'all' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -156,7 +154,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Matched ViewToggle's padding and gap
+          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'available' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -175,7 +174,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Matched ViewToggle's padding and gap
+          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'unavailable' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -193,4 +193,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};44
+};
