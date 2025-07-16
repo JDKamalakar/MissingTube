@@ -174,6 +174,15 @@ export default {
         'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
       },
+      // NEW: Custom text and drop shadows
+      textShadow: {
+        'sm': '0px 1px 2px rgba(0, 0, 0, 0.4)',
+        'md': '0px 2px 4px rgba(0, 0, 0, 0.5)',
+      },
+      dropShadow: {
+        'sm-icon': '0px 1px 1px rgba(0, 0, 0, 0.3)',
+        'md-icon': '0px 2px 2px rgba(0, 0, 0, 0.4)',
+      },
       transitionDuration: {
         '225': '225ms',
         '195': '195ms',
@@ -225,17 +234,38 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // NEW: Plugin to generate text-shadow and drop-shadow utilities
+    function ({ addUtilities, theme }) {
+      const newTextShadows = {};
+      for (const key in theme('textShadow')) {
+        newTextShadows[`.text-shadow-${key}`] = {
+          'text-shadow': theme('textShadow')[key],
+        };
+      }
+      addUtilities(newTextShadows, ['responsive', 'hover', 'group-hover']); // Added group-hover variant
+
+      const newDropShadows = {};
+      for (const key in theme('dropShadow')) {
+        newDropShadows[`.drop-shadow-${key}`] = {
+          'filter': `drop-shadow(${theme('dropShadow')[key]})`,
+        };
+      }
+      addUtilities(newDropShadows, ['responsive', 'hover', 'group-hover']); // Added group-hover variant
+    },
+  ],
   safelist: [
-  'group-hover:-rotate-[30deg]',
-  'group-hover:rotate-[360deg]',
-  'group-hover:animate-bounce-short-slow',
- 
+    'group-hover:-rotate-[30deg]',
+    'group-hover:rotate-[360deg]',
+    'group-hover:animate-bounce-short-slow',
+    'group-hover:drop-shadow-sm-icon', // Safelist new drop shadow
+    'group-hover:text-shadow-sm',   // Safelist new text shadow
+   
     // Visibility for tooltips
     'invisible',
     'group-hover:visible',
     'group-hover:opacity-100', // Tooltip opacity
-    'group-hover:-top-16',   // Tooltip position
+    'group-hover:-top-16',     // Tooltip position
 
     // Collapsible sections (if they behave oddly)
     'max-h-0',
@@ -244,10 +274,10 @@ export default {
     // Specific scales if they are generated dynamically
     'hover:scale-[1.005]', // Subtler scale for main sections
     'hover:scale-[1.04]',  // Stronger scale for individual video items
-    'hover:shadow-xl',     // Shadow for main sections
-    'hover:shadow-md',     // Shadow for individual items
+    'hover:shadow-xl',      // Shadow for main sections
+    'hover:shadow-md',      // Shadow for individual items
 
     // Also add other transition-related classes just to be safe if they cause issues
     // e.g., 'transition-all', 'duration-200', 'duration-300', 'duration-500', etc.
-],
-};1
+  ],
+};
