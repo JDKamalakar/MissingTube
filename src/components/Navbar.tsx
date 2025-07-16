@@ -248,10 +248,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                         item.onClick();
                         closeMobileMenu();
                       }}
-                      className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
+                      // Changed 'h-10' to 'h-11' for slightly more vertical space
+                      className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button h-11"
                     >
-                      {/* Changed 'rounded-2xl' to 'rounded-xl' for less rounded corners on hover */}
-                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-xl"></div>
+                      {/* Changed 'rounded-xl' to 'rounded-lg' for even less rounded corners on hover */}
+                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-lg"></div>
                       <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                       <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
                         {item.label}
@@ -313,4 +314,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
