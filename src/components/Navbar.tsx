@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
-import { BackupManager } = from './BackupManager';
+import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
 import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
