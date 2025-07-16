@@ -13,7 +13,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 }) => {
   return (
     <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in">
-      /* Background Image with Blur */
+      {/* Background Image with Blur */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -43,9 +43,9 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1">
                 {playlistInfo.title}
               </h1>
-              /* External Link Button - MODIFIED */
+              {/* External Link Button - MODIFIED */}
               <a
-                href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`} {/* Corrected URL */}
+                href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`} {/* Corrected URL format */}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 bg-white/20 hover:bg-white/30 rounded-xl sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center" // Added flex items-center justify-center for icon centering
