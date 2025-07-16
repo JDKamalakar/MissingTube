@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, AlertTriangle, Search, FileText, Clock, Play } from 'lucide-react';
-import { Video, FilterMode } = from '../types';
+import { Video, FilterMode } from '../types';
 import { getVideoUrl } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
@@ -86,8 +86,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="w-4 h-4 opacity-50" />;
     return sortDirection === 'asc' ?
-      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> :
-      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />;
+      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> : // MODIFIED: text-white dark:text-primary
+      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />; // MODIFIED: text-white dark:text-primary
   };
 
   const handleVideoClick = (videoId: string) => {
@@ -192,7 +192,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group"> {/* Corrected items-center justify-center */}
+                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group"> {/* MODIFIED: items-center justify-center */}
                       {video.index}
                     </div>
                   </td>
@@ -242,7 +242,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20`}> {/* MODIFIED: px-3 py-3 */}
+                    <span className={`text-sm px-2 py-2 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20`}>
                       <Clock className="w-3 h-3" />
                       {video.duration}
                     </span>
@@ -251,24 +251,24 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     <div className="flex items-center gap-1 sm:gap-2">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
-                        className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="flex p-2 sm:p-3 bg-primary-container text-on-primary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
+                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
-                        className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="flex p-2 sm:p-3 bg-secondary-container text-on-secondary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:scale-110" /> {/* MODIFIED: Icon animation */}
+                        <Search className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container text-on-tertiary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="View description"
                       >
-                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
+                        <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                     </div>
                   </td>
