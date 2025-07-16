@@ -50,14 +50,12 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Define a small padding for the floating effect around the selector
-        const SELECTOR_INSET_PADDING = 2; // 2 pixels on each side for a floating effect
-
         // Calculate values for the selector
-        const selectorTopPos = (activeRect.top - innerContainerElem.getBoundingClientRect().top) + SELECTOR_INSET_PADDING;
-        const selectorLeftPos = (activeRect.left - innerContainerElem.getBoundingClientRect().left) + SELECTOR_INSET_PADDING;
-        const selectorWidth = activeRect.width - (2 * SELECTOR_INSET_PADDING);
-        const selectorHeight = activeRect.height - (2 * SELECTOR_INSET_PADDING);
+        // NEW: These are now directly the button's position and size relative to its parent
+        const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
+        const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
+        const selectorWidth = activeRect.width;
+        const selectorHeight = activeRect.height;
 
         // Set CSS variables on the innerButtonsContainerRef for the selector
         innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
@@ -65,12 +63,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
         innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
 
-        // Calculate the exact size of the *outer blur div* to match the inner content + its own p-1 padding
+        // Calculate the exact size of the *outer blur div* to match the inner content
         const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
         const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
 
-        const outerDesiredWidth = innerContainerRenderedWidth + 8; // 2 * p-1 (4px padding on each side)
-        const outerDesiredHeight = innerContainerRenderedHeight + 8; // 2 * p-1
+        // NEW: No longer adding 8px here, as outer div's p-1 is removed.
+        // The outer div will perfectly wrap innerContainerRenderedWidth/Height.
+        const outerDesiredWidth = innerContainerRenderedWidth; 
+        const outerDesiredHeight = innerContainerRenderedHeight; 
 
         // Apply these calculated dimensions directly to the outer blur div
         const isDesktop = window.innerWidth >= 640; 
@@ -116,21 +116,21 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
+    // Outer div (blur one) - MODIFIED: Removed p-1 from here!
+    // The inner container will dictate the size, and the selector will use inset.
     <div ref={outerContainerRef} 
-         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
+         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
       
+      {/* Inner div containing the buttons - MODIFIED: Added p-1 to this div! */}
       <div 
         ref={innerButtonsContainerRef} 
-        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
+        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" // Added p-1 here
       > 
-        {/* Animated Selector Background - Styling is correct, uses CSS variables */}
+        {/* Animated Selector Background - MODIFIED: Uses 'inset-px' or specific px values */}
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
+          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm inset-px`} // NEW: inset-px
           style={{
-            top: 'var(--selector-top, 4px)', 
-            left: 'var(--selector-left, 4px)', 
-            width: 'var(--selector-width, calc(33.333% - 8px))', 
-            height: 'var(--selector-height, calc(33.333% - 8px))', 
+            // Removed explicit top/left/width/height here as inset-px handles it relative to its parent (innerButtonsContainerRef)
           }}
         />
         
@@ -193,4 +193,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};2
+};
