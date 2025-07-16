@@ -23,17 +23,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
-  // Ref for the *outermost* div (the blur container)
-  const outerContainerRef = useRef<HTMLDivElement>(null); 
-  // Ref for the *inner* flex container holding buttons
-  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
+  const outerContainerRef = useRef<HTMLDivElement>(null); // Ref for the outermost div (the blur container)
+  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); // Ref for the flex container holding buttons
 
   // State to trigger re-calculation when filterMode changes
   const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
   useEffect(() => {
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
-
 
   // Effect to calculate and set CSS variables AND outer container size
   useEffect(() => {
@@ -42,7 +39,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           innerButtonsContainerRef.current && outerContainerRef.current) {
 
         const innerContainerElem = innerButtonsContainerRef.current;
-        const outerContainerElem = outerContainerRef.current; // Get outer container element
+        const outerContainerElem = outerContainerRef.current; 
 
         const allRect = allButtonRef.current.getBoundingClientRect();
         const availableRect = availableButtonRef.current.getBoundingClientRect();
@@ -52,7 +49,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Calculate values for the selector (relative to innerButtonsContainerRef)
+        // Calculate values for the selector
         const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
         const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
         const selectorWidth = activeRect.width;
@@ -65,22 +62,19 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
 
         // Calculate the exact size of the *outer blur div* to match the inner content + its own p-1 padding
-        // Get the actual rendered size of the inner buttons container
         const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
         const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
 
-        // The outer div has p-1 (4px) padding. So, its total size should be inner content + 8px (4px left + 4px right)
-        const outerDesiredWidth = innerContainerRenderedWidth + 8; // 2 * p-1
+        const outerDesiredWidth = innerContainerRenderedWidth + 8; // 2 * p-1 (4px padding on each side)
         const outerDesiredHeight = innerContainerRenderedHeight + 8; // 2 * p-1
 
         // Apply these calculated dimensions directly to the outer blur div
-        // Only apply if it's currently in desktop view mode (sm:w-auto applies)
         const isDesktop = window.innerWidth >= 640; 
         if (isDesktop) {
             outerContainerElem.style.width = `${outerDesiredWidth}px`;
             outerContainerElem.style.height = `${outerDesiredHeight}px`;
         } else {
-            // For mobile, retain w-full and natural height
+            // For mobile, retain w-full and natural height to stretch horizontally
             outerContainerElem.style.width = '100%';
             outerContainerElem.style.height = 'auto';
         }
@@ -118,18 +112,12 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // Outer div (blur one) - MODIFIED: Added ref, removed w-full sm:w-auto from here.
-    // Width/Height will be explicitly set by JS on desktop.
     <div ref={outerContainerRef} 
          className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
       
-      {/* Inner div containing the buttons - MODIFIED: Retain w-full sm:w-auto, this is what JS measures */}
       <div 
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
-        // Remove style={{ width, height }} from here, as the parent (outerContainerRef) will directly set it.
-        // Or, keep this for inner structure to guide overall size, but let outer be final arbiter.
-        // Let's remove it from here and rely on outerContainerRef
       > 
         {/* Animated Selector Background - Styling is correct, uses CSS variables */}
         <div 
@@ -145,7 +133,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'all' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -154,7 +143,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Filter className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          <span className={`transition-all duration-225 ${
+          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
+          <span className={`transition-all duration-225 whitespace-nowrap ${ 
             currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             All ({totalCount})
@@ -164,7 +154,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'available' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -173,7 +164,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Eye className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          <span className={`transition-all duration-225 ${
+          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
+          <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Available ({availableCount})
@@ -183,7 +175,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'unavailable' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -192,7 +185,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          <span className={`transition-all duration-225 ${
+          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
+          <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Unavailable ({unavailableCount})
@@ -201,4 +195,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
