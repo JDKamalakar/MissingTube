@@ -250,4 +250,4 @@ export default {
     // Also add other transition-related classes just to be safe if they cause issues
     // e.g., 'transition-all', 'duration-200', 'duration-300', 'duration-500', etc.
 ],
-};
+};1
