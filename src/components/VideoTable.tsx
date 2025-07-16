@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, AlertTriangle, Search, FileText, Clock, Play } from 'lucide-react';
-import { Video, FilterMode } = from '../types';
+import { Video, FilterMode } from '../types';
 import { getVideoUrl } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
