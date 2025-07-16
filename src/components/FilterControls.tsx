@@ -23,7 +23,10 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
-  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); // Ref for the flex container holding buttons
+  // Ref for the *outermost* div (the blur container)
+  const outerContainerRef = useRef<HTMLDivElement>(null); 
+  // Ref for the *inner* flex container holding buttons
+  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
 
   // State to trigger re-calculation when filterMode changes
   const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
@@ -31,14 +34,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
 
-  // State to store the calculated size of the inner buttons container
-  const [innerContainerSize, setInnerContainerSize] = useState({ width: 0, height: 0 });
 
-  // Effect to calculate and set CSS variables AND inner container size
+  // Effect to calculate and set CSS variables AND outer container size
   useEffect(() => {
     const calculateAndSetDimensions = () => {
-      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && innerButtonsContainerRef.current) {
-        const containerElem = innerButtonsContainerRef.current;
+      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && 
+          innerButtonsContainerRef.current && outerContainerRef.current) {
+
+        const innerContainerElem = innerButtonsContainerRef.current;
+        const outerContainerElem = outerContainerRef.current; // Get outer container element
+
         const allRect = allButtonRef.current.getBoundingClientRect();
         const availableRect = availableButtonRef.current.getBoundingClientRect();
         const unavailableRect = unavailableButtonRef.current.getBoundingClientRect();
@@ -47,36 +52,38 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Calculate values for the selector
-        const topPos = activeRect.top - containerElem.getBoundingClientRect().top;
-        const leftPos = activeRect.left - containerElem.getBoundingClientRect().left;
-        const width = activeRect.width;
-        const height = activeRect.height;
+        // Calculate values for the selector (relative to innerButtonsContainerRef)
+        const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
+        const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
+        const selectorWidth = activeRect.width;
+        const selectorHeight = activeRect.height;
 
-        // Set CSS variables on the container for the selector
-        containerElem.style.setProperty('--selector-top', `${topPos}px`);
-        containerElem.style.setProperty('--selector-height', `${height}px`);
-        containerElem.style.setProperty('--selector-left', `${leftPos}px`);
-        containerElem.style.setProperty('--selector-width', `${width}px`);
+        // Set CSS variables on the innerButtonsContainerRef for the selector
+        innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
+        innerContainerElem.style.setProperty('--selector-height', `${selectorHeight}px`);
+        innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
+        innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
 
-        // Calculate the total combined size of the inner buttons container
-        // On desktop (sm and up), buttons are horizontal. On mobile, they are vertical.
-        const isDesktop = window.innerWidth >= 640; // Tailwind's sm breakpoint
+        // Calculate the exact size of the *outer blur div* to match the inner content + its own p-1 padding
+        // Get the actual rendered size of the inner buttons container
+        const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
+        const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
 
-        let totalContentWidth = 0;
-        let totalContentHeight = 0;
+        // The outer div has p-1 (4px) padding. So, its total size should be inner content + 8px (4px left + 4px right)
+        const outerDesiredWidth = innerContainerRenderedWidth + 8; // 2 * p-1
+        const outerDesiredHeight = innerContainerRenderedHeight + 8; // 2 * p-1
 
+        // Apply these calculated dimensions directly to the outer blur div
+        // Only apply if it's currently in desktop view mode (sm:w-auto applies)
+        const isDesktop = window.innerWidth >= 640; 
         if (isDesktop) {
-          // Horizontal layout: Sum of widths + gaps
-          totalContentWidth = allRect.width + availableRect.width + unavailableRect.width + 2 * 4; // 2 gaps of 4px (gap-1)
-          totalContentHeight = Math.max(allRect.height, availableRect.height, unavailableRect.height); // Max height of any button
+            outerContainerElem.style.width = `${outerDesiredWidth}px`;
+            outerContainerElem.style.height = `${outerDesiredHeight}px`;
         } else {
-          // Vertical layout: Max width + sum of heights + gaps
-          totalContentWidth = Math.max(allRect.width, availableRect.width, unavailableRect.width); // Max width of any button
-          totalContentHeight = allRect.height + availableRect.height + unavailableRect.height + 2 * 4; // 2 gaps of 4px (space-y-1)
+            // For mobile, retain w-full and natural height
+            outerContainerElem.style.width = '100%';
+            outerContainerElem.style.height = 'auto';
         }
-        
-        setInnerContainerSize({ width: totalContentWidth, height: totalContentHeight });
       }
     };
 
@@ -111,20 +118,20 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // Outer div (blur one) - Modified to rely on inner container's calculated size
-    <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
-      {/* Inner div containing the buttons - Explicitly set width/height based on calculation */}
+    // Outer div (blur one) - MODIFIED: Added ref, removed w-full sm:w-auto from here.
+    // Width/Height will be explicitly set by JS on desktop.
+    <div ref={outerContainerRef} 
+         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
+      
+      {/* Inner div containing the buttons - MODIFIED: Retain w-full sm:w-auto, this is what JS measures */}
       <div 
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
-        style={{
-          // Apply calculated dimensions for desktop
-          // For mobile, w-full ensures it stretches, and height will naturally fit content
-          width: innerContainerSize.width ? `${innerContainerSize.width}px` : 'auto',
-          height: innerContainerSize.height ? `${innerContainerSize.height}px` : 'auto',
-        }}
+        // Remove style={{ width, height }} from here, as the parent (outerContainerRef) will directly set it.
+        // Or, keep this for inner structure to guide overall size, but let outer be final arbiter.
+        // Let's remove it from here and rely on outerContainerRef
       > 
-        {/* Animated Selector Background - Styling remains */}
+        {/* Animated Selector Background - Styling is correct, uses CSS variables */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
