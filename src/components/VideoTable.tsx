@@ -86,8 +86,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="w-4 h-4 opacity-50" />;
     return sortDirection === 'asc' ?
-      <ArrowUp className="w-4 h-4 text-primary" /> :
-      <ArrowDown className="w-4 h-4 text-primary" />;
+      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> : // MODIFIED: text-white dark:text-primary
+      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />; // MODIFIED: text-white dark:text-primary
   };
 
   const handleVideoClick = (videoId: string) => {
@@ -151,9 +151,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     {getSortIcon('title')}
                   </div>
                 </th>
-                <th className="hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                <th className={`hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
                     sortField === 'channel' ? 'bg-primary/20' : ''
-                  }"
+                  }`}
                   onClick={() => handleSort('channel')}
                 >
                   {sortField === 'channel' && (
@@ -192,7 +192,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] item-center justify-center active:scale-95 hover:shadow-lg group">
+                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group"> {/* MODIFIED: items-center justify-center */}
                       {video.index}
                     </div>
                   </td>
@@ -251,21 +251,21 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     <div className="flex items-center gap-1 sm:gap-2">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
-                        className="flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="flex p-2 sm:p-3 bg-primary-container text-on-primary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="Open video"
                       >
                         <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
-                        className="flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="flex p-2 sm:p-3 bg-secondary-container text-on-secondary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="Search actions"
                       >
                         <Search className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                        className="hidden sm:flex p-2 sm:p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] item-center justify-center active:scale-95 hover:shadow-lg group touch-target"
+                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container text-on-tertiary-container backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target" // MODIFIED: Color & centering
                         title="View description"
                       >
                         <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -301,4 +301,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1
+};
