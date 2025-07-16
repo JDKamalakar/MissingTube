@@ -39,11 +39,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   useEffect(() => {
     const checkScrollability = () => {
-      // Check if document height is greater than window height + a buffer
       setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
     };
 
-    // Initial check and event listeners for resize and DOM changes
     checkScrollability();
     window.addEventListener('resize', checkScrollability);
 
@@ -54,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       window.removeEventListener('resize', checkScrollability);
       observer.disconnect();
     };
-  }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           }
 
           // If mobile menu is open and user scrolls, close the menu
-          // This prevents the menu from staying open when user scrolls the content
           if (showMobileMenu && currentScrollY !== lastScrollY.current) {
             setShowMobileMenu(false);
           }
@@ -111,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]); // Dependencies: re-run effect if canScroll or showMobileMenu changes
+  }, [canScroll, showMobileMenu]);
 
   const navItems = [
     {
@@ -148,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const closeMobileMenu = useCallback(() => {
     setShowMobileMenu(false);
-  }, []); // useCallback to memoize the function
+  }, []);
 
   return (
     <>
@@ -188,12 +185,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </h1>
               </div>
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Button - MODIFIED */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                // Changed w-12 h-10 to w-10 h-10 for consistent rounded-2xl shape.
-                // Crucially, removed `overflow-hidden` from the button itself and added `z-50`.
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
+                // Increased width (w-12) to make it more like a rounded square horizontally.
+                // Height (h-10) is kept to balance the look with rounded-2xl.
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
                 aria-label="Toggle mobile menu"
               >
                 {/* This inner div provides the visual glassmorphism effect and contains the overflow-hidden */}
@@ -242,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Menu Dropdown - MODIFIED */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
@@ -251,20 +248,25 @@ export const Navbar: React.FC<NavbarProps> = ({
               {navItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      item.onClick();
-                      closeMobileMenu(); // Close menu after an item is clicked
-                    }}
-                    className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
-                  >
-                    <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
-                    <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                    <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
-                      {item.label}
-                    </span>
-                  </button>
+                  <React.Fragment key={index}> {/* Use Fragment for conditional separator */}
+                    <button
+                      onClick={() => {
+                        item.onClick();
+                        closeMobileMenu(); // Close menu after an item is clicked
+                      }}
+                      className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
+                    >
+                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                      <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                      <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
+                        {item.label}
+                      </span>
+                    </button>
+                    {/* Add separator if it's not the last item */}
+                    {index < navItems.length - 1 && (
+                      <div className="mx-2 my-1 border-t border-white/30 dark:border-white/20"></div>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </div>
@@ -316,4 +318,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
