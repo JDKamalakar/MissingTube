@@ -32,7 +32,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
 
-
   // Effect to calculate and set CSS variables AND outer container size
   useEffect(() => {
     const calculateAndSetDimensions = () => {
@@ -50,20 +49,20 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Define a small padding for the floating effect around the selector
-        const SELECTOR_INSET_PADDING = 2; // 2 pixels on each side for a floating effect
+        // The key is to calculate position/size relative to the *innerButtonsContainerRef*
+        // because the selector is absolute within it.
+        const innerContainerRect = innerContainerElem.getBoundingClientRect();
 
-        // Calculate values for the selector
-        const selectorTopPos = (activeRect.top - innerContainerElem.getBoundingClientRect().top) + SELECTOR_INSET_PADDING;
-        const selectorLeftPos = (activeRect.left - innerContainerElem.getBoundingClientRect().left) + SELECTOR_INSET_PADDING;
-        const selectorWidth = activeRect.width - (2 * SELECTOR_INSET_PADDING);
-        const selectorHeight = activeRect.height - (2 * SELECTOR_INSET_PADDING);
+        const topPos = activeRect.top - innerContainerRect.top;
+        const leftPos = activeRect.left - innerContainerRect.left;
+        const width = activeRect.width;
+        const height = activeRect.height;
 
         // Set CSS variables on the innerButtonsContainerRef for the selector
-        innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
-        innerContainerElem.style.setProperty('--selector-height', `${selectorHeight}px`);
-        innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
-        innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
+        innerContainerElem.style.setProperty('--selector-top', `${topPos}px`);
+        innerContainerElem.style.setProperty('--selector-height', `${height}px`);
+        innerContainerElem.style.setProperty('--selector-left', `${leftPos}px`);
+        innerContainerElem.style.setProperty('--selector-width', `${width}px`);
 
         // Calculate the exact size of the *outer blur div* to match the inner content + its own p-1 padding
         const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
@@ -123,14 +122,15 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
       > 
-        {/* Animated Selector Background - Styling is correct, uses CSS variables */}
+        {/* Animated Selector Background - MODIFIED to use inset and slightly less rounded */}
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
+          className={`absolute bg-primary/80 backdrop-blur-sm transition-all duration-300 ease-out shadow-sm rounded-xl`} {/* Changed rounded-2xl to rounded-xl for selector */}
           style={{
-            top: 'var(--selector-top, 4px)', 
-            left: 'var(--selector-left, 4px)', 
-            width: 'var(--selector-width, calc(33.333% - 8px))', 
-            height: 'var(--selector-height, calc(33.333% - 8px))', 
+            // Use calculated dimensions, then add an inset effect
+            top: `calc(var(--selector-top, 4px) + 2px)`, // Shift down by 2px
+            left: `calc(var(--selector-left, 4px) + 2px)`, // Shift right by 2px
+            width: `calc(var(--selector-width, 100px) - 4px)`, // Reduce width by 4px (2px left + 2px right)
+            height: `calc(var(--selector-height, 40px) - 4px)`, // Reduce height by 4px (2px top + 2px bottom)
           }}
         />
         
