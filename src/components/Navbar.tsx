@@ -69,28 +69,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         // Logic for hiding/showing navbar ONLY on mobile when scrolling further down/up
         if (!isDesktop) {
-          // If scrolling down significantly, hide the navbar
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
             // Close mobile menu immediately if navbar hides on scroll down
             if (showMobileMenu) {
               setShowMobileMenu(false);
             }
-          } 
-          // If scrolling up or near the top, show the navbar
-          else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
+          } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
+            // Show navbar when scrolling up or near the top
             setIsNavbarHidden(false);
           }
 
-          // **MODIFIED LOGIC HERE:**
-          // Only close mobile menu if scrolling DOWN significantly AND it's open.
-          // Or if scrollability changes (e.g., content loads/unloads).
-          if (showMobileMenu && currentScrollY > lastScrollY.current && currentScrollY > SHRINK_THRESHOLD) {
-              setShowMobileMenu(false);
+          // If mobile menu is open and user scrolls, close the menu
+          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+            setShowMobileMenu(false);
           }
-          // The critical change: Do NOT close menu just for scrolling up if the navbar is shown.
-          // The button should be clickable if the navbar is visible.
-
 
         } else {
           // Ensure navbar is always visible on desktop
@@ -115,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]); // Keep dependencies as they are
+  }, [canScroll, showMobileMenu]);
 
   const navItems = [
     {
@@ -240,7 +233,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Menu Dropdown - MODIFIED */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
@@ -255,15 +248,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                         item.onClick();
                         closeMobileMenu();
                       }}
+                      // Changed 'h-10' to 'h-11' for slightly more vertical space
                       className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button h-11"
                     >
+                      {/* Changed 'rounded-xl' to 'rounded-lg' for even less rounded corners on hover */}
                       <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-lg"></div>
                       <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                       <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
                         {item.label}
                       </span>
                     </button>
-                    {/* Separator */}
+                    {/* Separator - remains full width */}
                     {index < navItems.length - 1 && (
                       <div className="-mx-2 w-auto my-1 border-t border-white/30 dark:border-white/20"></div>
                     )}
