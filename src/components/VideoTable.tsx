@@ -254,14 +254,16 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce" /> {/* MODIFIED: group-hover:animate-bounce */}
+                        {/* MODIFIED: Slow down animate-bounce for ExternalLink */}
+                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
                         className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> {/* MODIFIED: group-hover:rotate-[360deg] and transition */}
+                        {/* MODIFIED: Search icon rotate 360deg with specific transition */}
+                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
@@ -301,4 +303,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1
+};
