@@ -54,20 +54,19 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('all')}
-          // Added 'group' class to the button
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'all'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
           }`}
         >
-          {/* Modified icon animation and added group-hover color */}
+          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Filter className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'all' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-primary'
+            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* Modified span text color and font-weight */}
+          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary'
+            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             All ({totalCount})
           </span>
@@ -75,20 +74,19 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('available')}
-          // Added 'group' class to the button
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'available'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
           }`}
         >
-          {/* Modified icon animation and added group-hover color */}
+          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Eye className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary' // Spin 360deg for Eye
+            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* Modified span text color and font-weight */}
+          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary'
+            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Available ({availableCount})
           </span>
@@ -96,20 +94,19 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('unavailable')}
-          // Added 'group' class to the button
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'unavailable'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
           }`}
         >
-          {/* Modified icon animation and added group-hover color */}
+          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary' // Spin 360deg for EyeOff
+            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* Modified span text color and font-weight */}
+          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary'
+            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Unavailable ({unavailableCount})
           </span>
@@ -117,4 +114,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
