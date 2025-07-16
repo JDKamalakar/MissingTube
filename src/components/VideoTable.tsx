@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, AlertTriangle, Search, FileText, Clock, Play } from 'lucide-react';
-import { Video, FilterMode } from '../types';
+import { Video, FilterMode } = from '../types';
 import { getVideoUrl } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
@@ -254,21 +254,21 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container" /> {/* MODIFIED: Icon size and color */}
+                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
                         className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container" /> {/* MODIFIED: Icon size and color */}
+                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:scale-110" /> {/* MODIFIED: Icon animation */}
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
                         className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.18] items-center justify-center active:scale-95 hover:shadow-lg group touch-target"
                         title="View description"
                       >
-                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container" /> {/* MODIFIED: Icon size and color */}
+                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" /> {/* MODIFIED: Icon animation */}
                       </button>
                     </div>
                   </td>
@@ -301,4 +301,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1
+};
