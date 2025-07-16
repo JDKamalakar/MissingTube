@@ -31,10 +31,12 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
 
+  // State to store the calculated size of the inner buttons container
+  const [innerContainerSize, setInnerContainerSize] = useState({ width: 0, height: 0 });
 
-  // Effect to calculate and set CSS variables
+  // Effect to calculate and set CSS variables AND inner container size
   useEffect(() => {
-    const calculateAndSetCssVars = () => {
+    const calculateAndSetDimensions = () => {
       if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && innerButtonsContainerRef.current) {
         const containerElem = innerButtonsContainerRef.current;
         const allRect = allButtonRef.current.getBoundingClientRect();
@@ -45,41 +47,55 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // Get positions relative to the container for accurate offset
-        const containerX = containerElem.getBoundingClientRect().left;
-        const containerY = containerElem.getBoundingClientRect().top;
-
         // Calculate values for the selector
-        const topPos = activeRect.top - containerY;
-        const leftPos = activeRect.left - containerX;
+        const topPos = activeRect.top - containerElem.getBoundingClientRect().top;
+        const leftPos = activeRect.left - containerElem.getBoundingClientRect().left;
         const width = activeRect.width;
         const height = activeRect.height;
 
-        // Set CSS variables on the container
+        // Set CSS variables on the container for the selector
         containerElem.style.setProperty('--selector-top', `${topPos}px`);
         containerElem.style.setProperty('--selector-height', `${height}px`);
         containerElem.style.setProperty('--selector-left', `${leftPos}px`);
         containerElem.style.setProperty('--selector-width', `${width}px`);
+
+        // Calculate the total combined size of the inner buttons container
+        // On desktop (sm and up), buttons are horizontal. On mobile, they are vertical.
+        const isDesktop = window.innerWidth >= 640; // Tailwind's sm breakpoint
+
+        let totalContentWidth = 0;
+        let totalContentHeight = 0;
+
+        if (isDesktop) {
+          // Horizontal layout: Sum of widths + gaps
+          totalContentWidth = allRect.width + availableRect.width + unavailableRect.width + 2 * 4; // 2 gaps of 4px (gap-1)
+          totalContentHeight = Math.max(allRect.height, availableRect.height, unavailableRect.height); // Max height of any button
+        } else {
+          // Vertical layout: Max width + sum of heights + gaps
+          totalContentWidth = Math.max(allRect.width, availableRect.width, unavailableRect.width); // Max width of any button
+          totalContentHeight = allRect.height + availableRect.height + unavailableRect.height + 2 * 4; // 2 gaps of 4px (space-y-1)
+        }
+        
+        setInnerContainerSize({ width: totalContentWidth, height: totalContentHeight });
       }
     };
 
     // Initial calculation and on resize
-    calculateAndSetCssVars();
-    window.addEventListener('resize', calculateAndSetCssVars);
+    calculateAndSetDimensions();
+    window.addEventListener('resize', calculateAndSetDimensions);
 
     // Timeout to catch initial render layout shifts
-    const timeoutId = setTimeout(calculateAndSetCssVars, 50); // Small delay for DOM reflow
+    const timeoutId = setTimeout(calculateAndSetDimensions, 100); 
 
     return () => {
-      window.removeEventListener('resize', calculateAndSetCssVars);
+      window.removeEventListener('resize', calculateAndSetDimensions);
       clearTimeout(timeoutId);
     };
-  }, [currentFilterMode, totalCount, unavailableCount]); // Depend on currentFilterMode state
+  }, [currentFilterMode, totalCount, unavailableCount]); 
 
   const handleFilterChange = (newMode: FilterMode) => {
-    if (newMode === currentFilterMode) return; // Use currentFilterMode
+    if (newMode === currentFilterMode) return;
     
-    // Add smooth transition animation
     const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
     if (container) {
       container.classList.add('opacity-50', 'scale-95');
@@ -95,16 +111,20 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // Outer div for the entire component - MODIFIED TO ENSURE CONTENT WRAPPING
-    // It already has p-1. This p-1 is the border/padding around the content.
-    // The inner container (innerButtonsContainerRef) determines its size.
+    // Outer div (blur one) - Modified to rely on inner container's calculated size
     <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
-      {/* Inner div containing the buttons - This flex container dictates the size */}
+      {/* Inner div containing the buttons - Explicitly set width/height based on calculation */}
       <div 
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
+        style={{
+          // Apply calculated dimensions for desktop
+          // For mobile, w-full ensures it stretches, and height will naturally fit content
+          width: innerContainerSize.width ? `${innerContainerSize.width}px` : 'auto',
+          height: innerContainerSize.height ? `${innerContainerSize.height}px` : 'auto',
+        }}
       > 
-        {/* Animated Selector Background - Styling is correct, uses CSS variables */}
+        {/* Animated Selector Background - Styling remains */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
@@ -174,4 +194,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};3
+};
