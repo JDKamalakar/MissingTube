@@ -38,28 +38,38 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // MODIFIED: Removed sm:min-w and lg:min-w from the outer div.
-    // Adjusted w-full to w-auto for desktop flexibility.
+    // MODIFIED: Ensure outer div allows content to dictate width more flexibly
     <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
       {/* Mobile: Stack vertically, Desktop: Horizontal */}
-      {/* MODIFIED: Changed w-full to w-auto on sm for inner flex container, and added flex-shrink-0 */}
+      {/* Ensure this inner flex container dictates the overall width for desktop */}
       <div className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"> 
-        {/* Animated Selector Background - Adjusted for mobile */}
+        {/* Animated Selector Background - MODIFIED for dynamic positioning */}
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
-            filterMode === 'all' 
-              ? 'top-1 left-1 right-1 h-[calc(33.333%-4px)] sm:top-1 sm:bottom-1 sm:left-1 sm:right-auto sm:w-[calc(33.333%-4px)] sm:h-auto' 
-              : filterMode === 'available'
-              ? 'top-[33.333%] left-1 right-1 h-[calc(33.333%-4px)] sm:top-1 sm:bottom-1 sm:left-[33.333%] sm:right-auto sm:w-[calc(33.333%-4px)] sm:h-auto'
-              : 'top-[66.666%] left-1 right-1 h-[calc(33.333%-4px)] sm:top-1 sm:bottom-1 sm:left-[66.666%] sm:right-auto sm:w-[calc(33.333%-4px)] sm:h-auto'
-          }`}
+          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm
+            top-1 bottom-1
+            ${
+              // Mobile vertical positioning
+              filterMode === 'all'
+                ? 'left-1 right-1 h-[calc(33.333%-4px)]'
+                : filterMode === 'available'
+                ? 'left-1 right-1 h-[calc(33.333%-4px)] top-[calc(33.333%+1px)]' // Adjusted top for consistency
+                : 'left-1 right-1 h-[calc(33.333%-4px)] top-[calc(66.666%+1px)]' // Adjusted top for consistency
+            }
+            sm:top-1 sm:bottom-1 sm:h-auto sm:w-[calc(33.333%-4px)]
+            ${
+              // Desktop horizontal positioning
+              filterMode === 'all'
+                ? 'sm:left-1'
+                : filterMode === 'available'
+                ? 'sm:left-[33.333%]'
+                : 'sm:left-[66.666%]'
+            }
+          `}
         />
         
         <button
           onClick={() => handleFilterChange('all')}
-          // MODIFIED: Removed flex-1 to allow buttons to take only required space
-          // Added sm:flex-auto to ensure they don't grow beyond content on desktop
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${ // Adjusted desktop px for more compact
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'all'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -77,9 +87,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('available')}
-          // MODIFIED: Removed flex-1 to allow buttons to take only required space
-          // Added sm:flex-auto to ensure they don't grow beyond content on desktop
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${ // Adjusted desktop px for more compact
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'available'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -97,9 +105,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('unavailable')}
-          // MODIFIED: Removed flex-1 to allow buttons to take only required space
-          // Added sm:flex-auto to ensure they don't grow beyond content on desktop
-          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${ // Adjusted desktop px for more compact
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             filterMode === 'unavailable'
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
@@ -117,4 +123,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};2
+};
