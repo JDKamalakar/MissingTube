@@ -54,20 +54,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('all')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
+          // MODIFIED: Reduced horizontal padding (px-2) and gap (gap-1) for mobile
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'all'
               ? 'text-white'
-              // MODIFIED: Added dark:hover:text-primary for dark mode hover, keep hover:text-white for light mode
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Filter className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary'
           }`} />
-          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             All ({totalCount})
           </span>
@@ -75,20 +73,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('available')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
+          // MODIFIED: Reduced horizontal padding (px-2) and gap (gap-1) for mobile
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'available'
               ? 'text-white'
-              // MODIFIED: Added dark:hover:text-primary for dark mode hover, keep hover:text-white for light mode
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Eye className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary'
           }`} />
-          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Available ({availableCount})
           </span>
@@ -96,20 +92,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         
         <button
           onClick={() => handleFilterChange('unavailable')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
+          // MODIFIED: Reduced horizontal padding (px-2) and gap (gap-1) for mobile
+          className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'unavailable'
               ? 'text-white'
-              // MODIFIED: Added dark:hover:text-primary for dark mode hover, keep hover:text-white for light mode
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary'
           }`} />
-          {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm' // MODIFIED: Added dark:group-hover:text-primary
+            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Unavailable ({unavailableCount})
           </span>
@@ -117,4 +111,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
