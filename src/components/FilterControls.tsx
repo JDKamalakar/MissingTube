@@ -63,7 +63,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         >
           {/* Modified icon animation and added group-hover color */}
           <Filter className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-primary'
+            filterMode === 'all' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-primary'
           }`} />
           {/* Modified span text color and font-weight */}
           <span className={`transition-all duration-225 ${
