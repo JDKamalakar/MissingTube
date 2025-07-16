@@ -25,34 +25,41 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
       {/* Content */}
       <div className="relative z-10 p-4 sm:p-6 lg:p-8 text-white">
-        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-          <div className="flex-shrink-0 w-full sm:w-auto flex justify-center sm:justify-start">
+        {/* Main Content Flex Container */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+          {/* Thumbnail */}
+          <div className="flex-shrink-0"> {/* Removed w-full and justify-center from here */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105"
+              className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0" /* Added mx-auto for mobile centering */
             />
           </div>
           
+          {/* Text Content */}
           <div className="flex-1 min-w-0 text-center sm:text-left w-full">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 mb-2">
+            {/* Title and External Link */}
+            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-2"> {/* Ensure center on mobile, start on desktop */}
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1">
                 {playlistInfo.title}
               </h1>
+              {/* External Link Button - MODIFIED */}
               <a
-                href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`}
+                href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`} {/* Corrected URL */}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-white/20 hover:bg-white/30 rounded-xl sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0"
+                className="p-2 bg-white/20 hover:bg-white/30 rounded-xl sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center" // Added flex items-center justify-center for icon centering
               >
-                <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" /> {/* Icon sizing remains */}
               </a>
             </div>
             
+            {/* Channel Title */}
             <p className="text-white/80 mb-3 text-sm sm:text-base lg:text-lg">
               by {playlistInfo.channelTitle}
             </p>
             
+            {/* Video Count and Unavailable Count */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm text-white/70">
               <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
                 {playlistInfo.videoCount} videos
@@ -64,6 +71,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               )}
             </div>
             
+            {/* Description */}
             {playlistInfo.description && (
               <p className="mt-3 sm:mt-4 text-white/80 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">
                 {playlistInfo.description}
@@ -74,4 +82,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};1
+};
