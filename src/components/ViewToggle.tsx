@@ -77,4 +77,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       </button>
     </div>
   );
-};
+};2
