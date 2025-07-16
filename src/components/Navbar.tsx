@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Key, History, Info, Download, GitCompare, Menu, X } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
-import { BackupManager } from './BackupManager';
+import { BackupManager } = from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
 import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
@@ -222,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 state-layer h-10 overflow-hidden touch-target
                     ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`} 
                 >
-                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center"></div>
+                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
                   <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} /> 
                   <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">
                     {item.label}
@@ -238,7 +238,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="px-4 pb-4">
-            {/* The outer div has p-2 padding. We will make the content inside it full width. */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
               {navItems.map((item, index) => {
                 const Icon = item.icon;
@@ -249,20 +248,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                         item.onClick();
                         closeMobileMenu();
                       }}
-                      // Ensure this button's hover state matches desktop: rounded-2xl
                       className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 state-layer overflow-hidden mobile-button"
                     >
-                      {/* Changed `rounded-full` back to `rounded-2xl` for desktop-like hover */}
-                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
+                      {/* Changed 'rounded-2xl' to 'rounded-xl' for less rounded corners on hover */}
+                      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-xl"></div>
                       <Icon className={`relative z-10 w-5 h-5 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
                       <span className="relative z-10 transition-all duration-300 group-hover:font-semibold mobile-text-base">
                         {item.label}
                       </span>
                     </button>
-                    {/* Separator - Adjusted classes to make it full width and align with inner padding */}
+                    {/* Separator - remains full width */}
                     {index < navItems.length - 1 && (
-                      // Apply negative horizontal margins to counteract parent padding
-                      // Ensure it's full width relative to its own parent (the p-2 div)
                       <div className="-mx-2 w-auto my-1 border-t border-white/30 dark:border-white/20"></div>
                     )}
                   </React.Fragment>
@@ -317,4 +313,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
