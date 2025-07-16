@@ -1,4 +1,4 @@
-import React, { useState } = from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, BarChart3, Clock, Video, AlertTriangle } from 'lucide-react';
 import { PlaylistStats } from '../types';
 
