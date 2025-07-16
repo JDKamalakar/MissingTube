@@ -19,21 +19,17 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
 
-  // Refs for each button
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
   const outerContainerRef = useRef<HTMLDivElement>(null); 
   const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
 
-  // State to trigger re-calculation when filterMode changes
   const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
   useEffect(() => {
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
 
-
-  // Effect to calculate and set CSS variables AND outer container size
   useEffect(() => {
     const calculateAndSetDimensions = () => {
       if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && 
@@ -50,46 +46,42 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        // NEW: Define a small, consistent inset for the selector
-        const SELECTOR_VISUAL_INSET = 2; // Adjust this value (e.g., 1, 2, or 3) for visual balance
+        // Selector Positioning and Sizing Logic
+        const SELECTOR_VISUAL_INSET = 2; // This value controls the floating space on all sides
 
-        // Calculate values for the selector, including the inset
-        const selectorTopPos = (activeRect.top - innerContainerElem.getBoundingClientRect().top) + SELECTOR_VISUAL_INSET;
-        const selectorLeftPos = (activeRect.left - innerContainerElem.getBoundingClientRect().left) + SELECTOR_VISUAL_INSET;
+        const baseTop = activeRect.top - innerContainerElem.getBoundingClientRect().top;
+        const baseLeft = activeRect.left - innerContainerElem.getBoundingClientRect().left;
+
+        const selectorTopPos = baseTop + SELECTOR_VISUAL_INSET;
+        const selectorLeftPos = baseLeft + SELECTOR_VISUAL_INSET;
         const selectorWidth = activeRect.width - (2 * SELECTOR_VISUAL_INSET);
         const selectorHeight = activeRect.height - (2 * SELECTOR_VISUAL_INSET);
 
-        // Set CSS variables on the innerButtonsContainerRef for the selector
         innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
         innerContainerElem.style.setProperty('--selector-height', `${selectorHeight}px`);
         innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
         innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
 
-        // Calculate the exact size of the *outer blur div* to match the inner content
+        // Outer Blur Div Sizing Logic
         const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
         const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
 
         const outerDesiredWidth = innerContainerRenderedWidth; 
         const outerDesiredHeight = innerContainerRenderedHeight; 
 
-        // Apply these calculated dimensions directly to the outer blur div
         const isDesktop = window.innerWidth >= 640; 
         if (isDesktop) {
             outerContainerElem.style.width = `${outerDesiredWidth}px`;
             outerContainerElem.style.height = `${outerDesiredHeight}px`;
         } else {
-            // For mobile, retain w-full and natural height to stretch horizontally
             outerContainerElem.style.width = '100%';
             outerContainerElem.style.height = 'auto';
         }
       }
     };
 
-    // Initial calculation and on resize
     calculateAndSetDimensions();
     window.addEventListener('resize', calculateAndSetDimensions);
-
-    // Timeout to catch initial render layout shifts
     const timeoutId = setTimeout(calculateAndSetDimensions, 100); 
 
     return () => {
@@ -123,14 +115,13 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" 
       > 
-        {/* Animated Selector Background - Styling uses CSS variables from JS */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
-            top: 'var(--selector-top, 4px)', // Using fallback to p-1 top offset
-            left: 'var(--selector-left, 4px)', // Using fallback to p-1 left offset
-            width: 'var(--selector-width, calc(33.333% - 8px))', // Using fallback
-            height: 'var(--selector-height, calc(33.333% - 8px))', // Using fallback
+            top: 'var(--selector-top)', 
+            left: 'var(--selector-left)', 
+            width: 'var(--selector-width)', 
+            height: 'var(--selector-height)', 
           }}
         />
         
@@ -143,9 +134,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED ICON SIZE: w-5 h-5 (matching ViewToggle) */}
-          <Filter className={`w-5 h-5 transition-all duration-225 ${
-            currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
+          <Filter className={`w-4 h-4 transition-all duration-225 ${
+            currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${ 
             currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
@@ -163,9 +154,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED ICON SIZE: w-5 h-5 (matching ViewToggle) */}
-          <Eye className={`w-5 h-5 transition-all duration-225 ${
-            currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
+          <Eye className={`w-4 h-4 transition-all duration-225 ${
+            currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
@@ -183,9 +174,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
-          {/* MODIFIED ICON SIZE: w-5 h-5 (matching ViewToggle) */}
-          <EyeOff className={`w-5 h-5 transition-all duration-225 ${
-            currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
+          <EyeOff className={`w-4 h-4 transition-all duration-225 ${
+            currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
