@@ -11,7 +11,6 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
   const handleViewChange = (newMode: ViewMode) => {
     if (newMode === viewMode) return;
     
-    // Add smooth transition animation
     const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
     if (container) {
       container.classList.add('opacity-50', 'scale-95');
@@ -39,17 +38,19 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('grid')}
-        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
+        className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'grid'
-            ? 'text-white' // Active state text color
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // MODIFIED: Hover color and shadow on inactive button
+            ? 'text-white' // Active button: white text
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // Inactive button: default text, hover color and shadow
           }`}
       >
         <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12' // MODIFIED: Added group-hover
+          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12' // Active: scale. Inactive: rotate on group hover.
         }`} />
         <span className={`transition-all duration-225 ${
-          viewMode === 'grid' ? 'font-semibold text-white' : 'group-hover:font-semibold group-hover:text-primary-dark-variant' // MODIFIED: Added group-hover colors and font-weight
+          viewMode === 'grid' 
+            ? 'font-semibold text-white' // Active: bold white text
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant' // Inactive: default text, bold & color on group hover.
         }`}>
           Grid
         </span>
@@ -57,21 +58,23 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('table')}
-        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
+        className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'table'
-            ? 'text-white' // Active state text color
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // MODIFIED: Hover color and shadow on inactive button
+            ? 'text-white' // Active button: white text
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // Inactive button: default text, hover color and shadow
           }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'group-hover:rotate-12' // MODIFIED: Added group-hover (or your preferred icon animation)
+          viewMode === 'table' ? 'scale-110' : 'group-hover:rotate-12' // Active: scale. Inactive: rotate on group hover.
         }`} />
         <span className={`transition-all duration-225 ${
-          viewMode === 'table' ? 'font-semibold text-white' : 'group-hover:font-semibold group-hover:text-primary-dark-variant' // MODIFIED: Added group-hover colors and font-weight
+          viewMode === 'table' 
+            ? 'font-semibold text-white' // Active: bold white text
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary-dark-variant' // Inactive: default text, bold & color on group hover.
         }`}>
           Table
         </span>
       </button>
     </div>
   );
-};1
+};
