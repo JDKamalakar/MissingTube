@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'; // Import useRef
+import React, { useState, useEffect, useRef } from 'react';
 import { Filter, Eye, EyeOff } from 'lucide-react';
 import { FilterMode } from '../types';
 
@@ -23,67 +23,61 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // Ref for the main container to set CSS variables
+  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); // Ref for the flex container holding buttons
 
-  // State to hold calculated positions/widths
-  const [selectorStyles, setSelectorStyles] = useState<{
-    mobileTop: string;
-    mobileHeight: string;
-    desktopLeft: string;
-    desktopWidth: string;
-  }>({
-    mobileTop: '0px',
-    mobileHeight: '0px',
-    desktopLeft: '0px',
-    desktopWidth: '0px',
-  });
-
-  // Calculate and update selector styles on mount, filterMode change, or resize
+  // State to trigger re-calculation when filterMode changes
+  const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
   useEffect(() => {
-    const calculateStyles = () => {
-      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && containerRef.current) {
-        const containerRect = containerRef.current.getBoundingClientRect();
+      setCurrentFilterMode(filterMode);
+  }, [filterMode]);
+
+
+  // Effect to calculate and set CSS variables
+  useEffect(() => {
+    const calculateAndSetCssVars = () => {
+      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && innerButtonsContainerRef.current) {
+        const containerElem = innerButtonsContainerRef.current;
         const allRect = allButtonRef.current.getBoundingClientRect();
         const availableRect = availableButtonRef.current.getBoundingClientRect();
         const unavailableRect = unavailableButtonRef.current.getBoundingClientRect();
-
-        // Determine current active button rect
-        let activeRect = allRect;
-        if (filterMode === 'available') activeRect = availableRect;
-        if (filterMode === 'unavailable') activeRect = unavailableRect;
-
-        // Mobile (vertical stack) calculations
-        const mobileActiveTop = activeRect.top - containerRect.top;
-        const mobileActiveHeight = activeRect.height; // Height of the button
         
-        // Desktop (horizontal row) calculations
-        const desktopActiveLeft = activeRect.left - containerRect.left;
-        const desktopActiveWidth = activeRect.width; // Width of the button
+        let activeRect = allRect;
+        if (currentFilterMode === 'available') activeRect = availableRect;
+        if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
-        setSelectorStyles({
-          mobileTop: `${mobileActiveTop}px`,
-          mobileHeight: `${mobileActiveHeight}px`,
-          desktopLeft: `${desktopActiveLeft}px`,
-          desktopWidth: `${desktopActiveWidth}px`,
-        });
+        // Get positions relative to the container for accurate offset
+        const containerX = containerElem.getBoundingClientRect().left;
+        const containerY = containerElem.getBoundingClientRect().top;
+
+        // Calculate values for the selector
+        const topPos = activeRect.top - containerY;
+        const leftPos = activeRect.left - containerX;
+        const width = activeRect.width;
+        const height = activeRect.height;
+
+        // Set CSS variables on the container
+        containerElem.style.setProperty('--selector-top', `${topPos}px`);
+        containerElem.style.setProperty('--selector-height', `${height}px`);
+        containerElem.style.setProperty('--selector-left', `${leftPos}px`);
+        containerElem.style.setProperty('--selector-width', `${width}px`);
       }
     };
 
-    // Recalculate on mount, filterMode change, and window resize
-    calculateStyles();
-    window.addEventListener('resize', calculateStyles);
+    // Initial calculation and on resize
+    calculateAndSetCssVars();
+    window.addEventListener('resize', calculateAndSetCssVars);
 
-    // Set a small timeout after initial render to account for DOM reflow
-    const timeoutId = setTimeout(calculateStyles, 100); 
+    // Timeout to catch initial render layout shifts
+    const timeoutId = setTimeout(calculateAndSetCssVars, 50); // Small delay for DOM reflow
 
     return () => {
-      window.removeEventListener('resize', calculateStyles);
+      window.removeEventListener('resize', calculateAndSetCssVars);
       clearTimeout(timeoutId);
     };
-  }, [filterMode, totalCount, unavailableCount]); // Add totalCount/unavailableCount as dependencies if they change layout dynamically
+  }, [currentFilterMode, totalCount, unavailableCount]); // Depend on currentFilterMode state
 
   const handleFilterChange = (newMode: FilterMode) => {
-    if (newMode === filterMode) return;
+    if (newMode === currentFilterMode) return; // Use currentFilterMode
     
     // Add smooth transition animation
     const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
@@ -101,82 +95,84 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // MODIFIED: Added ref to container div
-    <div ref={containerRef} className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
-      {/* Mobile: Stack vertically, Desktop: Horizontal */}
-      <div className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"> 
-        {/* Animated Selector Background - MODIFIED to use inline styles / CSS variables*/}
+    // Outer div for the entire component - REMOVE sm:min-w/lg:min-w
+    // Ensure it wraps its content on desktop, and is full width on mobile
+    <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
+      {/* Inner div containing the buttons - MODIFIED to be the ref for calculations */}
+      <div 
+        ref={innerButtonsContainerRef} // Ref attached here
+        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
+        // Applying the CSS variables directly here, they are consumed by the absolute selector
+        style={{
+          // Set min/max dimensions for this container to match content
+          // This div's size will dictate where the blur div (its parent) ends
+          // flex items in a flex container will determine its size.
+          // No explicit width on this div is needed beyond sm:w-auto.
+        }}
+      > 
+        {/* Animated Selector Background - Styling simplified to consume CSS variables */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
-            // Mobile styles
-            top: selectorStyles.mobileTop,
-            left: '4px', // From p-1 (4px)
-            right: '4px', // From p-1 (4px)
-            height: selectorStyles.mobileHeight,
-            // Desktop overrides
-            sm: {
-                top: '4px', // From p-1 (4px)
-                bottom: '4px', // From p-1 (4px)
-                height: 'auto',
-                left: selectorStyles.desktopLeft,
-                width: selectorStyles.desktopWidth,
-            }
+            top: 'var(--selector-top, 4px)', // Fallback to p-1 top offset
+            left: 'var(--selector-left, 4px)', // Fallback to p-1 left offset
+            width: 'var(--selector-width, calc(33.333% - 8px))', // Fallback for desktop width
+            height: 'var(--selector-height, calc(33.333% - 8px))', // Fallback for mobile height
           }}
         />
         
         <button
-          ref={allButtonRef} // Add ref
+          ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            filterMode === 'all'
+            currentFilterMode === 'all' // Use currentFilterMode
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           <Filter className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
           <span className={`transition-all duration-225 ${
-            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
+            currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             All ({totalCount})
           </span>
         </button>
         
         <button
-          ref={availableButtonRef} // Add ref
+          ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            filterMode === 'available'
+            currentFilterMode === 'available' // Use currentFilterMode
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           <Eye className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
           <span className={`transition-all duration-225 ${
-            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
+            currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Available ({availableCount})
           </span>
         </button>
         
         <button
-          ref={unavailableButtonRef} // Add ref
+          ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            filterMode === 'unavailable'
+            currentFilterMode === 'unavailable' // Use currentFilterMode
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
           <span className={`transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
+            currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
             Unavailable ({unavailableCount})
           </span>
@@ -184,4 +180,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
