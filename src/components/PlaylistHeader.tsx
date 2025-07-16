@@ -27,13 +27,14 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       <div className="relative z-10 p-4 sm:p-6 lg:p-8 text-white">
         {/* Main Content Flex Container */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-          {/* Thumbnail - MODIFIED FOR RECTANGULAR SHAPE ON MOBILE */}
-          <div className="flex-shrink-0 w-full sm:w-auto"> {/* Added w-full here to control width */}
+          {/* Thumbnail - MODIFIED FOR SMALLER RECTANGULAR SHAPE ON MOBILE */}
+          <div className="flex-shrink-0 w-full sm:w-auto"> 
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              // Added aspect-video for 16:9 ratio on mobile, then reverted to fixed w/h for sm and up
-              className="w-full aspect-video sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
+              // MODIFIED: Use a smaller explicit width (e.g., w-40 or w-48) with aspect-video for mobile
+              // And keep sm:w-32 sm:h-32 for square on larger screens.
+              className="w-40 aspect-video sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
             />
           </div>
           
@@ -83,4 +84,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};2
+};
