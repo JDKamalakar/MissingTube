@@ -23,14 +23,15 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
-  const outerContainerRef = useRef<HTMLDivElement>(null); // Ref for the outermost div (the blur container)
-  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); // Ref for the flex container holding buttons
+  const outerContainerRef = useRef<HTMLDivElement>(null); 
+  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
 
   // State to trigger re-calculation when filterMode changes
   const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
   useEffect(() => {
       setCurrentFilterMode(filterMode);
   }, [filterMode]);
+
 
   // Effect to calculate and set CSS variables AND outer container size
   useEffect(() => {
@@ -49,11 +50,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         if (currentFilterMode === 'available') activeRect = availableRect;
         if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
 
+        // Define a small padding for the floating effect around the selector
+        const SELECTOR_INSET_PADDING = 2; // 2 pixels on each side for a floating effect
+
         // Calculate values for the selector
-        const selectorTopPos = activeRect.top - innerContainerElem.getBoundingClientRect().top;
-        const selectorLeftPos = activeRect.left - innerContainerElem.getBoundingClientRect().left;
-        const selectorWidth = activeRect.width;
-        const selectorHeight = activeRect.height;
+        const selectorTopPos = (activeRect.top - innerContainerElem.getBoundingClientRect().top) + SELECTOR_INSET_PADDING;
+        const selectorLeftPos = (activeRect.left - innerContainerElem.getBoundingClientRect().left) + SELECTOR_INSET_PADDING;
+        const selectorWidth = activeRect.width - (2 * SELECTOR_INSET_PADDING);
+        const selectorHeight = activeRect.height - (2 * SELECTOR_INSET_PADDING);
 
         // Set CSS variables on the innerButtonsContainerRef for the selector
         innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
@@ -133,7 +137,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
-          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'all' 
               ? 'text-white'
@@ -143,7 +146,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Filter className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
           <span className={`transition-all duration-225 whitespace-nowrap ${ 
             currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -154,7 +156,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
-          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'available' 
               ? 'text-white'
@@ -164,7 +165,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <Eye className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -175,7 +175,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
-          // MODIFIED: Adjusted px for light/lg screens, and py for all buttons
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-3 lg:px-4 py-2 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
             currentFilterMode === 'unavailable' 
               ? 'text-white'
@@ -185,7 +184,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
             currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon'
           }`} />
-          {/* MODIFIED: Added whitespace-nowrap to span for count to stay on one line */}
           <span className={`transition-all duration-225 whitespace-nowrap ${
             currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
           }`}>
@@ -195,4 +193,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};4
+};
