@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Video, FilterMode } from '../types';
 import { getVideoUrl } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
-import { Play, Clock, AlertTriangle, Search, ExternalLink, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { Play, Clock, AlertTriangle, Search, ExternalLink, ArrowUpDown, ArrowUp, ArrowDown, FileText } from 'lucide-react';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
@@ -83,11 +83,10 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   });
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <ArrowUpDown className="w-6 h-6 opacity-50 text-gray-900 dark:text-white" />; // MODIFIED: w-6 h-6, text-gray-900 dark:text-white
-    // MODIFIED: Sort arrow white in light mode when sorted, black in dark mode
+    if (sortField !== field) return <ArrowUpDown className="w-6 h-6 opacity-50 text-gray-900 dark:text-white" />;
     return sortDirection === 'asc' ?
-      <ArrowUp className="w-6 h-6 text-white dark:text-gray-900" /> : // MODIFIED: w-6 h-6, dark:text-gray-900
-      <ArrowDown className="w-6 h-6 text-white dark:text-gray-900" />; // MODIFIED: w-6 h-6, dark:text-gray-900
+      <ArrowUp className="w-6 h-6 text-white dark:text-gray-900" /> :
+      <ArrowDown className="w-6 h-6 text-white dark:text-gray-900" />;
   };
 
   const handleVideoClick = (videoId: string) => {
@@ -123,15 +122,14 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             <button
               key={field}
               onClick={() => handleSort(field)}
-              // MODIFIED: Sort buttons height-16, px-4 py-3, and rounded-3xl
+              // MODIFIED: Active sort button is now rounded-full (pill shape)
               className={`flex items-center justify-center gap-2 px-4 py-3 h-16 mobile-text-base font-medium transition-all duration-225 hover:scale-105 active:scale-95 touch-target mobile-button ${
                 sortField === field
-                  ? 'bg-primary text-white rounded-3xl shadow-md' // MODIFIED: rounded-3xl
-                  : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-3xl border border-white/30 dark:border-white/20' // MODIFIED: rounded-3xl
+                  ? 'bg-primary text-white rounded-full shadow-md' // CHANGED: rounded-full for active state
+                  : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-3xl border border-white/30 dark:border-white/20'
               }`}
             >
-              {/* MODIFIED: Ensure sort names don't cut in mobile view & text size */}
-              <span className="inline-block text-base">{label}</span> {/* Modified text-base */}
+              <span className="inline-block text-base">{label}</span>
               {getSortIcon(field)}
             </button>
           ))}
@@ -207,16 +205,16 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               <div className="flex gap-2 mt-auto">
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
-                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-secondary text-white rounded-2xl mobile-text-xs sm:text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target"
+                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-secondary-container/20 backdrop-blur-lg rounded-2xl mobile-text-xs sm:text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group" // Added group class
                 >
-                  <Search className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> {/* MODIFIED: Animation on hover */}
                   <span className="mobile-hidden sm:inline">Search</span>
                 </button>
                 <button
                   onClick={() => handleVideoClick(video.videoId)}
-                  className="flex items-center justify-center p-2 sm:p-3 bg-primary text-white rounded-2xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target"
+                  className="flex items-center justify-center p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-2xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target group" // Added group class
                 >
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> {/* MODIFIED: Animation on hover */}
                 </button>
               </div>
             </div>
@@ -246,4 +244,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
