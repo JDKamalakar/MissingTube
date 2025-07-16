@@ -48,7 +48,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`} {/* Corrected URL format */}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-white/20 hover:bg-white/30 rounded-xl sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center" // Added flex items-center justify-center for icon centering
+                className="p-2 bg-white/20 hover:bg-white/30 rounded-xl sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center" /* Added flex items-center justify-center for icon centering*/
               >
                 <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" /> {/* Icon sizing remains */}
               </a>
