@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid3X3, List } from 'lucide-react';
-import { ViewMode } from '../types';
+import { ViewMode } = from '../types';
 
 interface ViewToggleProps {
   viewMode: ViewMode;
@@ -40,8 +40,8 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         onClick={() => handleViewChange('grid')}
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'grid'
-            ? 'text-white'
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg'
+            ? 'text-white' // Active button: white text
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' // MODIFIED: Added hover background colors
           }`}
       >
         <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
@@ -60,12 +60,12 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         onClick={() => handleViewChange('table')}
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'table'
-            ? 'text-white'
-            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg'
+            ? 'text-white' // Active button: white text
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' // MODIFIED: Added hover background colors
           }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12' // MODIFIED: Changed group-hover:rotate-12 to group-hover:-rotate-12
+          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12'
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'table' 
@@ -77,4 +77,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       </button>
     </div>
   );
-};2
+};
