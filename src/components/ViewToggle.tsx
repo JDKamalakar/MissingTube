@@ -39,17 +39,17 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('grid')}
-        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm ${
-          viewMode === 'grid'
-            ? 'text-white'
-            : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
-        }`}
+        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
+          ${viewMode === 'grid'
+            ? 'text-white' // Active state text color
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // MODIFIED: Hover color and shadow on inactive button
+          }`}
       >
         <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'grid' ? 'scale-110' : 'hover:rotate-12'
+          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12' // MODIFIED: Added group-hover
         }`} />
         <span className={`transition-all duration-225 ${
-          viewMode === 'grid' ? 'font-semibold' : ''
+          viewMode === 'grid' ? 'font-semibold text-white' : 'group-hover:font-semibold group-hover:text-primary-dark-variant' // MODIFIED: Added group-hover colors and font-weight
         }`}>
           Grid
         </span>
@@ -57,21 +57,21 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       
       <button
         onClick={() => handleViewChange('table')}
-        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm ${
-          viewMode === 'table'
-            ? 'text-white'
-            : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
-        }`}
+        className={`relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
+          ${viewMode === 'table'
+            ? 'text-white' // Active state text color
+            : 'text-gray-900 dark:text-white hover:text-primary-dark-variant hover:shadow-lg' // MODIFIED: Hover color and shadow on inactive button
+          }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'hover:rotate-12' // MODIFIED: Changed hover:scale-110 to hover:rotate-12
+          viewMode === 'table' ? 'scale-110' : 'group-hover:rotate-12' // MODIFIED: Added group-hover (or your preferred icon animation)
         }`} />
         <span className={`transition-all duration-225 ${
-          viewMode === 'table' ? 'font-semibold' : ''
+          viewMode === 'table' ? 'font-semibold text-white' : 'group-hover:font-semibold group-hover:text-primary-dark-variant' // MODIFIED: Added group-hover colors and font-weight
         }`}>
           Table
         </span>
       </button>
     </div>
   );
-};1
+};
