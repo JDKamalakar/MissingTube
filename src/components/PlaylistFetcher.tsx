@@ -31,7 +31,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
     <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in">
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-          <div className="p-2 sm:p-3 bg-primary-container rounded-2xl">
+          <div className="p-3 sm:p-3 bg-primary-container rounded-2xl">
             <Search className="w-5 h-5 sm:w-6 sm:h-6 text-on-primary-container" />
           </div>
           <div>
