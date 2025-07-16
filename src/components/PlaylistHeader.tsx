@@ -27,32 +27,31 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       <div className="relative z-10 p-4 sm:p-6 lg:p-8 text-white">
         {/* Main Content Flex Container */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-          {/* Thumbnail */}
-          <div className="flex-shrink-0">
+          {/* Thumbnail - MODIFIED FOR RECTANGULAR SHAPE ON MOBILE */}
+          <div className="flex-shrink-0 w-full sm:w-auto"> {/* Added w-full here to control width */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
+              // Added aspect-video for 16:9 ratio on mobile, then reverted to fixed w/h for sm and up
+              className="w-full aspect-video sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
             />
           </div>
           
           {/* Text Content */}
           <div className="flex-1 min-w-0 text-center sm:text-left w-full">
-            {/* Title and External Link - MODIFIED FOR MOBILE WRAPPING */}
-            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-2 flex-wrap"> {/* Added flex-wrap */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1 break-words"> {/* Added break-words */}
+            {/* Title and External Link */}
+            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 mb-2 flex-wrap">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1 break-words">
                 {playlistInfo.title}
               </h1>
-              {/* External Link Button - MODIFIED FOR SMALLER SIZE ON MOBILE */}
+              {/* External Link Button */}
               <a
-                href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`}
+                href={`http://googleusercontent.com/youtube.com/playlist?list=${playlistInfo.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                // Smaller padding (p-1.5), smaller icon (w-3.5 h-3.5) for mobile
-                // Use sm:p-2 sm:w-5 sm:h-5 to revert to original size on larger screens
                 className="p-1.5 bg-white/20 hover:bg-white/30 rounded-lg sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center"
               >
-                <ExternalLink className="w-3.5 h-3.5 sm:w-5 sm:h-5" /> {/* Smaller icon for mobile */}
+                <ExternalLink className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               </a>
             </div>
             
@@ -84,4 +83,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};1
+};
