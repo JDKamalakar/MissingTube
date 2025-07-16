@@ -46,8 +46,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Enter YouTube playlist URL or ID"
-            // MODIFIED: Ensure consistent vertical padding and height
-            className="w-full px-4 sm:px-6 py-4 h-12 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target"
+            className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target"
             disabled={isLoading}
           />
         </div>
@@ -55,8 +54,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
         <button
           type="submit"
           disabled={isLoading || !url.trim()}
-          // MODIFIED: Ensure consistent vertical padding and height
-          className="w-full py-4 h-12 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 mobile-button touch-target mobile-text-base"
+          className="w-full py-3 sm:py-4 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3 mobile-button touch-target mobile-text-base"
         >
           {isLoading ? (
             <>
@@ -73,4 +71,4 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
       </form>
     </div>
   );
-};
+};1
