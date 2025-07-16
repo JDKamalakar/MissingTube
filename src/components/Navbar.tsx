@@ -24,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const [showBackupModal, setShowBackupModal] = useState(false);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showAboutModal, setShowAboutModa1] = useState(false);
   const [showComparisonModal, setShowComparisonModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false); // State for mobile menu visibility
 
@@ -71,17 +71,26 @@ export const Navbar: React.FC<NavbarProps> = ({
         if (!isDesktop) {
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
+            // Close mobile menu immediately when navbar hides
+            if (showMobileMenu) {
+              setShowMobileMenu(false);
+            }
           } else if (currentScrollY < lastScrollY.current || currentScrollY < SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
 
-          // NEW: If mobile menu is open and user scrolls, close the menu
-          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
-            setShowMobileMenu(false);
+          // NEW: If mobile menu is open and user scrolls down, close the menu
+          // This prevents the menu from staying open if the user scrolls the main content
+          if (showMobileMenu && currentScrollY > lastScrollY.current && currentScrollY > SHRINK_THRESHOLD) {
+              setShowMobileMenu(false);
           }
 
         } else {
           setIsNavbarHidden(false); // Ensure it's never hidden on desktop
+          // Ensure mobile menu is closed if user resizes to desktop view
+          if (showMobileMenu) {
+            setShowMobileMenu(false);
+          }
         }
         
         lastScrollY.current = currentScrollY;
@@ -126,7 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     {
       icon: Info,
       label: 'About',
-      onClick: () => setShowAboutModal(true),
+      onClick: () => setShowAboutModa1(true),
       animation: 'rotate-[360deg]' 
     }
   ];
@@ -138,9 +147,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
-                              ${isScrolled
-                                ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' 
-                                : 'py-4 flex-col items-center sm:pr-8'}`}>
+                                ${isScrolled
+                                  ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' 
+                                  : 'py-4 flex-col items-center sm:pr-8'}`}>
 
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                                 ${isScrolled
@@ -175,9 +184,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Menu Button - REFINED with correct sizing and scroll-to-close logic */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                // The button itself just handles basic hover/active states and sizing
-                // Changed w-12 h-10 to w-10 h-10 for consistent rounded-2xl shape
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 overflow-hidden" 
+                // Changed w-12 h-10 to w-10 h-10 for consistent rounded-2xl shape.
+                // The key fix here is ensuring the button itself has proper dimensions and Z-index
+                // Also removed `overflow-hidden` from the parent button.
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
                 aria-label="Toggle mobile menu"
               >
                 {/* This div *is* the visual representation of the button, mimicking the logo's dive */}
@@ -285,8 +295,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         />
       )}
 
-      {showAboutModal && (
-        <AboutModal onClose={() => setShowAboutModal(false)} />
+      {showAboutModa1 && (
+        <AboutModal onClose={() => setShowAboutModa1(false)} />
       )}
 
       {showComparisonModal && (
@@ -298,4 +308,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       )}
     </>
   );
-};1
+};
