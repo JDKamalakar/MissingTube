@@ -95,29 +95,23 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   };
 
   return (
-    // Outer div for the entire component - REMOVE sm:min-w/lg:min-w
-    // Ensure it wraps its content on desktop, and is full width on mobile
+    // Outer div for the entire component - MODIFIED TO ENSURE CONTENT WRAPPING
+    // It already has p-1. This p-1 is the border/padding around the content.
+    // The inner container (innerButtonsContainerRef) determines its size.
     <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left w-full sm:w-auto">
-      {/* Inner div containing the buttons - MODIFIED to be the ref for calculations */}
+      {/* Inner div containing the buttons - This flex container dictates the size */}
       <div 
-        ref={innerButtonsContainerRef} // Ref attached here
+        ref={innerButtonsContainerRef} 
         className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0"
-        // Applying the CSS variables directly here, they are consumed by the absolute selector
-        style={{
-          // Set min/max dimensions for this container to match content
-          // This div's size will dictate where the blur div (its parent) ends
-          // flex items in a flex container will determine its size.
-          // No explicit width on this div is needed beyond sm:w-auto.
-        }}
       > 
-        {/* Animated Selector Background - Styling simplified to consume CSS variables */}
+        {/* Animated Selector Background - Styling is correct, uses CSS variables */}
         <div 
           className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
-            top: 'var(--selector-top, 4px)', // Fallback to p-1 top offset
-            left: 'var(--selector-left, 4px)', // Fallback to p-1 left offset
-            width: 'var(--selector-width, calc(33.333% - 8px))', // Fallback for desktop width
-            height: 'var(--selector-height, calc(33.333% - 8px))', // Fallback for mobile height
+            top: 'var(--selector-top, 4px)', 
+            left: 'var(--selector-left, 4px)', 
+            width: 'var(--selector-width, calc(33.333% - 8px))', 
+            height: 'var(--selector-height, calc(33.333% - 8px))', 
           }}
         />
         
@@ -125,7 +119,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            currentFilterMode === 'all' // Use currentFilterMode
+            currentFilterMode === 'all' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
@@ -144,7 +138,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            currentFilterMode === 'available' // Use currentFilterMode
+            currentFilterMode === 'available' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
@@ -163,7 +157,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
           className={`group relative z-10 flex items-center justify-center gap-1 px-2 sm:px-4 lg:px-6 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
-            currentFilterMode === 'unavailable' // Use currentFilterMode
+            currentFilterMode === 'unavailable' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
@@ -180,4 +174,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       </div>
     </div>
   );
-};1
+};
