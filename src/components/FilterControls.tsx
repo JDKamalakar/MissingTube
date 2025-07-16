@@ -57,16 +57,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'all'
               ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white hover:bg-white/10'
           }`}
         >
           {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Filter className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            filterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white group-hover:drop-shadow-sm-icon'
           }`} />
           {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
+            filterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white group-hover:text-shadow-sm'
           }`}>
             All ({totalCount})
           </span>
@@ -77,16 +77,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'available'
               ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white hover:bg-white/10'
           }`}
         >
           {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <Eye className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            filterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white group-hover:drop-shadow-sm-icon'
           }`} />
           {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
+            filterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white group-hover:text-shadow-sm'
           }`}>
             Available ({availableCount})
           </span>
@@ -97,16 +97,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 lg:px-8 py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 flex-1 touch-target ${
             filterMode === 'unavailable'
               ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-primary hover:bg-white/10'
+              : 'text-gray-900 dark:text-white hover:text-white hover:bg-white/10'
           }`}
         >
           {/* MODIFIED: Add group-hover:drop-shadow-sm-icon and group-hover:text-shadow-sm */}
           <EyeOff className={`w-4 h-4 transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-primary group-hover:drop-shadow-sm-icon'
+            filterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white group-hover:drop-shadow-sm-icon'
           }`} />
           {/* MODIFIED: Add group-hover:text-shadow-sm */}
           <span className={`transition-all duration-225 ${
-            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-primary group-hover:text-shadow-sm'
+            filterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white group-hover:text-shadow-sm'
           }`}>
             Unavailable ({unavailableCount})
           </span>
