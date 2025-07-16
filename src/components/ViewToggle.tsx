@@ -41,16 +41,17 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'grid'
             ? 'text-white' // Active button: white text
-            : 'text-gray-900 dark:text-white hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' // Inactive button: default text, hover shadow and background
+            // MODIFIED: Apply hover:text-white for light mode, dark:hover:text-primary for dark mode
+            : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' 
           }`}
       >
         <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-primary' // MODIFIED: Added group-hover:text-primary
+          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'grid' 
             ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary' // MODIFIED: Added group-hover:text-primary
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
         }`}>
           Grid
         </span>
@@ -61,16 +62,17 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target mobile-text-sm
           ${viewMode === 'table'
             ? 'text-white' // Active button: white text
-            : 'text-gray-900 dark:text-white hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' // Inactive button: default text, hover shadow and background
+            // MODIFIED: Apply hover:text-white for light mode, dark:hover:text-primary for dark mode
+            : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' 
           }`}
       >
         <List className={`w-4 h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-primary' // MODIFIED: Added group-hover:text-primary
+          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
         }`} />
         <span className={`transition-all duration-225 ${
           viewMode === 'table' 
             ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-primary' // MODIFIED: Added group-hover:text-primary
+            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
         }`}>
           Table
         </span>
