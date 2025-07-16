@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } = from 'react';
 import { ChevronDown, ChevronUp, BarChart3, Clock, Video, AlertTriangle } from 'lucide-react';
 import { PlaylistStats } from '../types';
 
@@ -65,7 +65,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
             <p className="text-on-surface-variant text-sm">View detailed analytics</p>
           </div>
         </div>
-        <div className="flex-shrink-0 transition-transform duration-225"> {/* Added flex-shrink-0 to prevent icon from shrinking */}
+        <div className="flex-shrink-0 transition-transform duration-225">
           {isExpanded ? (
             <ChevronUp className="w-5 h-5 text-on-surface-variant" />
           ) : (
@@ -74,10 +74,10 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         </div>
       </button>
 
-      <div className={`transition-all duration-300 ease-out ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}> {/* Changed max-h-96 to max-h-screen for potentially taller content */}
+      <div className={`transition-all duration-300 ease-out ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
         <div className="p-6 pt-0">
-          {/* MODIFIED GRID LAYOUT FOR RESPONSIVENESS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Keep grid-cols-2 as requested, but ensure content inside wraps */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {statItems.map((item, index) => {
               const Icon = item.icon;
               const colorClasses = getColorClasses(item.color);
@@ -85,13 +85,14 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225"
+                  // Ensured text-wrap is available for smaller screens to prevent overflow
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 overflow-hidden" // Added overflow-hidden as a safeguard
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses}`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  {/* Ensure value and label text can wrap */}
-                  <div className="text-2xl font-bold text-on-surface mb-1 break-words"> 
+                  {/* Apply break-words to values and labels */}
+                  <div className="text-2xl font-bold text-on-surface mb-1 break-words">
                     {item.value}
                   </div>
                   <div className="text-sm text-on-surface-variant font-medium break-words">{item.label}</div>
@@ -104,8 +105,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
             <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant">
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5" />
-                {/* Ensure text can wrap on smaller screens */}
-                <span className="text-sm font-medium break-words"> 
+                {/* Apply break-words to warning message */}
+                <span className="text-sm font-medium break-words">
                   {stats.unavailableVideos} video{stats.unavailableVideos !== 1 ? 's' : ''} unavailable
                 </span>
               </div>
@@ -115,4 +116,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};3
+};
