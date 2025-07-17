@@ -109,8 +109,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
   return (
     <>
-      {/* Mobile-Optimized Sort Controls */}
-      <div className="flex flex-col gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2">
+      {/* Mobile-Optimized Sort Controls - MODIFIED */}
+      <div className="flex flex-col gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 group hover:scale-[1.01] transition-transform duration-300"> {/* ADDED group and hover:scale */}
         <span className="mobile-text-sm font-medium text-gray-900 dark:text-white">Sort by:</span>
         <div className="grid grid-cols-2 sm:flex gap-2">
           {[
@@ -143,9 +143,10 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         }`}
       >
         {sortedVideos.map((video) => (
+          // MODIFIED: Added hover:scale to the main video card div
           <div
             key={video.id}
-            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
+            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col hover:scale-[1.02]" {/* ADDED hover:scale-[1.02] */}
           >
             {/* Thumbnail Container with Mobile-Optimized Padding */}
             <div className="relative p-3 sm:p-4 pb-2">
@@ -172,13 +173,13 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 </div>
 
                 {/* Duration badge - Mobile Optimized - MODIFIED */}
-                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-sm hover:scale-110 transition-transform duration-225"> {/* ADDED hover:scale-110 and transition */}
+                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-sm hover:scale-110 transition-transform duration-225">
                   <Clock className="w-4 h-4 text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }} />
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>{video.duration}</span>
                 </div>
 
                 {/* Index number - Mobile Optimized - MODIFIED */}
-                <div className="absolute top-2 left-2 flex items-center gap-3 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-xs hover:scale-110 transition-transform duration-225"> {/* ADDED hover:scale-110 and transition */}
+                <div className="absolute top-2 left-2 flex items-center gap-3 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-xs hover:scale-110 transition-transform duration-225">
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>#{video.index}</span>
                 </div>
               </div>
@@ -244,4 +245,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
