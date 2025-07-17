@@ -47,7 +47,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300">
+    // MODIFIED: Changed hover:scale to shadow change, ensuring rounded corners work with shadow
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2 animate-fade-in transition-all duration-300">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
@@ -56,7 +57,6 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         className="w-full p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
         <div className="flex items-center gap-4">
-          {/* MODIFIED: Added hover:scale to this div directly */}
           <div className="p-3 bg-secondary-container rounded-2xl transition-transform duration-225 hover:scale-110">
             <BarChart3 className="w-6 h-6 text-on-secondary-container" />
           </div>
@@ -74,6 +74,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         </div>
       </button>
 
+      {/* Opening animation is controlled by max-height and opacity transition */}
       <div className={`transition-all duration-300 ease-out ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
         <div className="p-6 pt-0">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -112,4 +113,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};1
+};
