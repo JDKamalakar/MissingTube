@@ -169,7 +169,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   }}
                 />
                 
-                {/* Play overlay - RESTORED AND CONFIRMED PRESENT */}
+                {/* Play overlay - THIS SECTION IS NOW CORRECTLY RESTORED */}
                 <div
                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
                   onClick={() => handleVideoClick(video.videoId)}
@@ -252,4 +252,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
