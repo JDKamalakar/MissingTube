@@ -45,13 +45,13 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1 break-words">
                 {playlistInfo.title}
               </h1>
-              {/* External Link Button */}
+              {/* External Link Button - MODIFIED */}
               <a
                 href={`http://googleusercontent.com/youtube.com/playlist?list=${playlistInfo.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1.5 bg-white/20 hover:bg-white/30 rounded-lg sm:rounded-2xl transition-all duration-200 hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center"
-              >
+                className="p-1.5 bg-white/20 hover:bg-white/30 rounded-lg sm:rounded-2xl transition-all duration-200 hover:scale-125 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
+              > {/* ADDED animate-bounce and changed hover:scale-110 to hover:scale-125 */}
                 <ExternalLink className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               </a>
             </div>
@@ -84,4 +84,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};1
+};
