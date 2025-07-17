@@ -46,13 +46,19 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
     return colorMap[color as keyof typeof colorMap] || colorMap.primary;
   };
 
-  return (
-    // MODIFIED: Ensure overflow-hidden and rounded-3xl are with the shadow classes
-    <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.03] transition-all duration-300 ease-in-out">
-      <div className="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none"> {/* This helper div helps ensure shadow respects corners */}
-         {/* We can potentially move the shadow here if needed, but for now, keep it on the main div */}
-      </div>
+  const panelShadowStyle = {
+    boxShadow: isExpanded 
+      ? '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' // Equivalent to shadow-2xl
+      : '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // Equivalent to shadow-xl
+    transition: 'box-shadow 300ms ease-in-out', // Ensure smooth transition
+  };
 
+  return (
+    // MODIFIED: Custom shadow style applied, hover:scale adjusted
+    <div
+      className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.03] transition-all duration-300 ease-in-out"
+      style={panelShadowStyle} // Apply custom shadow here
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
@@ -88,7 +94,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
+                  // MODIFIED: Adjusted padding and hover scale, added relative and z-10
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-[1.03] relative z-10" // scale reduced, relative & z-10 added
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
                     <Icon className="w-5 h-5" />
@@ -116,4 +123,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};1
+};
