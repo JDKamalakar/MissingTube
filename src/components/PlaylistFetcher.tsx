@@ -28,8 +28,8 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
   };
 
   return (
-    // MODIFIED: Added group and hover:scale to the main div
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.01] transition-transform duration-300">
+    // MODIFIED: Increased hover:scale to the main div
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300">
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           {/* MODIFIED: Added hover:scale to the icon's parent div */}
@@ -48,7 +48,8 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Enter YouTube playlist URL or ID"
-            className="w-full px-4 sm:px-6 py-3 h-12 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target"
+            // MODIFIED: Added hover:scale to the input field
+            className="w-full px-4 sm:px-6 py-3 h-12 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target hover:scale-[1.005]"
             disabled={isLoading}
           />
         </div>
@@ -73,4 +74,4 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
       </form>
     </div>
   );
-};1
+};
