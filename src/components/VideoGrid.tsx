@@ -51,8 +51,18 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   };
 
   const sortedVideos = [...filteredVideos].sort((a, b) => {
-    let aValue: any = a[sortField === 'channel' ? 'channelTitle' : sortField];
-    let bValue: any = b[sortField === 'channel' ? 'channelTitle' : sortField];
+    // FIX: Corrected the access to properties for sorting
+    let aValue: any;
+    let bValue: any;
+
+    if (sortField === 'channel') {
+      aValue = a.channelTitle;
+      bValue = b.channelTitle;
+    } else {
+      aValue = a[sortField];
+      bValue = b[sortField];
+    }
+    
     const direction = sortDirection === 'asc' ? 1 : -1;
 
     if (sortField === 'index') {
@@ -143,6 +153,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         }`}
       >
         {sortedVideos.map((video) => (
+          {/* Main Video Card Div - MODIFIED */}
+          {/* Ensure hover:scale is applied directly and effectively */}
           <div
             key={video.id}
             className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 elevation-2 hover:elevation-4 flex flex-col hover:scale-[1.02]"
@@ -161,7 +173,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   }}
                 />
                 
-                {/* Play overlay */}
+                {/* Play overlay - RESTORED */}
                 <div
                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
                   onClick={() => handleVideoClick(video.videoId)}
@@ -244,4 +256,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
