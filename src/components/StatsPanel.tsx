@@ -47,7 +47,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300"> {/* MODIFIED: hover:scale increased */}
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
@@ -56,7 +56,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         className="w-full p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-secondary-container rounded-2xl transition-transform duration-225 group-hover:scale-110">
+          {/* MODIFIED: Added hover:scale to this div directly */}
+          <div className="p-3 bg-secondary-container rounded-2xl transition-transform duration-225 hover:scale-110">
             <BarChart3 className="w-6 h-6 text-on-secondary-container" />
           </div>
           <div className="text-left">
@@ -83,7 +84,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105" // MODIFIED: Removed overflow-hidden
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
                     <Icon className="w-5 h-5" />
