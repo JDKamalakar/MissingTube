@@ -73,10 +73,11 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         </div>
       </button>
 
-      {/* MODIFIED: Increased transition duration to duration-500 */}
       <div className={`transition-all duration-500 ease-in-out transform-gpu ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-        <div className="p-6 pt-0">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* MODIFIED: Adjusted padding to p-5 to give more room for elements within */}
+        <div className="p-5 pt-0">
+          {/* MODIFIED: Increased gap from gap-4 to gap-6 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statItems.map((item, index) => {
               const Icon = item.icon;
               const colorClasses = getColorClasses(item.color);
@@ -84,7 +85,6 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  // MODIFIED: Added p-5 (increased padding) to give more room for scaling
                   className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-5 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
@@ -113,4 +113,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};1
+};
