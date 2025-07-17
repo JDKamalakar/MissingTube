@@ -47,17 +47,16 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2 animate-fade-in">
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2 animate-fade-in group hover:scale-[1.005] transition-transform duration-300">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
-          // Force remove hover state when mouse leaves
           e.currentTarget.blur();
         }}
         className="w-full p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-secondary-container rounded-2xl">
+          <div className="p-3 bg-secondary-container rounded-2xl transition-transform duration-225 group-hover:scale-110"> {/* MODIFIED: Added group-hover:scale-110 */}
             <BarChart3 className="w-6 h-6 text-on-secondary-container" />
           </div>
           <div className="text-left">
@@ -76,7 +75,6 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
 
       <div className={`transition-all duration-300 ease-out ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
         <div className="p-6 pt-0">
-          {/* Keep grid-cols-2 as requested, but ensure content inside wraps */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {statItems.map((item, index) => {
               const Icon = item.icon;
@@ -85,13 +83,11 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  // Added hover:scale-105 and transition classes here
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 overflow-hidden hover:scale-105" // ADDED hover:scale-105
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 overflow-hidden hover:scale-105"
                 >
-                  <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses}`}>
+                  <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}> {/* MODIFIED: Added hover:scale-110 */}
                     <Icon className="w-5 h-5" />
                   </div>
-                  {/* Apply break-words to values and labels */}
                   <div className="text-2xl font-bold text-on-surface mb-1 break-words">
                     {item.value}
                   </div>
@@ -102,10 +98,9 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
           </div>
 
           {stats.unavailableVideos > 0 && (
-            <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant">
+            <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant transition-transform duration-225 hover:scale-[1.02]"> {/* MODIFIED: Added hover:scale-[1.02] */}
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5" />
-                {/* Apply break-words to warning message */}
                 <span className="text-sm font-medium break-words">
                   {stats.unavailableVideos} video{stats.unavailableVideos !== 1 ? 's' : ''} unavailable
                 </span>
@@ -116,4 +111,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};2
+};
