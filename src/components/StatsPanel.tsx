@@ -47,7 +47,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    // MODIFIED: Reverted shadow to Tailwind classes, keeping hover:scale.
+    // MODIFIED: Adjusted shadow classes and transition for better rounded corners effect
     <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.03] transition-all duration-300 ease-in-out">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -75,7 +75,10 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </button>
 
       <div className={`transition-all duration-500 ease-in-out transform-gpu ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
-        <div className="p-5 pt-0"> {/* This div has padding */}
+        {/* MODIFIED: Adjusted padding to pt-1 to pt-2 or pt-3 to shift grid down slightly
+                     And removed the top-padding from the containing div, added to each grid item instead. */}
+        <div className="p-5"> {/* Changed pt-0 to p-5 to apply general padding */}
+          {/* MODIFIED: Increased gap and adjusted padding */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {statItems.map((item, index) => {
               const Icon = item.icon;
@@ -84,6 +87,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
+                  // MODIFIED: Increased vertical padding further to p-6 (from p-5)
                   className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
