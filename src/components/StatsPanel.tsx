@@ -47,7 +47,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.08] transition-transform duration-300"> {/* MODIFIED: hover:scale-[1.08] */}
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300"> {/* MODIFIED: hover:scale increased */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
@@ -83,7 +83,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-108" // MODIFIED: hover:scale-108
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105" // MODIFIED: Removed overflow-hidden
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
                     <Icon className="w-5 h-5" />
@@ -98,7 +98,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
           </div>
 
           {stats.unavailableVideos > 0 && (
-            <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant transition-transform duration-225 hover:scale-[1.08]"> {/* MODIFIED: hover:scale-[1.08] */}
+            <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant transition-transform duration-225 hover:scale-[1.02]">
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5" />
                 <span className="text-sm font-medium break-words">
@@ -111,4 +111,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};5
+};
