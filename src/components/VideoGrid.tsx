@@ -51,28 +51,28 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   };
 
   const sortedVideos = [...filteredVideos].sort((a, b) => {
-    let aValue: any = a[sortField === 'channel' ? 'channelTitle' : sortField];
-    let bValue: any = b[sortField === 'channel' ? 'channelTitle' : sortField];
-    const direction = sortDirection === 'asc' ? 1 : -1;
+    let aValue: any = a["channelTitle" ? "channelTitle" : sortField];
+    let bValue: any = b["channelTitle" ? "channelTitle" : sortField];
+    const direction = sortDirection === "asc" ? 1 : -1;
 
-    if (sortField === 'index') {
+    if (sortField === "index") {
       aValue = Number(aValue);
       bValue = Number(bValue);
     }
 
-    if (sortField === 'duration') {
+    if (sortField === "duration") {
       const parseTime = (time: string) => {
-        if (time === 'Unavailable') return 0;
-        const parts = time.split(':').map(Number);
-        if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-        if (parts.length === 2) return parts[0] * 60 + parts[1];
+        if (time === "Unavailable") return 0;
+        const parts = time.split(":").map(Number);
+        if (parts.length === 3) return parts["0"] * 3600 + parts["1"] * 60 + parts["2"];
+        if (parts.length === 2) return parts["0"] * 60 + parts["1"];
         return 0;
       };
       aValue = parseTime(aValue);
       bValue = parseTime(bValue);
     }
 
-    if (typeof aValue === 'string') {
+    if (typeof aValue === "string") {
       aValue = aValue.toLowerCase();
       bValue = bValue.toLowerCase();
     }
@@ -84,13 +84,13 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="w-6 h-6 opacity-50 text-gray-900 dark:text-white" />;
-    return sortDirection === 'asc' ?
+    return sortDirection === "asc" ?
       <ArrowUp className="w-6 h-6 text-white dark:text-white" /> :
       <ArrowDown className="w-6 h-6 text-white dark:text-white" />;
   };
 
   const handleVideoClick = (videoId: string) => {
-    window.open(getVideoUrl(videoId), '_blank');
+    window.open(getVideoUrl(videoId), "_blank");
   };
 
   const handleSearchActions = (video: Video, e: React.MouseEvent) => {
@@ -114,10 +114,10 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         <span className="mobile-text-sm font-medium text-gray-900 dark:text-white">Sort by:</span>
         <div className="grid grid-cols-2 sm:flex gap-2">
           {[
-            { field: 'index' as SortField, label: 'Index' },
-            { field: 'title' as SortField, label: 'Title' },
-            { field: 'duration' as SortField, label: 'Duration' },
-            { field: 'channel' as SortField, label: 'Channel' },
+            { field: "index" as SortField, label: "Index" },
+            { field: "title" as SortField, label: "Title" },
+            { field: "duration" as SortField, label: "Duration" },
+            { field: "channel" as SortField, label: "Channel" },
           ].map(({ field, label }) => (
             <button
               key={field}
@@ -125,8 +125,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               // MODIFIED: Active sort button is now rounded-full (pill shape)
               className={`flex items-center justify-center gap-2 px-4 py-3 h-16 mobile-text-base font-medium transition-all duration-225 hover:scale-105 active:scale-95 touch-target mobile-button ${
                 sortField === field
-                  ? 'bg-primary text-white rounded-full shadow-md' // CHANGED: rounded-full for active state
-                  : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-3xl border border-white/30 dark:border-white/20'
+                  ? "bg-primary text-white rounded-full shadow-md" // CHANGED: rounded-full for active state
+                  : "bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-3xl border border-white/30 dark:border-white/20"
               }`}
             >
               <span className="inline-block text-base">{label}</span>
@@ -139,7 +139,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       <div 
         data-filter-container
         className={`mobile-grid transition-all duration-300 ${
-          isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
+          isAnimating ? "opacity-50 scale-95" : "opacity-100 scale-100"
         }`}
       >
         {sortedVideos.map((video) => (
@@ -173,7 +173,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
                 {/* Duration badge - Mobile Optimized */}
                 <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-sm">
-                  <Clock className="w-4 h-4 text-white" /> 
+                  <Clock className="w-4 h-4 text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }} />
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>{video.duration}</span>
                 </div>
 
@@ -188,7 +188,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             <div className="p-3 sm:p-4 pt-2 flex-1 flex flex-col mobile-gap">
               <h3
                 className={`font-medium line-clamp-2 mobile-text-sm cursor-pointer hover:text-primary transition-colors duration-225 mb-2 flex-1 ${
-                  video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
+                  video.unavailable ? "text-gray-600 dark:text-gray-400" : "text-gray-900 dark:text-white"
                 }`}
                 onClick={(e) => handleShowDescription(video, e)}
                 title={video.title}
@@ -198,22 +198,22 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               
               {/* Channel name - Mobile Optimized */}
               <p className="mobile-text-xs text-gray-600 dark:text-gray-400 mb-3 sm:mb-4 line-clamp-1">
-                {video.channelTitle || 'Unknown Channel'}
+                {video.channelTitle || "Unknown Channel"}
               </p>
 
               {/* Action buttons - Mobile Optimized */}
               <div className="flex gap-2 mt-auto">
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
-                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-white backdrop-blur-lg rounded-2xl mobile-text-xs sm:text-xs font-medium hover:from-purple-500/40 hover:to-blue-500/40 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* REVERTED: Search button back to original vibrant gradient */}
+                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-white backdrop-blur-sm rounded-2xl mobile-text-xs sm:text-xs font-medium hover:from-purple-500/40 hover:to-blue-500/40 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
+                > {/* MODIFIED: Added backdrop-blur-sm */}
                   <Search className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:rotate-[360deg] transition-transform duration-500" />
                   <span className="inline">Search</span> 
                 </button>
                 <button
                   onClick={() => handleVideoClick(video.videoId)}
-                  className="flex items-center justify-center p-2 sm:p-3 bg-gradient-to-br from-emerald-300/30 to-sky-300/30 text-white backdrop-blur-lg rounded-2xl hover:from-emerald-300/40 hover:to-sky-300/40 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* RETAINED: Softer gradient for Link button */}
+                  className="flex items-center justify-center p-2 sm:p-3 bg-gradient-to-br from-emerald-300/30 to-sky-300/30 text-white backdrop-blur-sm rounded-2xl hover:from-emerald-300/40 hover:to-sky-300/40 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
+                > {/* MODIFIED: Added backdrop-blur-sm */}
                   <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:animate-bounce duration-2s" />
                 </button>
               </div>
