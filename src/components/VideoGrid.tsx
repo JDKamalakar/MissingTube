@@ -143,6 +143,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         }`}
       >
         {sortedVideos.map((video) => (
+          {/* Main Video Card Div - MODIFIED */}
+          {/* Ensure hover:scale is applied directly and effectively */}
           <div
             key={video.id}
             className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 elevation-2 hover:elevation-4 flex flex-col hover:scale-[1.02]"
@@ -161,7 +163,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   }}
                 />
                 
-                {/* Play overlay */}
+                {/* Play overlay - RESTORED */}
                 <div
                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
                   onClick={() => handleVideoClick(video.videoId)}
@@ -244,4 +246,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
