@@ -32,7 +32,8 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-40 aspect-video sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
+              // MODIFIED: Increased width for mobile view
+              className="w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-xl sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-300 hover:scale-105 mx-auto sm:mx-0"
             />
           </div>
           
@@ -49,7 +50,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-1.5 bg-white/20 hover:bg-white/30 rounded-lg sm:rounded-2xl transition-all duration-200 hover:scale-135 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
-              > {/* The hover:scale-135 and animate-bounce are now directly effective on this element */}
+              >
                 <ExternalLink className="w-4.5 h-4.5 sm:w-5 sm:h-5" /> 
               </a>
             </div>
@@ -61,11 +62,11 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             
             {/* Video Count and Unavailable Count - MODIFIED */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm text-white/70">
-              <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-transform duration-200 hover:scale-110"> {/* MODIFIED: hover:scale-105 to hover:scale-110 */}
+              <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-transform duration-200 hover:scale-110">
                 {playlistInfo.videoCount} videos
               </span>
               {unavailableCount > 0 && (
-                <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg animate-pulse transition-transform duration-200 hover:scale-110"> {/* MODIFIED: hover:scale-105 to hover:scale-110 */}
+                <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg animate-pulse transition-transform duration-200 hover:scale-110">
                   {unavailableCount} unavailable
                 </span>
               )}
@@ -82,4 +83,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};1
+};
