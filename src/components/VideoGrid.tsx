@@ -85,8 +85,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="w-6 h-6 opacity-50 text-gray-900 dark:text-white" />;
     return sortDirection === 'asc' ?
-      <ArrowUp className="w-6 h-6 text-white dark:text-gray-900" /> :
-      <ArrowDown className="w-6 h-6 text-white dark:text-gray-900" />;
+      <ArrowUp className="w-6 h-6 text-white dark:text-white" /> :
+      <ArrowDown className="w-6 h-6 text-white dark:text-white" />;
   };
 
   const handleVideoClick = (videoId: string) => {
@@ -188,7 +188,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             <div className="p-3 sm:p-4 pt-2 flex-1 flex flex-col mobile-gap">
               <h3
                 className={`font-medium line-clamp-2 mobile-text-sm cursor-pointer hover:text-primary transition-colors duration-225 mb-2 flex-1 ${
-                  video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-white dark:text-white'
+                  video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
                 }`}
                 onClick={(e) => handleShowDescription(video, e)}
                 title={video.title}
