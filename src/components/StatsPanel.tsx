@@ -85,8 +85,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  // Ensured text-wrap is available for smaller screens to prevent overflow
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 overflow-hidden" // Added overflow-hidden as a safeguard
+                  // Added hover:scale-105 and transition classes here
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 overflow-hidden hover:scale-105" // ADDED hover:scale-105
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses}`}>
                     <Icon className="w-5 h-5" />
@@ -116,4 +116,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};1
+};
