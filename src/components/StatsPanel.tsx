@@ -47,8 +47,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
   };
 
   return (
-    // MODIFIED: Increased hover:scale for the main div
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-gray-300/30 dark:border-gray-700/30 overflow-hidden elevation-2 animate-fade-in group hover:scale-[1.03] transition-all duration-300 ease-in-out">
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.03] transition-all duration-300 ease-in-out">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         onMouseLeave={(e) => {
@@ -74,8 +73,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         </div>
       </button>
 
-      {/* MODIFIED: Changed max-h transition duration to match closing speed (duration-300) */}
-      <div className={`transition-all duration-300 ease-in-out transform-gpu ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
+      {/* MODIFIED: Increased transition duration to duration-500 */}
+      <div className={`transition-all duration-500 ease-in-out transform-gpu ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
         <div className="p-6 pt-0">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {statItems.map((item, index) => {
@@ -85,7 +84,8 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
               return (
                 <div
                   key={index}
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-4 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
+                  // MODIFIED: Added p-5 (increased padding) to give more room for scaling
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-5 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
                 >
                   <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
                     <Icon className="w-5 h-5" />
@@ -113,4 +113,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};1
+};
