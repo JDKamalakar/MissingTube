@@ -205,15 +205,15 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               <div className="flex gap-2 mt-auto">
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
-                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-gradient-to-br from-indigo-300/30 to-purple-300/30 text-white backdrop-blur-lg rounded-2xl mobile-text-xs sm:text-xs font-medium hover:from-indigo-300/40 hover:to-purple-300/40 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* MODIFIED: Softer gradient for Search button */}
+                  className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-white backdrop-blur-lg rounded-2xl mobile-text-xs sm:text-xs font-medium hover:from-purple-500/40 hover:to-blue-500/40 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
+                > {/* REVERTED: Search button back to original vibrant gradient */}
                   <Search className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:rotate-[360deg] transition-transform duration-500" />
                   <span className="inline">Search</span> 
                 </button>
                 <button
                   onClick={() => handleVideoClick(video.videoId)}
                   className="flex items-center justify-center p-2 sm:p-3 bg-gradient-to-br from-emerald-300/30 to-sky-300/30 text-white backdrop-blur-lg rounded-2xl hover:from-emerald-300/40 hover:to-sky-300/40 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* MODIFIED: Softer gradient for Link button */}
+                > {/* RETAINED: Softer gradient for Link button */}
                   <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:animate-bounce duration-2s" />
                 </button>
               </div>
@@ -244,4 +244,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
