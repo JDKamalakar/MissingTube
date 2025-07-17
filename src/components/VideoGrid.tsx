@@ -51,7 +51,6 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   };
 
   const sortedVideos = [...filteredVideos].sort((a, b) => {
-    // FIX: Corrected the access to properties for sorting
     let aValue: any;
     let bValue: any;
 
@@ -119,8 +118,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
   return (
     <>
-      {/* Mobile-Optimized Sort Controls - MODIFIED */}
-      {/* Ensured group and hover:scale are applied correctly */}
+      {/* Mobile-Optimized Sort Controls */}
       <div className="flex flex-col gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 group hover:scale-[1.01] transition-transform duration-300">
         <span className="mobile-text-sm font-medium text-gray-900 dark:text-white">Sort by:</span>
         <div className="grid grid-cols-2 sm:flex gap-2">
@@ -153,8 +151,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         }`}
       >
         {sortedVideos.map((video) => (
-          {/* Main Video Card Div - MODIFIED */}
-          {/* Ensure hover:scale is applied directly and effectively */}
+          // Main Video Card Div
+          // Ensure hover:scale is applied directly and effectively
           <div
             key={video.id}
             className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 elevation-2 hover:elevation-4 flex flex-col hover:scale-[1.02]"
