@@ -12,7 +12,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   unavailableCount = 0 
 }) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in">
+    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.01] transition-transform duration-300">
       {/* Background Image with Blur */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -61,13 +61,13 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               by {playlistInfo.channelTitle}
             </p>
             
-            {/* Video Count and Unavailable Count */}
+            {/* Video Count and Unavailable Count - MODIFIED */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm text-white/70">
-              <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg">
+              <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-transform duration-200 hover:scale-105">
                 {playlistInfo.videoCount} videos
               </span>
               {unavailableCount > 0 && (
-                <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg animate-pulse">
+                <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg animate-pulse transition-transform duration-200 hover:scale-105">
                   {unavailableCount} unavailable
                 </span>
               )}
@@ -84,4 +84,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};4
+};
