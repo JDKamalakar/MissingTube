@@ -48,8 +48,8 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Enter YouTube playlist URL or ID"
-            // MODIFIED: Added hover:scale to the input field
-            className="w-full px-4 sm:px-6 py-3 h-12 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target hover:scale-[1.005]"
+            // MODIFIED: Changed hover:scale to match the button's scale
+            className="w-full px-4 sm:px-6 py-3 h-12 rounded-2xl border border-outline-variant bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-225 text-on-surface placeholder:text-on-surface-variant mobile-text-base touch-target hover:scale-[1.02]"
             disabled={isLoading}
           />
         </div>
