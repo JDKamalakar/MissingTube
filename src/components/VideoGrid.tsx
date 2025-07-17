@@ -178,7 +178,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 </div>
 
                 {/* Index number - Mobile Optimized */}
-                <div className="absolute top-2 left-2 flex items-center gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-2 px-2 py-1 sm:px-3 sm:py-2 mobile-text-xs sm:text-xs">
+                <div className="absolute top-2 left-2 flex items-center gap-3 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-xs">
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>#{video.index}</span>
                 </div>
               </div>
