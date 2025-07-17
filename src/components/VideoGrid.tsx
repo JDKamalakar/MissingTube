@@ -171,14 +171,14 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   </div>
                 </div>
 
-                {/* Duration badge - Mobile Optimized */}
-                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-sm">
+                {/* Duration badge - Mobile Optimized - MODIFIED */}
+                <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-sm hover:scale-110 transition-transform duration-225"> {/* ADDED hover:scale-110 and transition */}
                   <Clock className="w-4 h-4 text-white" style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }} />
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>{video.duration}</span>
                 </div>
 
-                {/* Index number - Mobile Optimized */}
-                <div className="absolute top-2 left-2 flex items-center gap-3 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-xs">
+                {/* Index number - Mobile Optimized - MODIFIED */}
+                <div className="absolute top-2 left-2 flex items-center gap-3 bg-white/20 text-white backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 elevation-3 px-3 py-3 sm:px-3 sm:py-3 mobile-text-xs sm:text-xs hover:scale-110 transition-transform duration-225"> {/* ADDED hover:scale-110 and transition */}
                   <span style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>#{video.index}</span>
                 </div>
               </div>
@@ -206,14 +206,14 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
                   className="flex-1 flex items-center justify-center gap-2 py-2 sm:py-3 px-2 sm:px-3 bg-gradient-to-br from-purple-500/30 to-blue-500/30 text-white backdrop-blur-sm rounded-2xl mobile-text-xs sm:text-xs font-medium hover:from-purple-500/40 hover:to-blue-500/40 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* MODIFIED: Added backdrop-blur-sm */}
+                >
                   <Search className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:rotate-[360deg] transition-transform duration-500" />
                   <span className="inline">Search</span> 
                 </button>
                 <button
                   onClick={() => handleVideoClick(video.videoId)}
                   className="flex items-center justify-center p-2 sm:p-3 bg-gradient-to-br from-emerald-300/30 to-sky-300/30 text-white backdrop-blur-sm rounded-2xl hover:from-emerald-300/40 hover:to-sky-300/40 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md touch-target group border border-white/30" 
-                > {/* MODIFIED: Added backdrop-blur-sm */}
+                >
                   <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:animate-bounce duration-2s" />
                 </button>
               </div>
@@ -244,4 +244,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
