@@ -112,4 +112,4 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       </div>
     </div>
   );
-};
+};1
