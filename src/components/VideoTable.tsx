@@ -112,7 +112,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
     <>
       <div 
         data-filter-container
-        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 ${
+        // Added hover:scale-[1.005] for subtle table scale on hover
+        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 hover:scale-[1.005] ${ 
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
@@ -192,12 +193,13 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
+                    {/* Consistent square shape for index with rounded corners */}
+                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.15] items-center justify-center active:scale-90 hover:shadow-lg group aspect-square"> {/* Added aspect-square and adjusted hover scale */}
                       {video.index}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225"> {/* Applied shadow-lg here for elevation-3 effect on thumbnail and reduced hover scale to 1.03 for a subtle effect */}
+                    <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.08] transition-transform duration-225"> {/* Increased hover scale for prominence */}
                       <img
                         src={video.thumbnail}
                         alt={video.title}
@@ -212,7 +214,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
                         onClick={() => handleVideoClick(video.videoId)}
                       >
-                        <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-110 transition-transform duration-225 border border-white/30">
+                        <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-125 transition-transform duration-225 border border-white/30"> {/* Increased hover scale for prominence */}
                           <Play className="w-6 h-6 text-white fill-white" />
                         </div>
                       </div>
@@ -226,9 +228,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         </div>
                       )}
                       <div
-                        className={`cursor-pointer hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
-                          video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
-                        }`}
+                        className={`cursor-pointer hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 hover:scale-[1.02] transition-transform duration-225 origin-left ${video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''}`} {/* Added subtle hover scale */}
                         onClick={(e) => handleShowDescription(video, e)}
                         title={video.title}
                       >
@@ -242,8 +242,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {/* Applied shadow-lg for elevation-3 and hover:scale-[1.03] for subtle hover scale */}
-                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
+                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.08] transition-all duration-300`}> {/* Increased hover scale for prominence */}
                       <Clock className="w-3 h-3" />
                       {video.duration}
                     </span>
@@ -252,24 +251,21 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     <div className="flex items-center gap-1 sm:gap-2">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
-                        // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.20] items-center justify-center active:scale-95 group touch-target" // Increased hover scale for prominence
                         title="Open video"
                       >
                         <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
-                        // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.20] items-center justify-center active:scale-95 group touch-target" // Increased hover scale for prominence
                         title="Search actions"
                       >
                         <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                        // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.20] items-center justify-center active:scale-95 group touch-target" // Increased hover scale for prominence
                         title="View description"
                       >
                         <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" />
@@ -305,4 +301,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1
+};
