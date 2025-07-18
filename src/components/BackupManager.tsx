@@ -120,7 +120,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
         <div className="p-6">
           <div className="space-y-6">
             {/* Download Playlist Data text card */}
-            <div className="group relative text-center p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+            <div className="group relative text-center p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.08] z-0 hover:z-10">
               <h3 className="text-lg font-semibold text-on-surface mb-2">
                 Download Playlist Data
               </h3>
