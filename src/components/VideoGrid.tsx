@@ -156,7 +156,8 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 elevation-2 hover:elevation-4 flex flex-col hover:scale-[1.02]"
           >
             {/* Thumbnail Container with Mobile-Optimized Padding */}
-            <div className="relative p-3 sm:p-4 pb-2">
+            {/* ADD group CLASS HERE */}
+            <div className="relative p-3 sm:p-4 pb-2 group"> 
               <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
                 <img
                   src={video.thumbnail}
@@ -252,4 +253,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};1
+};
