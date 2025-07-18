@@ -131,7 +131,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
 
             {/* Current Data Status Card */}
             {hasCurrentData ? (
-              <div className="group relative p-4 bg-tertiary-container/20 backdrop-blur-lg rounded-2xl border border-tertiary/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <div className="group relative p-4 bg-tertiary-container/20 backdrop-blur-lg rounded-2xl border border-tertiary/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.08] z-0 hover:z-10">
                 <div className="flex items-center gap-2 mb-3">
                   <CheckCircle className="w-5 h-5 text-on-tertiary-container" />
                   <span className="font-medium text-on-tertiary-container">Ready to Download</span>
@@ -151,7 +151,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
                 </div>
               </div>
             ) : (
-              <div className="group relative p-4 bg-warning-container/20 backdrop-blur-lg rounded-2xl border border-warning/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <div className="group relative p-4 bg-warning-container/20 backdrop-blur-lg rounded-2xl border border-warning/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.08] z-0 hover:z-10">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="w-5 h-5" />
                   <span className="font-medium">No Current Data</span>
@@ -165,7 +165,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
             <button
               onClick={handleDownloadBackup}
               disabled={!hasCurrentData}
-              className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
+              className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-primary text-on-primary rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.08] active:scale-[0.98]"
             >
               {/* Added group-hover:animate-bounce-short-slow to the Download icon */}
               <Download className="w-5 h-5 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
@@ -188,7 +188,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
             )}
 
             {/* What's Included Info Card */}
-            <div className="group relative text-xs text-on-surface-variant bg-surface-container/20 backdrop-blur-lg rounded-2xl p-4 border border-outline-variant/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+            <div className="group relative text-xs text-on-surface-variant bg-surface-container/20 backdrop-blur-lg rounded-2xl p-4 border border-outline-variant/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.08] z-0 hover:z-10">
               <div className="flex items-center gap-2 mb-2">
                 <Info className="w-4 h-4" />
                 <span className="font-medium">What's included:</span>
