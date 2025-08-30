@@ -140,8 +140,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               {filterOptions.map(option => (
                 <button key={option.mode} onClick={() => handleFilterChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${option.mode === filterMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
                   <option.icon className={`w-4 h-4 ${option.mode === filterMode ? 'text-white' : 'text-primary'}`} />
-                  {/* [MODIFIED] Changed to text-xs to prevent wrapping on small screens */}
-                  <span className="text-xs">{`${option.label} (${option.count})`}</span>
+                  {/* [MODIFIED] Made text semi-bold for better visual balance */}
+                  <span className="text-xs font-semibold">{`${option.label} (${option.count})`}</span>
                 </button>
               ))}
             </div>
