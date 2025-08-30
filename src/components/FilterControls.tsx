@@ -15,11 +15,9 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   unavailableCount,
   totalCount,
 }) => {
-  // State and refs for mobile dropdown
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Refs for desktop animated view
   const allButtonRef = useRef<HTMLButtonElement>(null);
   const availableButtonRef = useRef<HTMLButtonElement>(null);
   const unavailableButtonRef = useRef<HTMLButtonElement>(null);
@@ -36,7 +34,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
     { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff },
   ];
 
-  // This effect now only runs for the desktop view, as the refs will be null on mobile
   useEffect(() => {
     const calculateAndSetDimensions = () => {
       if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && 
@@ -69,7 +66,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
     };
   }, [filterMode, totalCount, unavailableCount]); 
 
-  // --- Mobile Dropdown Hooks ---
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -87,7 +83,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
     }
     return () => { window.removeEventListener('scroll', handleScroll); };
   }, [isMobileMenuOpen]);
-  // ---------------------------
 
   const handleFilterChange = (newMode: FilterMode) => {
     if (isMobileMenuOpen) setIsMobileMenuOpen(false);
@@ -108,7 +103,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   return (
     <>
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View: Animated Sliding Filter --- */}
+        {/* --- Desktop View: Animated Sliding Filter (No Changes) --- */}
         <div ref={outerContainerRef} className="hidden sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
           <div ref={innerButtonsContainerRef} className="flex flex-row w-auto flex-shrink-0 p-1">
             <div className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`} style={{ top: 'var(--selector-top)', left: 'var(--selector-left)', width: 'var(--selector-width)', height: 'var(--selector-height)' }} />
@@ -129,16 +124,27 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         {/* --- Mobile View: Dropdown Filter --- */}
         <div className="sm:hidden w-full animate-slide-in-left">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95">
-            <div className="relative h-5 flex items-center">
+            {/* [MODIFIED] Switched to a CSS Grid layout to maintain consistent button width */}
+            <div className="grid items-center">
               {filterOptions.map(option => (
-                <div key={option.mode} className={`flex items-center gap-2 transition-all duration-500 ease-out ${filterMode === option.mode ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 absolute'}`}>
+                <div
+                  key={option.mode}
+                  style={{ gridArea: '1 / 1' }} // Stacks all items in the same grid cell
+                  className={`flex items-center gap-2 transition-all duration-500 ease-out ${
+                    filterMode === option.mode
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 -translate-y-2'
+                  }`}
+                >
                   <option.icon className="w-4 h-4 text-primary" />
-                  <span className="font-semibold text-sm">{`${option.label} (${option.count})`}</span>
+                  {/* [MODIFIED] Added bottom padding to vertically align text with icon */}
+                  <span className="font-semibold text-sm pb-[1px]">{`${option.label} (${option.count})`}</span>
                 </div>
               ))}
             </div>
             <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
           </button>
+          
           <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
             <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
               {filterOptions.map(option => (
@@ -157,4 +163,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       )}
     </>
   );
-};11
+};
