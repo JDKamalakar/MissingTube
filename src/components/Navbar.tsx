@@ -218,6 +218,32 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
         {/* Mobile Menu Dropdown - MODIFIED */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+      <div className="-mx-2 w-auto my-1 border-t border-white/30 dark:border-white/20"></div>
+<div className="p-2">
+  <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
+    {/* Animated Selector Background */}
+    <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
+        theme === 'light' ? 'left-0.5' :
+        theme === 'dark' ? 'left-[33.333%]' :
+        'left-[66.666%]'
+      }`}
+    />
+    {/* Theme Buttons */}
+    {themeOptions.map(option => {
+      const isActive = theme === option.value;
+      return (
+        <button
+          key={option.value}
+          onClick={() => setTheme(option.value)}
+          className={`relative z-10 flex-1 flex justify-center items-center py-2 transition-colors duration-200 rounded-lg ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+          aria-label={`Set ${option.value} theme`}
+        >
+          <option.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} />
+        </button>
+      );
+    })}
+  </div>
+</div>
           showMobileMenu ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="px-4 pb-4">
