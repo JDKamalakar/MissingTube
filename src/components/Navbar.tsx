@@ -141,7 +141,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'rounded-t-2xl' // First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl' // Last item
-                  : 'rounded-2xl';  // Middle items
 
               return (
                 <button
