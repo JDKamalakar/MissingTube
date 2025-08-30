@@ -48,8 +48,8 @@ export const ThemeToggle: React.FC = () => {
   return (
     <div
       ref={themeToggleRef}
-      // Uses arbitrary values like `top-[26px]` for precise positioning
-      className={`fixed z-40 transition-all duration-300 ease-in-out ${
+      // [MODIFIED] Added `hidden` to hide on mobile and `sm:block` to show on desktop
+      className={`hidden sm:block fixed z-40 transition-all duration-300 ease-in-out ${
         isScrolled
           ? 'top-[18px] right-6'  // Scrolled
           : 'top-[26px] right-14' // Default Sate
@@ -61,7 +61,6 @@ export const ThemeToggle: React.FC = () => {
     >
       <button
         onClick={() => setShowOptions(!showOptions)}
-        // Conditionally changes shape and size based on the `isScrolled` state
         className={`flex items-center justify-center bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 group shadow-xl touch-target active:scale-95 hover:scale-110 ${
           isScrolled
             ? 'w-[60px] h-16 rounded-xl sm:rounded-2xl' // Scrolled state
@@ -124,4 +123,4 @@ export const ThemeToggle: React.FC = () => {
       </div>
     </div>
   );
-};1111
+};
