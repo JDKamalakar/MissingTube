@@ -64,7 +64,7 @@ export const ThemeToggle: React.FC = () => {
         // Conditionally changes shape and size based on the `isScrolled` state
         className={`flex items-center justify-center bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-300 group shadow-xl touch-target active:scale-95 hover:scale-110 ${
           isScrolled
-            ? 'w-16 h-16 rounded-xl sm:rounded-2xl' // Scrolled state
+            ? 'w-[24px] h-16 rounded-xl sm:rounded-2xl' // Scrolled state
             : 'p-2 sm:p-3 rounded-xl sm:rounded-2xl' // Default state
         }`}
         aria-label="Toggle theme"
