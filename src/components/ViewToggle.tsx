@@ -31,7 +31,6 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
     }
   };
 
-  // Effect to handle clicking outside of the dropdown to close it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -44,18 +43,15 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
     };
   }, []);
 
-  // [MODIFIED] Effect to close the dropdown on scroll
   useEffect(() => {
     const handleScroll = () => {
       if (isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
       }
     };
-
     if (isMobileMenuOpen) {
       window.addEventListener('scroll', handleScroll, { passive: true });
     }
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -66,90 +62,69 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
     { mode: 'table' as ViewMode, label: 'Table', icon: List },
   ];
 
-  const currentOption = viewOptions.find(opt => opt.mode === viewMode) || viewOptions[0];
-
   return (
-    // [MODIFIED] Set width to auto to allow parent flex container to position it
-    <div ref={dropdownRef} className="relative w-auto">
-      {/* --- Desktop View (Original Toggle) --- */}
-      <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto">
-        <div 
-          className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
-            viewMode === 'grid' 
-              ? 'left-1 w-[calc(50%-4px)]' 
-              : 'left-[50%] w-[calc(50%-4px)]'
-          }`}
-        />
-        <button
-          onClick={() => handleViewChange('grid')}
-          // [MODIFIED] Added active:scale-95 for click feedback
-          className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${
-            viewMode === 'grid' 
-              ? 'text-white' 
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
-          }`}
-        >
-          <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
-          <span className={`transition-all duration-225 ${viewMode === 'grid' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Grid</span>
-        </button>
-        <button
-          onClick={() => handleViewChange('table')}
-          // [MODIFIED] Added active:scale-95 for click feedback
-          className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${
-            viewMode === 'table' 
-              ? 'text-white' 
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
-          }`}
-        >
-          <List className={`w-4 h-4 transition-all duration-225 ${viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
-          <span className={`transition-all duration-225 ${viewMode === 'table' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Table</span>
-        </button>
-      </div>
+    <>
+      {/* [MODIFIED] Main component wrapper with dynamic z-index to appear above backdrop */}
+      <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
+        {/* --- Desktop View --- */}
+        <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto">
+          <div className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${viewMode === 'grid' ? 'left-1 w-[calc(50%-4px)]' : 'left-[50%] w-[calc(50%-4px)]'}`} />
+          <button onClick={() => handleViewChange('grid')} className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${viewMode === 'grid' ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'}`}>
+            <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
+            <span className={`transition-all duration-225 ${viewMode === 'grid' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Grid</span>
+          </button>
+          <button onClick={() => handleViewChange('table')} className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${viewMode === 'table' ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'}`}>
+            <List className={`w-4 h-4 transition-all duration-225 ${viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
+            <span className={`transition-all duration-225 ${viewMode === 'table' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Table</span>
+          </button>
+        </div>
 
-      {/* --- Mobile View (New Dropdown) --- */}
-      <div className="sm:hidden">
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          // [MODIFIED] Added a fixed width (w-32) and improved animation class
-          className="flex items-center justify-between w-32 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95"
-        >
-          {/* [MODIFIED] Wrapper with `key` prop to animate content changes */}
-          <div key={viewMode} className="flex items-center gap-2 animate-fade-in-quick">
-            <currentOption.icon className="w-4 h-4 text-primary" />
-            <span className="font-semibold text-sm">{currentOption.label}</span>
-          </div>
-          <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
-        </button>
+        {/* --- Mobile View (Dropdown) --- */}
+        {/* [MODIFIED] Set container to full-width to match desktop layout */}
+        <div className="sm:hidden w-full">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95"
+          >
+            {/* [MODIFIED] New animation container for cross-fade effect */}
+            <div className="relative h-5 flex items-center"> {/* Fixed height prevents jank */}
+              {viewOptions.map(option => (
+                <div
+                  key={option.mode}
+                  className={`flex items-center gap-2 transition-all duration-300 ease-out ${
+                    viewMode === option.mode
+                      ? 'opacity-100 translate-y-0'
+                      : 'opacity-0 -translate-y-2 absolute' // Inactive view slides up and fades out
+                  }`}
+                >
+                  <option.icon className="w-4 h-4 text-primary" />
+                  <span className="font-semibold text-sm">{option.label}</span>
+                </div>
+              ))}
+            </div>
+            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
+          </button>
 
-        <div
-          className={`absolute top-full left-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out z-20 ${
-            isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          {/* [MODIFIED] Using stronger blur and styles from your example code */}
-          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
-            {viewOptions.map((option) => {
-              const Icon = option.icon;
-              const isActive = viewMode === option.mode;
-              return (
-                <button
-                  key={option.mode}
-                  onClick={() => handleViewChange(option.mode)}
-                  // [MODIFIED] Added active:scale-95 for click feedback
-                  className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left active:scale-95 ${
-                    isActive
-                      ? 'bg-primary/80 text-white font-semibold shadow-md'
-                      : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-primary'}`} />
-                  <span className="text-sm">{option.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};333
+          <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
+              {viewOptions.map(option => (
+                <button key={option.mode} onClick={() => handleViewChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left active:scale-95 ${option.mode === viewMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
+                  <option.icon className={`w-4 h-4 ${option.mode === viewMode ? 'text-white' : 'text-primary'}`} />
+                  <span className="text-sm">{option.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* [MODIFIED] Added full-screen backdrop for when mobile menu is open */}
+      {isMobileMenuOpen && (
+        <div
+          className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-10 animate-fade-in"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+    </>
+  );
+};
