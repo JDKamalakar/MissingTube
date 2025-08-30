@@ -160,7 +160,7 @@ export const ThemeToggle: React.FC = () => {
 
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out w-5 h-5 sm:w-6 sm:h-6
 
-                          ${isScrolled ? 'w-12 h-12 sm:w-10 sm:h-10' : 'w-6 h-6'} 
+                          ${isScrolled ? 'w-12 h-12 sm:w-10 sm:h-10' : 'w-12 h-12'} 
 
                           ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}>
 
