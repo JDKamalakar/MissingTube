@@ -8,102 +8,102 @@ import { ComparisonModal } from './ComparisonModal';
 import { useTheme } from './ThemeProvider';
 
 interface NavbarProps {
-  onApiKeyChange: (apiKey: string) => void;
-  onRestoreComplete: () => void;
-  onPlaylistSelect: (playlistId: string) => void;
-  currentVideos?: any[];
-  currentPlaylistInfo?: any;
+  onApiKeyChange: (apiKey: string) => void;
+  onRestoreComplete: () => void;
+  onPlaylistSelect: (playlistId: string) => void;
+  currentVideos?: any[];
+  currentPlaylistInfo?: any;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  onApiKeyChange,
-  onRestoreComplete,
-  onPlaylistSelect,
-  currentVideos = [],
-  currentPlaylistInfo = null
+  onApiKeyChange,
+  onRestoreComplete,
+  onPlaylistSelect,
+  currentVideos = [],
+  currentPlaylistInfo = null
 }) => {
-  const { theme, setTheme } = useTheme();
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-  const [showBackupModal, setShowBackupModal] = useState(false);
-  const [showHistoryPanel, setShowHistoryPanel] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
-  const [showComparisonModal, setShowComparisonModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [showBackupModal, setShowBackupModal] = useState(false);
+  const [showHistoryPanel, setShowHistoryPanel] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [canScroll, setCanScroll] = useState(false);
-  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
-  const lastScrollY = useRef(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [canScroll, setCanScroll] = useState(false);
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
-  const SHRINK_THRESHOLD = 80;
-  const HIDE_THRESHOLD = 300;
+  const SHRINK_THRESHOLD = 80;
+  const HIDE_THRESHOLD = 300;
 
-  useEffect(() => {
-    const checkScrollability = () => {
-      setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
-    };
-    checkScrollability();
-    window.addEventListener('resize', checkScrollability);
-    const observer = new MutationObserver(checkScrollability);
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => {
-      window.removeEventListener('resize', checkScrollability);
-      observer.disconnect();
-    };
-  }, []);
+  useEffect(() => {
+    const checkScrollability = () => {
+      setCanScroll(document.documentElement.scrollHeight > (window.innerHeight + 50));
+    };
+    checkScrollability();
+    window.addEventListener('resize', checkScrollability);
+    const observer = new MutationObserver(checkScrollability);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      window.removeEventListener('resize', checkScrollability);
+      observer.disconnect();
+    };
+  }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (canScroll) {
-        const currentScrollY = window.scrollY;
-        const isDesktop = window.innerWidth >= 640;
-        setIsScrolled(currentScrollY > SHRINK_THRESHOLD);
-        if (!isDesktop) {
-          if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
-            setIsNavbarHidden(true);
-            if (showMobileMenu) setShowMobileMenu(false);
-          } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
-            setIsNavbarHidden(false);
-          }
-          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
-            setShowMobileMenu(false);
-          }
-        } else {
-          setIsNavbarHidden(false); 
-          if (showMobileMenu) setShowMobileMenu(false);
-        }
-        lastScrollY.current = currentScrollY;
-      } else {
-        setIsScrolled(false);
-        setIsNavbarHidden(false);
-        if (showMobileMenu) setShowMobileMenu(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (canScroll) {
+        const currentScrollY = window.scrollY;
+        const isDesktop = window.innerWidth >= 640;
+        setIsScrolled(currentScrollY > SHRINK_THRESHOLD);
+        if (!isDesktop) {
+          if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
+            setIsNavbarHidden(true);
+            if (showMobileMenu) setShowMobileMenu(false);
+          } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
+            setIsNavbarHidden(false);
+          }
+          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+            setShowMobileMenu(false);
+          }
+        } else {
+          setIsNavbarHidden(false);
+          if (showMobileMenu) setShowMobileMenu(false);
+        }
+        lastScrollY.current = currentScrollY;
+      } else {
+        setIsScrolled(false);
+        setIsNavbarHidden(false);
+        if (showMobileMenu) setShowMobileMenu(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [canScroll, showMobileMenu]);
 
-  const navItems = [
-    { icon: History, label: 'History', onClick: () => setShowHistoryPanel(true) },
-    { icon: Key, label: 'API Key', onClick: () => setShowApiKeyModal(true) },
-    { icon: Download, label: 'Download', onClick: () => setShowBackupModal(true) },
-    { icon: GitCompare, label: 'Compare', onClick: () => setShowComparisonModal(true) },
-    { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
-  ];
+  const navItems = [
+    { icon: History, label: 'History', onClick: () => setShowHistoryPanel(true) },
+    { icon: Key, label: 'API Key', onClick: () => setShowApiKeyModal(true) },
+    { icon: Download, label: 'Download', onClick: () => setShowBackupModal(true) },
+    { icon: GitCompare, label: 'Compare', onClick: () => setShowComparisonModal(true) },
+    { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
+  ];
 
   const themeOptions = [
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-sky-400' }, 
+    { value: 'dark' as const, icon: Moon, color: 'text-sky-400' },
     { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
   ];
 
-  const closeMobileMenu = useCallback(() => {
-    setShowMobileMenu(false);
-  }, []);
+  const closeMobileMenu = useCallback(() => {
+    setShowMobileMenu(false);
+  }, []);
 
-  return (
-    <>
-      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
+  return (
+    <>
+      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
             <div className="flex items-center w-full gap-2 sm:gap-4">
@@ -133,30 +133,41 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
+        {/* [MODIFIED] Mobile Menu section starts here */}
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          {/* [MODIFIED] Main container for the cards with a gap */}
-          <div className="px-4 pb-4 flex flex-col gap-2">
-            {/* [MODIFIED] Card container for the unified list */}
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 overflow-hidden">
-              <div className="flex flex-col gap-px bg-white/20 dark:bg-black/10">
-                {navItems.map((item, index) => (
+          <div className="px-4 pb-4 flex flex-col gap-2"> {/* Added gap-2 for separation */}
+            
+            {/* Wrapper for the button group */}
+            <div className="flex flex-col">
+              {navItems.map((item, index) => {
+                const isFirst = index === 0;
+                const isLast = index === navItems.length - 1;
+
+                // Determine corner classes based on position
+                const cornerClasses = isFirst
+                  ? 'rounded-t-2xl'
+                  : isLast
+                    ? 'rounded-b-2xl'
+                    : 'rounded-none';
+
+                // Determine border classes for a seamless look
+                const borderClasses = `border-t border-x ${isLast ? 'border-b' : ''} border-white/30 dark:border-white/20`;
+
+                return (
                   <button
                     key={item.label}
                     onClick={() => { item.onClick(); closeMobileMenu(); }}
-                    // [MODIFIED] Added conditional rounding and item-specific background
-                    className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-colors duration-200 hover:bg-black/10 dark:hover:bg-white/10 active:scale-[0.99] h-11 bg-white/10 dark:bg-black/20
-                      ${index === 0 ? 'rounded-t-2xl' : ''}
-                      ${index === navItems.length - 1 ? 'rounded-b-2xl' : ''}
-                    `}
+                    className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg ${cornerClasses} ${borderClasses}`}
                   >
+                    <div className={`absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center ${cornerClasses}`}></div>
                     <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
                     <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
-            
-            {/* Theme toggle card remains separate */}
+
+            {/* Theme toggle is now a separate, spaced-out card */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
@@ -175,10 +186,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                       aria-label={`Set ${option.value} theme`}
                     >
                       <option.icon className={`w-5 h-5 transition-all duration-500 ease-in-out ${option.color} ${
-                        isActive 
-                          ? 'scale-110 rotate-[360deg]' 
-                          : 'group-hover:rotate-[360deg]'
-                      }`} />
+                          isActive
+                            ? 'scale-110 rotate-[360deg]'
+                            : 'group-hover:rotate-[360deg]'
+                        }`} />
                     </button>
                   );
                 })}
@@ -186,15 +197,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
         </div>
-      </nav>
+      </nav>
 
-      {showMobileMenu && (<div className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in" onClick={closeMobileMenu} />)}
+      {showMobileMenu && (<div className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in" onClick={closeMobileMenu} />)}
 
-      {showApiKeyModal && (<ApiKeyModal onClose={() => setShowApiKeyModal(false)} onApiKeyChange={onApiKeyChange} />)}
-      {showBackupModal && (<BackupManager onClose={() => setShowBackupModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
-      {showHistoryPanel && (<HistoryPanel onClose={() => setShowHistoryPanel(false)} onPlaylistSelect={onPlaylistSelect} />)}
-      {showAboutModal && (<AboutModal onClose={() => setShowAboutModal(false)} />)}
-      {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
-    </>
-  );
+      {showApiKeyModal && (<ApiKeyModal onClose={() => setShowApiKeyModal(false)} onApiKeyChange={onApiKeyChange} />)}
+      {showBackupModal && (<BackupManager onClose={() => setShowBackupModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
+      {showHistoryPanel && (<HistoryPanel onClose={() => setShowHistoryPanel(false)} onPlaylistSelect={onPlaylistSelect} />)}
+      {showAboutModal && (<AboutModal onClose={() => setShowAboutModal(false)} />)}
+      {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
+    </>
+  );
 };
