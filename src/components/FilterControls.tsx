@@ -1,190 +1,160 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Filter, Eye, EyeOff } from 'lucide-react';
+import { Filter, Eye, EyeOff, ChevronDown } from 'lucide-react';
 import { FilterMode } from '../types';
 
 interface FilterControlsProps {
-  filterMode: FilterMode;
-  onFilterChange: (mode: FilterMode) => void;
-  unavailableCount: number;
-  totalCount: number;
+  filterMode: FilterMode;
+  onFilterChange: (mode: FilterMode) => void;
+  unavailableCount: number;
+  totalCount: number;
 }
 
 export const FilterControls: React.FC<FilterControlsProps> = ({
-  filterMode,
-  onFilterChange,
-  unavailableCount,
-  totalCount,
+  filterMode,
+  onFilterChange,
+  unavailableCount,
+  totalCount,
 }) => {
-  if (unavailableCount === 0) return null;
+  // State and refs for mobile dropdown
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const availableCount = totalCount - unavailableCount;
+  // Refs for desktop animated view
+  const allButtonRef = useRef<HTMLButtonElement>(null);
+  const availableButtonRef = useRef<HTMLButtonElement>(null);
+  const unavailableButtonRef = useRef<HTMLButtonElement>(null);
+  const outerContainerRef = useRef<HTMLDivElement>(null); 
+  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
 
-  const allButtonRef = useRef<HTMLButtonElement>(null);
-  const availableButtonRef = useRef<HTMLButtonElement>(null);
-  const unavailableButtonRef = useRef<HTMLButtonElement>(null);
-  const outerContainerRef = useRef<HTMLDivElement>(null); 
-  const innerButtonsContainerRef = useRef<HTMLDivElement>(null); 
+  if (unavailableCount === 0) return null;
 
-  const [currentFilterMode, setCurrentFilterMode] = useState(filterMode);
-  useEffect(() => {
-      setCurrentFilterMode(filterMode);
-  }, [filterMode]);
+  const availableCount = totalCount - unavailableCount;
+  
+  const filterOptions = [
+    { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter },
+    { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye },
+    { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff },
+  ];
 
-  useEffect(() => {
-    const calculateAndSetDimensions = () => {
-      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && 
-          innerButtonsContainerRef.current && outerContainerRef.current) {
+  // This effect now only runs for the desktop view, as the refs will be null on mobile
+  useEffect(() => {
+    const calculateAndSetDimensions = () => {
+      if (allButtonRef.current && availableButtonRef.current && unavailableButtonRef.current && 
+          innerButtonsContainerRef.current && outerContainerRef.current) {
+        const innerContainerElem = innerButtonsContainerRef.current;
+        const outerContainerElem = outerContainerRef.current; 
+        let activeRect;
+        switch (filterMode) {
+          case 'available': activeRect = availableButtonRef.current.getBoundingClientRect(); break;
+          case 'unavailable': activeRect = unavailableButtonRef.current.getBoundingClientRect(); break;
+          default: activeRect = allButtonRef.current.getBoundingClientRect();
+        }
+        const SELECTOR_VISUAL_INSET = 2;
+        const baseTop = activeRect.top - innerContainerElem.getBoundingClientRect().top;
+        const baseLeft = activeRect.left - innerContainerElem.getBoundingClientRect().left;
+        innerContainerElem.style.setProperty('--selector-top', `${baseTop + SELECTOR_VISUAL_INSET}px`);
+        innerContainerElem.style.setProperty('--selector-height', `${activeRect.height - (2 * SELECTOR_VISUAL_INSET)}px`);
+        innerContainerElem.style.setProperty('--selector-left', `${baseLeft + SELECTOR_VISUAL_INSET}px`);
+        innerContainerElem.style.setProperty('--selector-width', `${activeRect.width - (2 * SELECTOR_VISUAL_INSET)}px`);
+        outerContainerElem.style.width = `${innerContainerElem.offsetWidth}px`;
+        outerContainerElem.style.height = `${innerContainerElem.offsetHeight}px`;
+      }
+    };
+    calculateAndSetDimensions();
+    window.addEventListener('resize', calculateAndSetDimensions);
+    const timeoutId = setTimeout(calculateAndSetDimensions, 100); 
+    return () => {
+      window.removeEventListener('resize', calculateAndSetDimensions);
+      clearTimeout(timeoutId);
+    };
+  }, [filterMode, totalCount, unavailableCount]); 
 
-        const innerContainerElem = innerButtonsContainerRef.current;
-        const outerContainerElem = outerContainerRef.current; 
+  // --- Mobile Dropdown Hooks ---
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => { document.removeEventListener('mousedown', handleClickOutside); };
+  }, []);
 
-        const allRect = allButtonRef.current.getBoundingClientRect();
-        const availableRect = availableButtonRef.current.getBoundingClientRect();
-        const unavailableRect = unavailableButtonRef.current.getBoundingClientRect();
-        
-        let activeRect = allRect;
-        if (currentFilterMode === 'available') activeRect = availableRect;
-        if (currentFilterMode === 'unavailable') activeRect = unavailableRect;
+  useEffect(() => {
+    const handleScroll = () => setIsMobileMenuOpen(false);
+    if (isMobileMenuOpen) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    return () => { window.removeEventListener('scroll', handleScroll); };
+  }, [isMobileMenuOpen]);
+  // ---------------------------
 
-        // Selector Positioning and Sizing Logic
-        const SELECTOR_VISUAL_INSET = 2; // This value controls the floating space on all sides
+  const handleFilterChange = (newMode: FilterMode) => {
+    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    if (newMode === filterMode) return;
+    
+    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
+    if (container) {
+      container.classList.add('opacity-50', 'scale-95');
+      setTimeout(() => {
+        onFilterChange(newMode);
+        setTimeout(() => { container.classList.remove('opacity-50', 'scale-95'); }, 150);
+      }, 150);
+    } else {
+      onFilterChange(newMode);
+    }
+  };
 
-        const baseTop = activeRect.top - innerContainerElem.getBoundingClientRect().top;
-        const baseLeft = activeRect.left - innerContainerElem.getBoundingClientRect().left;
+  return (
+    <>
+      <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
+        {/* --- Desktop View: Animated Sliding Filter --- */}
+        <div ref={outerContainerRef} className="hidden sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
+          <div ref={innerButtonsContainerRef} className="flex flex-row w-auto flex-shrink-0 p-1">
+            <div className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`} style={{ top: 'var(--selector-top)', left: 'var(--selector-left)', width: 'var(--selector-width)', height: 'var(--selector-height)' }} />
+            {filterOptions.map(option => (
+              <button
+                key={option.mode}
+                ref={{ all: allButtonRef, available: availableButtonRef, unavailable: unavailableButtonRef }[option.mode]}
+                onClick={() => handleFilterChange(option.mode)}
+                className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 text-sm touch-target ${filterMode === option.mode ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'}`}
+              >
+                <option.icon className={`w-4 h-4 transition-all duration-225 ${filterMode === option.mode ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:scale-110'}`} />
+                <span className={`transition-all duration-225 whitespace-nowrap ${filterMode === option.mode ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>{`${option.label} (${option.count})`}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
-        const selectorTopPos = baseTop + SELECTOR_VISUAL_INSET;
-        const selectorLeftPos = baseLeft + SELECTOR_VISUAL_INSET;
-        const selectorWidth = activeRect.width - (2 * SELECTOR_VISUAL_INSET);
-        const selectorHeight = activeRect.height - (2 * SELECTOR_VISUAL_INSET);
-
-        innerContainerElem.style.setProperty('--selector-top', `${selectorTopPos}px`);
-        innerContainerElem.style.setProperty('--selector-height', `${selectorHeight}px`);
-        innerContainerElem.style.setProperty('--selector-left', `${selectorLeftPos}px`);
-        innerContainerElem.style.setProperty('--selector-width', `${selectorWidth}px`);
-
-        // Outer Blur Div Sizing Logic
-        const innerContainerRenderedWidth = innerContainerElem.offsetWidth;
-        const innerContainerRenderedHeight = innerContainerElem.offsetHeight;
-
-        const outerDesiredWidth = innerContainerRenderedWidth; 
-        const outerDesiredHeight = innerContainerRenderedHeight; 
-
-        const isDesktop = window.innerWidth >= 640; 
-        if (isDesktop) {
-            outerContainerElem.style.width = `${outerDesiredWidth}px`;
-            outerContainerElem.style.height = `${outerDesiredHeight}px`;
-        } else {
-            outerContainerElem.style.width = '100%';
-            outerContainerElem.style.height = 'auto';
-        }
-      }
-    };
-
-    calculateAndSetDimensions();
-    window.addEventListener('resize', calculateAndSetDimensions);
-    const timeoutId = setTimeout(calculateAndSetDimensions, 100); 
-
-    return () => {
-      window.removeEventListener('resize', calculateAndSetDimensions);
-      clearTimeout(timeoutId);
-    };
-  }, [currentFilterMode, totalCount, unavailableCount]); 
-
-  const handleFilterChange = (newMode: FilterMode) => {
-    if (newMode === currentFilterMode) return;
-    
-    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
-    if (container) {
-      container.classList.add('opacity-50', 'scale-95');
-      setTimeout(() => {
-        onFilterChange(newMode);
-        setTimeout(() => {
-          container.classList.remove('opacity-50', 'scale-95');
-        }, 150);
-      }, 150);
-    } else {
-      onFilterChange(newMode);
-    }
-  };
-
-  return (
-    <div ref={outerContainerRef} 
-         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl sm:rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
-      
-      <div 
-        ref={innerButtonsContainerRef} 
-        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-0.5 sm:p-1" 
-      > 
-        <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-lg sm:rounded-2xl transition-all duration-300 ease-out shadow-sm`}
-          style={{
-            top: 'var(--selector-top)', 
-            left: 'var(--selector-left)', 
-            width: 'var(--selector-width)', 
-            height: 'var(--selector-height)', 
-          }}
-        />
-        
-        <button
-          ref={allButtonRef} 
-          onClick={() => handleFilterChange('all')}
-          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
-            currentFilterMode === 'all' 
-              ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
-          }`}
-        >
-          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <Filter className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
-            currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
-          }`} />
-          <span className={`transition-all duration-225 whitespace-nowrap ${ 
-            currentFilterMode === 'all' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
-          }`}>
-            All ({totalCount})
-          </span>
-        </button>
-        
-        <button
-          ref={availableButtonRef} 
-          onClick={() => handleFilterChange('available')}
-          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
-            currentFilterMode === 'available' 
-              ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
-          }`}
-        >
-          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <Eye className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
-            currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
-          }`} />
-          <span className={`transition-all duration-225 whitespace-nowrap ${
-            currentFilterMode === 'available' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
-          }`}>
-            Available ({availableCount})
-          </span>
-        </button>
-        
-        <button
-          ref={unavailableButtonRef} 
-          onClick={() => handleFilterChange('unavailable')}
-          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
-            currentFilterMode === 'unavailable' 
-              ? 'text-white'
-              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
-          }`}
-        >
-          {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <EyeOff className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
-            currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
-          }`} />
-          <span className={`transition-all duration-225 whitespace-nowrap ${
-            currentFilterMode === 'unavailable' ? 'font-semibold' : 'group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary group-hover:text-shadow-sm'
-          }`}>
-            Unavailable ({unavailableCount})
-          </span>
-        </button>
+        {/* --- Mobile View: Dropdown Filter --- */}
+        <div className="sm:hidden w-full animate-slide-in-left">
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95">
+            <div className="relative h-5 flex items-center">
+              {filterOptions.map(option => (
+                <div key={option.mode} className={`flex items-center gap-2 transition-all duration-500 ease-out ${filterMode === option.mode ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 absolute'}`}>
+                  <option.icon className="w-4 h-4 text-primary" />
+                  <span className="font-semibold text-sm">{`${option.label} (${option.count})`}</span>
+                </div>
+              ))}
+            </div>
+            <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
+          </button>
+          <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
+              {filterOptions.map(option => (
+                <button key={option.mode} onClick={() => handleFilterChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${option.mode === filterMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
+                  <option.icon className={`w-4 h-4 ${option.mode === filterMode ? 'text-white' : 'text-primary'}`} />
+                  <span className="text-sm">{`${option.label} (${option.count})`}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
-};111
+
+      {isMobileMenuOpen && (
+        <div className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-10 animate-fade-in" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
+    </>
+  );
+};
