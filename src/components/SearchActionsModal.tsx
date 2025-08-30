@@ -5,14 +5,13 @@ import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
 import RedditLogo from '../assets/reddit-logo.png';
 import UnavailableImage from '../assets/Unavailable.png';
 
-interface VideoDescriptionModalProps {
+interface SearchActionsModalProps {
   video: Video;
   onClose: () => void;
 }
 
-export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ video, onClose }) => {
-  const [copied, setCopied] = React.useState(false);
-
+// [FIX] Ensure the "export" keyword is present on this line
+export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, onClose }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -21,125 +20,154 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
     };
 
     document.addEventListener('keydown', handleEscape);
-    document.body.style.overflow = 'hidden'; // Prevent scrolling on body when modal is open
+    document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset'; // Restore scrolling on body when modal is closed
+      document.body.style.overflow = 'unset';
     };
   }, [onClose]);
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const searchActions = [
+    {
+      name: 'Internet Archive',
+      icon: Archive,
+      url: `https://web.archive.org/web/*/https://www.youtube.com/watch?v=${video.videoId}`,
+      color: 'internetArchiveLightBlue',
+      description: 'Search archived versions of this video'
+    },
+    {
+      name: 'Brave Search',
+      icon: 'image',
+      imageUrl: BraveIconUrl,
+      url: `https://search.brave.com/search?q=${encodeURIComponent(video.title)}`,
+      color: 'braveOrange',
+      description: 'Search for this video on Brave'
+    },
+    {
+      name: 'Twitter',
+      icon: Twitter,
+      url: `https://twitter.com/search?q=${encodeURIComponent(video.title)}`,
+      color: 'twitterBlue',
+      description: 'Search for this video on Twitter'
+    },
+    {
+      name: 'Reddit',
+      icon: 'image',
+      imageUrl: RedditLogo,
+      url: `https://www.reddit.com/search/?q=${encodeURIComponent(video.title)}`,
+      color: 'redditOrange',
+      description: 'Search for this video on Reddit'
+    }
+  ];
+
+  const getColorClasses = (color: string) => {
+    const colorMap = {
+      internetArchiveLightBlue: 'bg-[#5D6B8C] text-white',
+      braveOrange: 'bg-[#FB542B] text-white',
+      twitterBlue: 'bg-[#1DA1F2] text-white',
+      redditOrange: 'bg-[#FF4500] text-white',
+    };
+    return colorMap[color as keyof typeof colorMap] || '';
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop with more transparency (bg-black/10) and blur */}
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Main Modal Container with updated styles and responsiveness */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
-        {/* Title & Button Div with updated styles */}
-        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
+              <Search className="w-6 h-6 text-primary" />
             </div>
-            <h2 className="text-lg sm:text-xl font-semibold text-on-surface line-clamp-1 flex-1">
-              Video Details
-            </h2>
+            <h2 className="text-xl font-semibold text-on-surface">Search Actions</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
+            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
           </button>
         </div>
 
-        {/* Scrollable Content Area */}
-        <div className="p-4 sm:p-6 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <div className="space-y-4 sm:space-y-6">
-            {/* Thumbnail and Title */}
-            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
+        <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="w-full sm:w-40 h-auto sm:h-24 object-cover rounded-xl flex-shrink-0 shadow-sm"
+                className="w-20 h-15 object-cover rounded-xl flex-shrink-0 shadow-sm"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = UnavailableImage;
                 }}
               />
               <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-on-surface line-clamp-2 text-base sm:text-lg">
+                <h3 className="font-medium text-on-surface line-clamp-2 text-base">
                   {video.title}
                 </h3>
                 <p className="text-sm text-on-surface-variant mt-1">
-                  <span className="inline-flex items-center gap-1">
-                    <Hash className="w-3 h-3 text-on-surface-variant" /> {video.index}
-                  </span>
-                  {' • '}
-                  <span className="inline-flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-on-surface-variant" /> {video.duration}
-                  </span>
-                </p>
-                {video.publishedAt && (
-                  <p className="text-xs text-on-surface-variant mt-1">
-                    Published: {format(new Date(video.publishedAt), 'MMM dd, yyyy')}
-                  </p>
-                )}
-                {video.unavailable && (
-                  <p className="text-xs text-error mt-1 flex items-center gap-1">
-                    <X className="w-3 h-3" /> Video Unavailable
-                  </p>
-                )}
-                <p className="text-sm text-on-surface-variant mt-2">
-                  Channel: {video.channelTitle || 'Unknown Channel'}
+                  #{video.index} • {video.duration}
                 </p>
               </div>
             </div>
 
-            {/* Description */}
-            <div className="p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
-              <h4 className="text-base font-medium text-on-surface mb-2">Description:</h4>
-              <p className="text-sm text-on-surface-variant whitespace-pre-wrap">
-                {video.description || 'No description available.'}
-              </p>
-            </div>
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-on-surface-variant">Search on:</h4>
+              <div className="grid grid-cols-1 gap-4">
+                {searchActions.map((action, index) => {
+                  const IconComponent = action.icon !== 'image' ? action.icon : null;
+                  const colorClasses = getColorClasses(action.color);
 
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={getVideoUrl(video.videoId)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary text-on-primary rounded-2xl text-sm font-medium hover:bg-primary/90 transition-all duration-225 hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg"
-              >
-                <ExternalLink className="w-4 h-4" /> Open on YouTube
-              </a>
-              <button
-                onClick={() => handleCopy(getVideoUrl(video.videoId))}
-                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-secondary-container text-on-secondary-container rounded-2xl text-sm font-medium hover:bg-secondary-container/90 transition-all duration-225 hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg"
-              >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? 'Copied!' : 'Copy Link'}
-              </button>
+                  return (
+                    <a
+                      key={index}
+                      href={action.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
+                                shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
+                    >
+                      <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} />
+
+                      <div className="relative flex items-center gap-4 w-full z-10">
+                        <div
+                          className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
+                            group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
+                        >
+                          {IconComponent ? (
+                            <IconComponent className="w-5 h-5 text-white" />
+                          ) : (
+                            <img
+                              src={action.imageUrl}
+                              alt={action.name}
+                              className="w-5 h-5 object-contain"
+                            />
+                          )}
+                        </div>
+
+                        <div className="flex-1 text-left min-w-0">
+                          <div className="font-medium text-base relative z-10 text-white">{action.name}</div>
+                          <div className="text-sm opacity-90 line-clamp-1 relative z-10 text-white">{action.description}</div>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-};5555
+};
