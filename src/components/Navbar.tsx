@@ -135,7 +135,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {/* [MODIFIED] This is now a flex container for the cards */}
-          <div className="px-4 pb-4 flex flex-col gap-2">
+          <div className="px-4 pb-4 flex flex-col gap-1">
             {/* [MODIFIED] Each button is now a self-contained card */}
             {navItems.map((item) => (
               <button
