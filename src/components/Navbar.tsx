@@ -135,13 +135,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="px-4 pb-4 flex flex-col gap-1">
-            {/* [MODIFIED] Mapped buttons with conditional rounding */}
             {navItems.map((item, index) => {
               const cornerClass = index === 0
                 ? 'rounded-t-2xl' // First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl' // Last item
-                  : 'rounded-2xl';  // Middle items
+                  : 'rounded';      // [MODIFIED] Middle items now have a 4px radius
 
               return (
                 <button
@@ -156,7 +155,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               );
             })}
 
-            {/* Theme toggle is now the last card in the flex layout */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
@@ -197,4 +195,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};111
+};
