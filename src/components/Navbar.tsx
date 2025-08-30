@@ -129,6 +129,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       onClick: () => setShowAboutModal(true),
       animation: 'rotate-[360deg]' 
     }
+    const themeOptions = [
+  { value: 'light' as const, icon: Sun },
+  { value: 'dark' as const, icon: Moon },
+  { value: 'system' as const, icon: Monitor },
+];
   ];
   const closeMobileMenu = useCallback(() => {
     setShowMobileMenu(false);
