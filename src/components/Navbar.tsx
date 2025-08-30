@@ -134,23 +134,30 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          {/* [MODIFIED] This is now a flex container for the cards */}
-          <div className="px-4 pb-4 flex flex-col gap-2">
-            {/* [MODIFIED] Each button is now a self-contained card */}
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => { item.onClick(); closeMobileMenu(); }}
-                className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20"
-              >
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center rounded-2xl"></div>
-                <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-                <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
-              </button>
-            ))}
-            
-            {/* [MODIFIED] Theme toggle is now the last card in the flex layout */}
+          <div className="px-4 pb-4">
+            {/* [MODIFIED] This div is now the main card for the navigation list */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2">
+              {navItems.map((item, index) => (
+                <React.Fragment key={item.label}>
+                  {/* [MODIFIED] A tiny separator line is added between items */}
+                  {index > 0 && <div className="h-px bg-white/30 dark:bg-black/20 mx-2" />}
+                  <button
+                    onClick={() => { item.onClick(); closeMobileMenu(); }}
+                    // [MODIFIED] Applying conditional rounded corners
+                    className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.99] h-11
+                      ${index === 0 ? 'rounded-t-xl' : ''}
+                      ${index === navItems.length - 1 ? 'rounded-b-xl' : ''}
+                      ${index > 0 && index < navItems.length -1 ? 'rounded-none' : ''}
+                    `}
+                  >
+                    <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+                    <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
+                  </button>
+                </React.Fragment>
+              ))}
+            </div>
+            
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
@@ -177,6 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </div>
             </div>
+
           </div>
         </div>
       </nav>
