@@ -302,7 +302,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* [MODIFIED] Theme toggle is now the last card in the flex layout */}
 
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2">
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
 
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
 
