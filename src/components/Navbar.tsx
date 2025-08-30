@@ -146,8 +146,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
             
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
-              <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-1 mt-2">
+              <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-1">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
                     theme === 'dark' ? 'left-[33.333%]' :
