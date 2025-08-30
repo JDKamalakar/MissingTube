@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Video } from '../types';
-import { X, Info, Clock, ExternalLink, Hash, Copy, Check } from 'lucide-react';
+import { X, Search, Archive, Twitter } from 'lucide-react';
+import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
+import RedditLogo from '../assets/reddit-logo.png';
 import UnavailableImage from '../assets/Unavailable.png';
-import { getVideoUrl } from '../utils/youtube';
-import { format } from "date-fns";
 
 interface VideoDescriptionModalProps {
   video: Video;
