@@ -16,6 +16,7 @@ interface NavbarProps {
   currentPlaylistInfo?: any;
 }
 export const Navbar: React.FC<NavbarProps> = ({
+  const { theme, setTheme } = useTheme();
   onApiKeyChange,
   onRestoreComplete,
   onPlaylistSelect,
