@@ -51,7 +51,7 @@ export const ThemeToggle: React.FC = () => {
       // Uses arbitrary values like `top-[26px]` for precise positioning
       className={`fixed z-40 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? 'top-[22px] right-6'  // Scrolled
+          ? 'top-[20px] right-6'  // Scrolled
           : 'top-[26px] right-14' // Default Sate
       }`}
       style={{
