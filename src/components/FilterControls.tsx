@@ -103,7 +103,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   return (
     <>
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View: Animated Sliding Filter (No Changes) --- */}
+        {/* --- Desktop View: Animated Sliding Filter --- */}
         <div ref={outerContainerRef} className="hidden sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
           <div ref={innerButtonsContainerRef} className="flex flex-row w-auto flex-shrink-0 p-1">
             <div className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`} style={{ top: 'var(--selector-top)', left: 'var(--selector-left)', width: 'var(--selector-width)', height: 'var(--selector-height)' }} />
@@ -124,20 +124,10 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         {/* --- Mobile View: Dropdown Filter --- */}
         <div className="sm:hidden w-full animate-slide-in-left">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95">
-            {/* [MODIFIED] Switched to a CSS Grid layout to maintain consistent button width */}
             <div className="grid items-center">
               {filterOptions.map(option => (
-                <div
-                  key={option.mode}
-                  style={{ gridArea: '1 / 1' }} // Stacks all items in the same grid cell
-                  className={`flex items-center gap-2 transition-all duration-500 ease-out ${
-                    filterMode === option.mode
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 -translate-y-2'
-                  }`}
-                >
+                <div key={option.mode} style={{ gridArea: '1 / 1' }} className={`flex items-center gap-2 transition-all duration-500 ease-out ${filterMode === option.mode ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
                   <option.icon className="w-4 h-4 text-primary" />
-                  {/* [MODIFIED] Added bottom padding to vertically align text with icon */}
                   <span className="font-semibold text-sm pb-[1px]">{`${option.label} (${option.count})`}</span>
                 </div>
               ))}
@@ -150,7 +140,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               {filterOptions.map(option => (
                 <button key={option.mode} onClick={() => handleFilterChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${option.mode === filterMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
                   <option.icon className={`w-4 h-4 ${option.mode === filterMode ? 'text-white' : 'text-primary'}`} />
-                  <span className="text-sm">{`${option.label} (${option.count})`}</span>
+                  {/* [MODIFIED] Changed to text-xs to prevent wrapping on small screens */}
+                  <span className="text-xs">{`${option.label} (${option.count})`}</span>
                 </button>
               ))}
             </div>
