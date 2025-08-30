@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-// [MODIFIED] Added Sun, Moon, Monitor icons for the theme toggle
 import { Key, History, Info, Download, GitCompare, Menu, X, Sun, Moon, Monitor } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
 import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
 import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
-import { useTheme } from './ThemeProvider'; // [MODIFIED] Import the useTheme hook
+import { useTheme } from './ThemeProvider';
 
 interface NavbarProps {
   onApiKeyChange: (apiKey: string) => void;
@@ -23,7 +22,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentVideos = [],
   currentPlaylistInfo = null
 }) => {
-  // [MODIFIED] Get theme state and setter from the ThemeProvider
   const { theme, setTheme } = useTheme();
 
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
@@ -86,15 +84,15 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [canScroll, showMobileMenu]);
 
+  // [FIX] Restored the `animation` property for each desktop navigation item
   const navItems = [
-    { icon: History, label: 'History', onClick: () => setShowHistoryPanel(true) },
-    { icon: Key, label: 'API Key', onClick: () => setShowApiKeyModal(true) },
-    { icon: Download, label: 'Download', onClick: () => setShowBackupModal(true) },
-    { icon: GitCompare, label: 'Compare', onClick: () => setShowComparisonModal(true) },
-    { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
+    { icon: History, label: 'History', onClick: () => setShowHistoryPanel(true), animation: '-rotate-[30deg]' },
+    { icon: Key, label: 'API Key', onClick: () => setShowApiKeyModal(true), animation: '-rotate-[30deg]' },
+    { icon: Download, label: 'Download', onClick: () => setShowBackupModal(true), animation: 'animate-bounce-short-slow' },
+    { icon: GitCompare, label: 'Compare', onClick: () => setShowComparisonModal(true), animation: 'rotate-[360deg]' },
+    { icon: Info, label: 'About', onClick: () => setShowAboutModal(true), animation: 'rotate-[360deg]' }
   ];
 
-  // [MODIFIED] Data for the new theme toggle buttons in the mobile menu
   const themeOptions = [
     { value: 'light' as const, icon: Sun },
     { value: 'dark' as const, icon: Moon },
@@ -127,13 +125,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow' : 'rounded-b-2xl rounded-t-none border-l border-r border-b'}`}>
-            {navItems.map((item, index) => (
-              <button key={index} onClick={item.onClick} className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 h-10 ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}>
-                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all origin-center rounded-2xl"></div>
-                <item.icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
-                <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">{item.label}</span>
-              </button>
-            ))}
+            {navItems.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <button key={index} onClick={item.onClick} className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 h-10 ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}>
+                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all origin-center rounded-2xl"></div>
+                  {/* [FIX] Restored the group-hover animation using item.animation */}
+                  <Icon className={`relative z-10 w-4 h-4 transition-all duration-500 group-hover:${item.animation} group-hover:scale-[1.1] group-hover:stroke-[2.5px]`} />
+                  <span className="relative z-10 hidden sm:inline transition-all duration-300 group-hover:font-semibold">{item.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -150,7 +152,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {index < navItems.length - 1 && (<div className="-mx-2 w-auto my-1 border-t border-white/30 dark:border-white/20"></div>)}
                 </React.Fragment>
               ))}
-              {/* [MODIFIED] Added Theme Toggle section to mobile menu */}
               <div className="-mx-2 w-auto my-1 border-t border-white/30 dark:border-white/20"></div>
               <div className="p-2">
                 <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
