@@ -5,6 +5,9 @@ import { BackupManager } from './BackupManager';
 import { HistoryPanel } from './HistoryPanel';
 import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
+import { Sun, Moon, Monitor } from 'lucide-react';
+import { useTheme } from './ThemeProvider';
+
 interface NavbarProps {
   onApiKeyChange: (apiKey: string) => void;
   onRestoreComplete: () => void;
