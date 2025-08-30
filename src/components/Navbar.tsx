@@ -93,7 +93,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const themeOptions = [
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    // [MODIFIED] Changed to a lighter blue for better visibility
     { value: 'dark' as const, icon: Moon, color: 'text-sky-400' }, 
     { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
   ];
@@ -160,13 +159,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       key={option.value}
                       onClick={() => setTheme(option.value)}
-                      // [MODIFIED] Added active:scale-95 for tap animation
                       className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-transform duration-200 rounded-lg active:scale-95`}
                       aria-label={`Set ${option.value} theme`}
                     >
+                      {/* [MODIFIED] Replaced scale with rotate for the active icon's animation */}
                       <option.icon className={`w-5 h-5 transition-all duration-300 ${
                         isActive 
-                          ? 'scale-110 text-white' 
+                          ? 'scale-110 rotate-12 text-white' 
                           : `${option.color} group-hover:scale-110 group-hover:-rotate-12`
                       }`} />
                     </button>
