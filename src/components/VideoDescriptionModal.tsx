@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Video } from '../types';
-import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X } from 'lucide-react';
+// [FIX] Added Eye and Heart to the import list
+import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Eye, Heart } from 'lucide-react';
 import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
+import { format } from 'date-fns';
 
 interface VideoDescriptionModalProps {
   video: Video;
@@ -91,19 +93,16 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* [MODIFIED] Backdrop styles from reference */}
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* [MODIFIED] Main Modal Container styles from reference */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-2xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
-        {/* [MODIFIED] Header styles from reference */}
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
@@ -122,7 +121,6 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
           </button>
         </div>
 
-        {/* [MODIFIED] Scrollable Content Area */}
         <div className="p-4 sm:p-6 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4 sm:space-y-6">
             <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
@@ -202,4 +200,4 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
       </div>
     </div>
   );
-};3333
+};
