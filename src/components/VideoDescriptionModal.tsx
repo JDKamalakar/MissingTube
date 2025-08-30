@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Video } from '../types';
-import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Heart, Eye } from 'lucide-react';
+import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X } from 'lucide-react';
 import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
-import { format } from 'date-fns';
 
 interface VideoDescriptionModalProps {
   video: Video;
