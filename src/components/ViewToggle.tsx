@@ -64,7 +64,6 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
 
   return (
     <>
-      {/* [MODIFIED] Main component wrapper with dynamic z-index to appear above backdrop */}
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
         {/* --- Desktop View --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto">
@@ -80,21 +79,20 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         </div>
 
         {/* --- Mobile View (Dropdown) --- */}
-        {/* [MODIFIED] Set container to full-width to match desktop layout */}
         <div className="sm:hidden w-full">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95"
           >
-            {/* [MODIFIED] New animation container for cross-fade effect */}
-            <div className="relative h-5 flex items-center"> {/* Fixed height prevents jank */}
+            <div className="relative h-5 flex items-center">
               {viewOptions.map(option => (
                 <div
                   key={option.mode}
-                  className={`flex items-center gap-2 transition-all duration-300 ease-out ${
+                  // [MODIFIED] Changed duration-300 to duration-500 for a slower animation
+                  className={`flex items-center gap-2 transition-all duration-500 ease-out ${
                     viewMode === option.mode
                       ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 -translate-y-2 absolute' // Inactive view slides up and fades out
+                      : 'opacity-0 -translate-y-2 absolute'
                   }`}
                 >
                   <option.icon className="w-4 h-4 text-primary" />
@@ -108,7 +106,16 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
           <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
             <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
               {viewOptions.map(option => (
-                <button key={option.mode} onClick={() => handleViewChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left active:scale-95 ${option.mode === viewMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
+                <button 
+                  key={option.mode} 
+                  onClick={() => handleViewChange(option.mode)} 
+                  // [MODIFIED] Replaced `transition-all` with specific properties to prevent icon shrinking
+                  className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${
+                    option.mode === viewMode 
+                      ? 'bg-primary/80 text-white font-semibold shadow-md' 
+                      : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                  }`}
+                >
                   <option.icon className={`w-4 h-4 ${option.mode === viewMode ? 'text-white' : 'text-primary'}`} />
                   <span className="text-sm">{option.label}</span>
                 </button>
@@ -118,7 +125,6 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         </div>
       </div>
 
-      {/* [MODIFIED] Added full-screen backdrop for when mobile menu is open */}
       {isMobileMenuOpen && (
         <div
           className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-10 animate-fade-in"
@@ -127,4 +133,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       )}
     </>
   );
-};444
+};
