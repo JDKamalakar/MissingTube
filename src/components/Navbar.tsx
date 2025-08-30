@@ -137,10 +137,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="px-4 pb-4 flex flex-col gap-0.5">
             {navItems.map((item, index) => {
               const cornerClass = index === 0
-                ? 'rounded-t-2xl rounded'// First item
+                ? 'rounded-t-2xl rounded-sm'// First item
                 : index === navItems.length - 1
-                  ? 'rounded-b-2xl rounded'// Last item
-                  : 'rounded';      // [MODIFIED] Middle items now have a 4px radius
+                  ? 'rounded-b-2xl rounded-sm'// Last item
+                  : 'rounded-sm';      // [MODIFIED] Middle items now have a 4px radius
 
               return (
                 <button
