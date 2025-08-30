@@ -50,7 +50,7 @@ export const ThemeToggle: React.FC = () => {
       className={`fixed z-40 transition-all duration-300 ease-in-out ${
         isScrolled
           ? 'top-[26px] right-6'  // Scrolled
-          : 'top-[24px] right-14' // Not-Scrolled
+          : 'top-[25px] right-14' // Not-Scrolled
       }`}
       style={{
         paddingTop: 'var(--mobile-safe-area-top)',
