@@ -1,4 +1,4 @@
-import React, from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Filter, Eye, EyeOff, ChevronDown } from 'lucide-react';
 import { FilterMode } from '../types';
 
