@@ -140,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'rounded-t-2xl' // First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl' // Last item
-                  : 'rounded-sm';      // [MODIFIED] Middle items now have rounded-sm (2px)
+                  : 'rounded';      // [MODIFIED] Middle items now have a 4px radius
 
               return (
                 <button
