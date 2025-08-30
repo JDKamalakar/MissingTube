@@ -91,11 +91,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
   ];
 
-  // [MODIFIED] Added labels and colors for the new theme UI
+  // Reverted to the simple themeOptions for the icon-only toggle
   const themeOptions = [
-    { value: 'light' as const, label: 'Light', icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, label: 'Dark', icon: Moon, color: 'text-blue-400' },
-    { value: 'system' as const, label: 'System', icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
+    { value: 'light' as const, icon: Sun },
+    { value: 'dark' as const, icon: Moon },
+    { value: 'system' as const, icon: Monitor },
   ];
 
   const closeMobileMenu = useCallback(() => {
@@ -136,6 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="px-4 pb-4">
+            {/* Div for the main menu items */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
               {navItems.map((item, index) => (
                 <button key={index} onClick={() => { item.onClick(); closeMobileMenu(); }} className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 h-11">
@@ -144,31 +145,33 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
                 </button>
               ))}
-              {/* [MODIFIED] New theme toggle UI for mobile menu */}
-              <div className="bg-black/5 dark:bg-white/5 rounded-2xl p-2 mt-2">
-                <div className="space-y-1">
-                  {themeOptions.map(option => {
-                      const isActive = theme === option.value;
-                      return (
-                          <button
-                              key={option.value}
-                              onClick={() => setTheme(option.value)}
-                              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-sm font-medium ${
-                                  isActive
-                                      ? 'bg-primary/80 text-white shadow-md'
-                                      : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
-                              }`}
-                          >
-                              <option.icon className={`w-5 h-5 transition-transform duration-300 ${option.color} ${
-                                  isActive ? 'scale-110 rotate-6' : 'scale-100'
-                              }`} />
-                              <span>{option.label}</span>
-                          </button>
-                      )
-                  })}
-                </div>
+            </div>
+            
+            {/* [MODIFIED] Theme toggle is now outside the menu list, in its own separate div */}
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
+              <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
+                <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
+                    theme === 'light' ? 'left-0.5' :
+                    theme === 'dark' ? 'left-[33.333%]' :
+                    'left-[66.666%]'
+                  }`}
+                />
+                {themeOptions.map(option => {
+                  const isActive = theme === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      onClick={() => setTheme(option.value)}
+                      className={`relative z-10 flex-1 flex justify-center items-center py-2 transition-colors duration-200 rounded-lg ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+                      aria-label={`Set ${option.value} theme`}
+                    >
+                      <option.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} />
+                    </button>
+                  );
+                })}
               </div>
             </div>
+
           </div>
         </div>
       </nav>
