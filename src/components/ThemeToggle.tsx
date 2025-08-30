@@ -122,7 +122,7 @@ export const ThemeToggle: React.FC = () => {
 
         isScrolled
 
-          ? 'top-3 right-3' // Mobile and Desktop: top right when scrolled
+          ? 'top-7 right-10' // Mobile and Desktop: top right when scrolled
 
           : 'top-7 right-14' // Mobile and Desktop: top right when not scrolled
 
