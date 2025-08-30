@@ -115,7 +115,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">MissingTube</h1>
               </div>
               <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-8 transition-all duration-300 hover:scale-110 active:scale-95 z-50" aria-label="Toggle mobile menu">
-                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-xl border border-white/30 dark:border-white/20 shadow-lg"></div>
+                {/* [MODIFIED] Changed rounding from rounded-xl to specific corners */}
+                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-t rounded-b-xl border border-white/30 dark:border-white/20 shadow-lg"></div>
                 <Menu className={`relative z-10 w-4 h-4 transition-all duration-500 ${showMobileMenu ? 'opacity-0 rotate-[360deg] scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
                 <X className={`absolute z-10 w-4 h-4 transition-all duration-500 text-red-500 ${showMobileMenu ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-[360deg] scale-0'}`} />
               </button>
@@ -140,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'rounded-t-2xl' // First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl' // Last item
-                  : 'rounded';      // [MODIFIED] Middle items now have a 4px radius
+                  : 'rounded-sm';      // Middle items now have rounded-sm (2px)
 
               return (
                 <button
@@ -195,4 +196,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};1111
+};
