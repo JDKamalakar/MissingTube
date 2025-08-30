@@ -109,14 +109,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   return (
     <div ref={outerContainerRef} 
-         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
+         className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl sm:rounded-2xl shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
       
       <div 
         ref={innerButtonsContainerRef} 
-        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-1" 
+        className="flex flex-col sm:flex-row w-full sm:w-auto sm:flex-shrink-0 p-0.5 sm:p-1" 
       > 
         <div 
-          className={`absolute bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm`}
+          className={`absolute bg-primary/80 backdrop-blur-sm rounded-lg sm:rounded-2xl transition-all duration-300 ease-out shadow-sm`}
           style={{
             top: 'var(--selector-top)', 
             left: 'var(--selector-left)', 
@@ -128,14 +128,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={allButtonRef} 
           onClick={() => handleFilterChange('all')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
             currentFilterMode === 'all' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <Filter className={`w-4 h-4 transition-all duration-225 ${
+          <Filter className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
             currentFilterMode === 'all' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${ 
@@ -148,14 +148,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={availableButtonRef} 
           onClick={() => handleFilterChange('available')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
             currentFilterMode === 'available' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <Eye className={`w-4 h-4 transition-all duration-225 ${
+          <Eye className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
             currentFilterMode === 'available' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${
@@ -168,14 +168,14 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         <button
           ref={unavailableButtonRef} 
           onClick={() => handleFilterChange('unavailable')}
-          className={`group relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-medium transition-all duration-225 mobile-text-sm min-w-0 touch-target sm:flex-auto ${
+          className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 text-xs sm:text-sm min-w-0 touch-target sm:flex-auto mobile-button-compact ${
             currentFilterMode === 'unavailable' 
               ? 'text-white'
               : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10'
           }`}
         >
           {/* ICON SIZE: w-4 h-4 (16px base size) + group-hover:scale-110 for inactive hover effect */}
-          <EyeOff className={`w-4 h-4 transition-all duration-225 ${
+          <EyeOff className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
             currentFilterMode === 'unavailable' ? 'scale-110' : 'group-hover:animate-spin group-hover:text-white dark:group-hover:text-primary group-hover:drop-shadow-sm-icon group-hover:scale-110'
           }`} />
           <span className={`transition-all duration-225 whitespace-nowrap ${

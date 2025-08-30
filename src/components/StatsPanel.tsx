@@ -54,22 +54,22 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         onMouseLeave={(e) => {
           e.currentTarget.blur();
         }}
-        className="w-full p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
+        className="w-full p-4 sm:p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-secondary-container rounded-2xl transition-transform duration-225 hover:scale-110">
-            <BarChart3 className="w-6 h-6 text-on-secondary-container" />
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="p-2 sm:p-3 bg-secondary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-110">
+            <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-on-secondary-container" />
           </div>
           <div className="text-left">
-            <h3 className="text-xl font-semibold text-on-surface">Playlist Statistics</h3>
-            <p className="text-on-surface-variant text-sm">View detailed analytics</p>
+            <h3 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist Statistics</h3>
+            <p className="text-on-surface-variant text-xs sm:text-sm">View detailed analytics</p>
           </div>
         </div>
         <div className="flex-shrink-0 transition-transform duration-225">
           {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-on-surface-variant" />
+            <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-on-surface-variant" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-on-surface-variant" />
+            <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-on-surface-variant" />
           )}
         </div>
       </button>
@@ -77,9 +77,9 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
       <div className={`transition-all duration-500 ease-in-out transform-gpu ${isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}>
         {/* MODIFIED: Adjusted padding to pt-1 to pt-2 or pt-3 to shift grid down slightly
                      And removed the top-padding from the containing div, added to each grid item instead. */}
-        <div className="p-5"> {/* Changed pt-0 to p-5 to apply general padding */}
+        <div className="p-3 sm:p-5">
           {/* MODIFIED: Increased gap and adjusted padding */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
             {statItems.map((item, index) => {
               const Icon = item.icon;
               const colorClasses = getColorClasses(item.color);
@@ -88,25 +88,25 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
                 <div
                   key={index}
                   // MODIFIED: Increased vertical padding further to p-6 (from p-5)
-                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
+                  className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 text-center border border-gray-300/30 dark:border-gray-700/30 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-all duration-225 hover:scale-105"
                 >
-                  <div className={`inline-flex p-3 rounded-2xl mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
-                    <Icon className="w-5 h-5" />
+                  <div className={`inline-flex p-2 sm:p-3 rounded-xl sm:rounded-2xl mb-2 sm:mb-3 ${colorClasses} transition-transform duration-225 hover:scale-110`}>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <div className="text-2xl font-bold text-on-surface mb-1 break-words">
+                  <div className="text-lg sm:text-2xl font-bold text-on-surface mb-1 break-words">
                     {item.value}
                   </div>
-                  <div className="text-sm text-on-surface-variant font-medium break-words">{item.label}</div>
+                  <div className="text-xs sm:text-sm text-on-surface-variant font-medium break-words">{item.label}</div>
                 </div>
               );
             })}
           </div>
 
           {stats.unavailableVideos > 0 && (
-            <div className="mt-6 p-4 bg-warning-container text-on-warning-container rounded-2xl border border-outline-variant transition-transform duration-225 hover:scale-[1.02]">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5" />
-                <span className="text-sm font-medium break-words">
+            <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-warning-container text-on-warning-container rounded-xl sm:rounded-2xl border border-outline-variant transition-transform duration-225 hover:scale-[1.02]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium break-words">
                   {stats.unavailableVideos} video{stats.unavailableVideos !== 1 ? 's' : ''} unavailable
                 </span>
               </div>

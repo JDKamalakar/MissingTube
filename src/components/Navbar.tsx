@@ -151,36 +151,36 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out
                       ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
-        <div className={`container mx-auto px-4 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out
+        <div className={`container mx-auto px-3 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding
                                 ${isScrolled
                                   ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4 sm:pr-24' 
-                                  : 'py-4 flex-col items-center sm:pr-8'}`}>
+                                  : 'py-3 sm:py-4 flex-col items-center sm:pr-8'}`}>
 
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20
                                 ${isScrolled
                                   ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 justify-center'
                                   : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none border-l border-r border-t justify-center'}`}>
             
-            <div className="flex items-center w-full gap-3 sm:gap-4 sm:justify-center">
+            <div className="flex items-center w-full gap-2 sm:gap-4 sm:justify-center">
               {/* MissingTube Logo with glassmorphism background */}
-              <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center">
+              <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center">
                 <div className="relative">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                     <img
                       src="/assets/Icon_Light_NB.png"
                       alt="MissingTube Logo"
-                      className="w-6 h-6 sm:w-8 sm:h-8 object-contain dark:hidden transition-opacity duration-300"
+                      className="w-5 h-5 sm:w-8 sm:h-8 object-contain dark:hidden transition-opacity duration-300"
                     />
                     <img
                       src="/assets/Icon_Dark_NB.png"
                       alt="MissingTube Logo"
-                      className="w-6 h-6 sm:w-8 sm:h-8 object-contain hidden dark:block transition-opacity duration-300"
+                      className="w-5 h-5 sm:w-8 sm:h-8 object-contain hidden dark:block transition-opacity duration-300"
                     />
                   </div>
                 </div>
                 
                 {/* Site Name */}
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
+                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">
                   MissingTube
                 </h1>
               </div>
@@ -188,20 +188,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="ml-auto sm:hidden group relative flex items-center justify-center w-12 h-10 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
+                className="ml-auto sm:hidden group relative flex items-center justify-center w-10 h-8 transition-all duration-300 hover:scale-110 active:scale-95 z-50" 
                 aria-label="Toggle mobile menu"
               >
-                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 overflow-hidden">
+                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 overflow-hidden">
                     <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out scale-0 group-hover:scale-100 origin-center rounded-2xl"></div>
                 </div>
 
                 <Menu 
-                    className={`relative z-10 w-5 h-5 transition-all duration-500 
+                    className={`relative z-10 w-4 h-4 transition-all duration-500 
                                 ${showMobileMenu ? 'opacity-0 rotate-[360deg] scale-0' : 'opacity-100 rotate-0 scale-100'}`} 
                 />
                 
                 <X 
-                    className={`absolute z-10 w-5 h-5 transition-all duration-500 text-red-500 
+                    className={`absolute z-10 w-4 h-4 transition-all duration-500 text-red-500 
                                 ${showMobileMenu ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-[360deg] scale-0'}`} 
                 />
               </button>

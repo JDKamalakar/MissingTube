@@ -160,6 +160,7 @@ function App() {
           <InstallPrompt />
 
           <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 py-6 sm:py-8 lg:py-12 max-w-7xl mobile-padding">
+          <div className="container mx-auto px-3 sm:px-6 md:px-8 lg:px-16 py-4 sm:py-8 lg:py-12 max-w-7xl mobile-container-padding">
             <div className="mb-8 sm:mb-12">
               <PlaylistFetcher onFetch={handleFetchPlaylist} isLoading={isLoading} />
             </div>

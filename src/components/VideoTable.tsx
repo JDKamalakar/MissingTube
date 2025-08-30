@@ -249,30 +249,30 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </span>
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleVideoClick(video.videoId)}
                         // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="flex p-2 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                         title="Open video"
                       >
-                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
+                        <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
                       </button>
                       <button
                         onClick={(e) => handleSearchActions(video, e)}
                         // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="flex p-2 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                         title="Search actions"
                       >
-                        <Search className="w-4 h-4 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
+                        <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
                         // Applied shadow-lg for elevation-3 and hover:scale-[1.10] for hover scale
-                        className="hidden sm:flex p-2 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                        className="hidden sm:flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                         title="View description"
                       >
-                        <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" />
+                        <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:rotate-6" />
                       </button>
                     </div>
                   </td>
