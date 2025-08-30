@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="px-4 pb-4 flex flex-col gap-1">
+          <div className="px-4 pb-4 flex flex-col gap-0.5">
             {navItems.map((item, index) => {
               const cornerClass = index === 0
                 ? 'rounded-t-2xl rounded'// First item
