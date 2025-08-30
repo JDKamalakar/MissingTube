@@ -134,18 +134,23 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="px-4 pb-4">
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
-              {navItems.map((item, index) => (
-                <button key={index} onClick={() => { item.onClick(); closeMobileMenu(); }} className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 h-11">
-                  <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center rounded-lg"></div>
-                  <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
-                  <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
-                </button>
-              ))}
-            </div>
+          {/* [MODIFIED] This is now a flex container for the cards */}
+          <div className="px-4 pb-4 flex flex-col gap-2">
+            {/* [MODIFIED] Each button is now a self-contained card */}
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => { item.onClick(); closeMobileMenu(); }}
+                className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20"
+              >
+                <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center rounded-2xl"></div>
+                <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+                <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
+              </button>
+            ))}
             
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
+            {/* [MODIFIED] Theme toggle is now the last card in the flex layout */}
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
@@ -162,7 +167,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-transform duration-200 rounded-lg active:scale-95`}
                       aria-label={`Set ${option.value} theme`}
                     >
-                      {/* [MODIFIED] Removed text-white from active state to retain the icon's original color */}
                       <option.icon className={`w-5 h-5 transition-all duration-500 ease-in-out ${option.color} ${
                         isActive 
                           ? 'scale-110 rotate-[360deg]' 
@@ -173,7 +177,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 })}
               </div>
             </div>
-
           </div>
         </div>
       </nav>
@@ -187,4 +190,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};1111
+};
