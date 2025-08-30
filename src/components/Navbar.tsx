@@ -91,10 +91,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
   ];
 
-  // [MODIFIED] Added colors for the icons
   const themeOptions = [
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-indigo-400' },
+    // [MODIFIED] Changed to a lighter blue for better visibility
+    { value: 'dark' as const, icon: Moon, color: 'text-sky-400' }, 
     { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
   ];
 
@@ -146,8 +146,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
             
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-1 mt-2">
-              <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-1">
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
+              <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
                     theme === 'dark' ? 'left-[33.333%]' :
@@ -160,10 +160,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       key={option.value}
                       onClick={() => setTheme(option.value)}
-                      className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-colors duration-200 rounded-lg`}
+                      // [MODIFIED] Added active:scale-95 for tap animation
+                      className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-transform duration-200 rounded-lg active:scale-95`}
                       aria-label={`Set ${option.value} theme`}
                     >
-                      {/* [MODIFIED] Added animations and conditional colors to the icons */}
                       <option.icon className={`w-5 h-5 transition-all duration-300 ${
                         isActive 
                           ? 'scale-110 text-white' 
@@ -188,4 +188,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};2222
+};
