@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 
-// [MODIFIED] Added isScrolled to the component's props
 interface ThemeToggleProps {
   isScrolled: boolean;
 }
@@ -36,8 +35,8 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ isScrolled }) => {
   };
 
   return (
-    <div ref={themeToggleRef} className="relative">
-      {/* [MODIFIED] Re-added the dynamic scale effect based on the isScrolled prop from the Navbar */}
+    // [FIX] Conditionally apply z-index to lift the whole component when the menu is open
+    <div ref={themeToggleRef} className={`relative ${showOptions ? 'z-50' : ''}`}>
       <button
         onClick={() => setShowOptions(!showOptions)}
         className={`p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-white/25 dark:bg-black/25 backdrop-blur-md border border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-black/40 transition-all duration-300 group shadow-lg active:scale-95 ${
@@ -52,8 +51,8 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ isScrolled }) => {
         </div>
       </button>
 
-      {/* [MODIFIED] Added z-50 to ensure the popover appears above other navbar elements */}
-      <div className={`absolute top-full mt-2 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-2xl shadow-xl p-2 min-w-[160px] z-50 transform transition-all duration-300 ease-out origin-top-right ${showOptions ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+      {/* [FIX] Removed z-index from here as it's now on the parent */}
+      <div className={`absolute top-full mt-2 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-2xl shadow-xl p-2 min-w-[160px] transform transition-all duration-300 ease-out origin-top-right ${showOptions ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
         {[
           { label: 'System', value: 'system' as const, icon: Monitor },
           { label: 'Light', value: 'light' as const, icon: Sun },
