@@ -1,6 +1,6 @@
-import React, from 'react';
-import { Filter, Eye, EyeOff, ChevronDown } from 'lucide-react';
-import { FilterMode } from '../types';
+import React, = 'react';
+import { Filter, Eye, EyeOff, ChevronDown } = 'lucide-react';
+import { FilterMode } = '../types';
 
 interface FilterControlsProps {
   filterMode: FilterMode;
