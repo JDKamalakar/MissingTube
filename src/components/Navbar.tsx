@@ -91,11 +91,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     { icon: Info, label: 'About', onClick: () => setShowAboutModal(true) }
   ];
 
-  // Reverted to the simple themeOptions for the icon-only toggle
+  // [MODIFIED] Added colors for the icons
   const themeOptions = [
-    { value: 'light' as const, icon: Sun },
-    { value: 'dark' as const, icon: Moon },
-    { value: 'system' as const, icon: Monitor },
+    { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
+    { value: 'dark' as const, icon: Moon, color: 'text-indigo-400' },
+    { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
   ];
 
   const closeMobileMenu = useCallback(() => {
@@ -136,7 +136,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="px-4 pb-4">
-            {/* Div for the main menu items */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 space-y-1">
               {navItems.map((item, index) => (
                 <button key={index} onClick={() => { item.onClick(); closeMobileMenu(); }} className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 h-11">
@@ -147,7 +146,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
             
-            {/* [MODIFIED] Theme toggle is now outside the menu list, in its own separate div */}
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
@@ -162,10 +160,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       key={option.value}
                       onClick={() => setTheme(option.value)}
-                      className={`relative z-10 flex-1 flex justify-center items-center py-2 transition-colors duration-200 rounded-lg ${isActive ? 'text-white' : 'text-gray-900 dark:text-white'}`}
+                      className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-colors duration-200 rounded-lg`}
                       aria-label={`Set ${option.value} theme`}
                     >
-                      <option.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} />
+                      {/* [MODIFIED] Added animations and conditional colors to the icons */}
+                      <option.icon className={`w-5 h-5 transition-all duration-300 ${
+                        isActive 
+                          ? 'scale-110 text-white' 
+                          : `${option.color} group-hover:scale-110 group-hover:-rotate-12`
+                      }`} />
                     </button>
                   );
                 })}
