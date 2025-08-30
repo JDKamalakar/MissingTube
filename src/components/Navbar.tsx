@@ -141,6 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'rounded-t-2xl' // First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl' // Last item
+                  : 'rounded-2xl';  // Middle items
 
               return (
                 <button
@@ -196,4 +197,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};
+};111
