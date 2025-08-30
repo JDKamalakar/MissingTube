@@ -1,82 +1,157 @@
-import React from 'react';
-import { Grid3X3, List } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Grid3X3, List, ChevronDown } from 'lucide-react';
 import { ViewMode } from '../types';
 
 interface ViewToggleProps {
-  viewMode: ViewMode;
-  onViewModeChange: (mode: ViewMode) => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
 }
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) => {
-  const handleViewChange = (newMode: ViewMode) => {
-    if (newMode === viewMode) return;
-    
-    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
-    if (container) {
-      container.classList.add('opacity-50', 'scale-95');
-      setTimeout(() => {
-        onViewModeChange(newMode);
-        setTimeout(() => {
-          container.classList.remove('opacity-50', 'scale-95');
-        }, 150);
-      }, 150);
-    } else {
-      onViewModeChange(newMode);
-    }
-  };
+  // State to manage the visibility of the mobile dropdown
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <div className="relative flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl sm:rounded-2xl p-0.5 sm:p-1 shadow-xl border border-white/30 dark:border-white/20 w-full sm:w-auto">
-      {/* Animated Selector Background */}
-      <div 
-        className={`absolute top-0.5 bottom-0.5 sm:top-1 sm:bottom-1 bg-primary/80 backdrop-blur-sm rounded-lg sm:rounded-2xl transition-all duration-300 ease-out shadow-sm ${
-          viewMode === 'grid' 
-            ? 'left-0.5 sm:left-1 w-[calc(50%-2px)] sm:w-[calc(50%-4px)]' 
-            : 'left-[50%] w-[calc(50%-2px)] sm:w-[calc(50%-4px)]'
-        }`}
-      />
-      
-      <button
-        onClick={() => handleViewChange('grid')}
-        className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-xs sm:text-sm mobile-button-compact
-          ${viewMode === 'grid'
-            ? 'text-white' // Active button: white text
-            // MODIFIED: Apply hover:text-white for light mode, dark:hover:text-primary for dark mode
-            : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' 
-          }`}
-      >
-        <Grid3X3 className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
-          viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
-        }`} />
-        <span className={`transition-all duration-225 ${
-          viewMode === 'grid' 
-            ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
-        }`}>
-          Grid
-        </span>
-      </button>
-      
-      <button
-        onClick={() => handleViewChange('table')}
-        className={`group relative z-10 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-xs sm:text-sm mobile-button-compact
-          ${viewMode === 'table'
-            ? 'text-white' // Active button: white text
-            // MODIFIED: Apply hover:text-white for light mode, dark:hover:text-primary for dark mode
-            : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10' 
-          }`}
-      >
-        <List className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-225 ${
-          viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
-        }`} />
-        <span className={`transition-all duration-225 ${
-          viewMode === 'table' 
-            ? 'font-semibold text-white' // Active: bold white text
-            : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary' // MODIFIED: Apply group-hover:text-white for light mode, dark:group-hover:text-primary for dark mode
-        }`}>
-          Table
-        </span>
-      </button>
-    </div>
-  );
-};111
+  const handleViewChange = (newMode: ViewMode) => {
+    // Close mobile menu upon selection
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+
+    if (newMode === viewMode) return;
+    
+    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
+    if (container) {
+      container.classList.add('opacity-50', 'scale-95');
+      setTimeout(() => {
+        onViewModeChange(newMode);
+        setTimeout(() => {
+          container.classList.remove('opacity-50', 'scale-95');
+        }, 150);
+      }, 150);
+    } else {
+      onViewModeChange(newMode);
+    }
+  };
+
+  // Effect to handle clicking outside of the dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const viewOptions = [
+    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3 },
+    { mode: 'table' as ViewMode, label: 'Table', icon: List },
+  ];
+
+  const currentOption = viewOptions.find(opt => opt.mode === viewMode) || viewOptions[0];
+
+  return (
+    <div ref={dropdownRef} className="relative w-full sm:w-auto">
+      {/* --- Desktop View (Original Toggle) --- */}
+      {/* This layout is hidden on mobile (displays below sm breakpoint) */}
+      <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto">
+        {/* Animated Selector Background */}
+        <div 
+          className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
+            viewMode === 'grid' 
+              ? 'left-1 w-[calc(50%-4px)]' 
+              : 'left-[50%] w-[calc(50%-4px)]'
+          }`}
+        />
+        
+        <button
+          onClick={() => handleViewChange('grid')}
+          className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm ${
+            viewMode === 'grid' 
+              ? 'text-white' 
+              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
+          }`}
+        >
+          <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${
+            viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary'
+          }`} />
+          <span className={`transition-all duration-225 ${
+            viewMode === 'grid' 
+              ? 'font-semibold text-white' 
+              : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'
+          }`}>
+            Grid
+          </span>
+        </button>
+        
+        <button
+          onClick={() => handleViewChange('table')}
+          className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm ${
+            viewMode === 'table' 
+              ? 'text-white' 
+              : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
+          }`}
+        >
+          <List className={`w-4 h-4 transition-all duration-225 ${
+            viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary'
+          }`} />
+          <span className={`transition-all duration-225 ${
+            viewMode === 'table' 
+              ? 'font-semibold text-white' 
+              : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'
+          }`}>
+            Table
+          </span>
+        </button>
+      </div>
+
+      {/* --- Mobile View (New Dropdown) --- */}
+      {/* This layout is hidden on desktop (displays above sm breakpoint) */}
+      <div className="sm:hidden w-full">
+        {/* Trigger Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white active:scale-98 transition-transform"
+        >
+          <div className="flex items-center gap-2">
+            <currentOption.icon className="w-4 h-4 text-primary" />
+            <span className="font-semibold text-sm">{currentOption.label}</span>
+          </div>
+          <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
+        </button>
+
+        {/* Dropdown Menu */}
+        <div
+          className={`absolute top-full left-0 right-0 mt-2 overflow-hidden transition-all duration-300 ease-in-out z-20 ${
+            isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="bg-white/50 dark:bg-black/50 backdrop-blur-heavy rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
+            {viewOptions.map((option) => {
+              const Icon = option.icon;
+              const isActive = viewMode === option.mode;
+              return (
+                <button
+                  key={option.mode}
+                  onClick={() => handleViewChange(option.mode)}
+                  className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-all duration-200 text-left ${
+                    isActive
+                      ? 'bg-primary/80 text-white font-semibold shadow-md'
+                      : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-primary'}`} />
+                  <span className="text-sm">{option.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
