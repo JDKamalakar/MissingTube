@@ -162,11 +162,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-transform duration-200 rounded-lg active:scale-95`}
                       aria-label={`Set ${option.value} theme`}
                     >
-                      {/* [MODIFIED] Changed active and hover animations to rotate 360 degrees */}
-                      <option.icon className={`w-5 h-5 transition-all duration-500 ease-in-out ${
+                      {/* [MODIFIED] Removed text-white from active state to retain the icon's original color */}
+                      <option.icon className={`w-5 h-5 transition-all duration-500 ease-in-out ${option.color} ${
                         isActive 
-                          ? 'rotate-[360deg] text-white' 
-                          : `${option.color} group-hover:rotate-[360deg]`
+                          ? 'scale-110 rotate-[360deg]' 
+                          : 'group-hover:rotate-[360deg]'
                       }`} />
                     </button>
                   );
