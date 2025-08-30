@@ -284,7 +284,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 onClick={() => { item.onClick(); closeMobileMenu(); }}
 
-                className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20"
+                className="group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20"
 
               >
 
