@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Video } from '../types';
-// [FIX] Added Eye and Heart to the import list
 import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Eye, Heart } from 'lucide-react';
 import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
+import { format } from 'date-fns';
 
 interface VideoDescriptionModalProps {
   video: Video;
@@ -177,7 +177,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
                     { label: 'Channel', value: videoDetails.channelTitle, icon: null },
                     { label: 'Published', value: formatDate(videoDetails.publishedAt), icon: null },
                   ].map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-3 sm:p-4 text-center border border-white/30 dark:border-white/20 shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div key={label} className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-3 sm:p-4 text-center border border-white/30 dark:border-white/20 shadow-sm transition-all duration-300 hover:scale-105 active:scale-[0.98] hover:shadow-lg">
                       <div className="text-lg sm:text-2xl font-bold text-on-surface mb-1 line-clamp-1">{value}</div>
                       <div className="text-xs sm:text-sm text-on-surface-variant flex items-center justify-center gap-1">
                         {Icon && <Icon className="w-3 h-3" />} {label}
@@ -186,7 +186,8 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
                   ))}
                 </div>
 
-                <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/20 shadow-sm">
+                {/* [MODIFIED] Description Card - added active:scale-[0.98] */}
+                <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/20 shadow-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg">
                   <h4 className="font-medium text-on-surface mb-2">Description</h4>
                   <div className="text-sm text-on-surface-variant leading-relaxed whitespace-pre-wrap max-h-48 sm:max-h-64 overflow-y-auto">
                     {videoDetails.description || 'No description available.'}
