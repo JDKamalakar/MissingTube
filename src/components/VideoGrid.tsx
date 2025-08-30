@@ -110,9 +110,9 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   return (
     <>
       {/* Sort Controls */}
-      <div className="flex items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2">
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2">
         <span className="text-sm font-medium text-gray-900 dark:text-white">Sort by:</span>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
           {[
             { field: 'index' as SortField, label: 'Index' },
             { field: 'title' as SortField, label: 'Title' },
@@ -243,4 +243,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};11
+};
