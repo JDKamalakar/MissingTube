@@ -95,11 +95,11 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
           <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
             <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
               {viewOptions.map(option => (
-                // [MODIFIED] Increased button height with py-4
                 <button key={option.mode} onClick={() => handleViewChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-4 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${option.mode === viewMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
-                  {/* [MODIFIED] Increased icon size to w-5 h-5 */}
-                  <option.icon className={`w-5 h-5 ${option.mode === viewMode ? 'text-white' : 'text-primary'}`} />
-                  <span className="text-sm">{option.label}</span>
+                  {/* [MODIFIED] Increased icon size */}
+                  <option.icon className={`w-6 h-6 ${option.mode === viewMode ? 'text-white' : 'text-primary'}`} />
+                  {/* [MODIFIED] Matched text style to Filter component */}
+                  <span className="text-xs font-semibold">{option.label}</span>
                 </button>
               ))}
             </div>
@@ -112,4 +112,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       )}
     </>
   );
-};111
+};
