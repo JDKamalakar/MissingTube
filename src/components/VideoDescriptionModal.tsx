@@ -5,7 +5,6 @@ import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
-import { format } from 'date-fns';
 
 interface VideoDescriptionModalProps {
   video: Video;
