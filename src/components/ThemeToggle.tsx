@@ -124,7 +124,7 @@ export const ThemeToggle: React.FC = () => {
 
           ? 'top-3 right-3' // Mobile and Desktop: top right when scrolled
 
-          : 'top-7 right-8' // Mobile and Desktop: top right when not scrolled
+          : 'top-6.5 right-10' // Mobile and Desktop: top right when not scrolled
 
       }`}
 
