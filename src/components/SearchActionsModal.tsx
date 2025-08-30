@@ -3,7 +3,7 @@ import { Video } from '../types';
 import { X, Info, Clock, ExternalLink, Hash, Copy, Check } from 'lucide-react';
 import UnavailableImage from '../assets/Unavailable.png';
 import { getVideoUrl } from '../utils/youtube';
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 interface VideoDescriptionModalProps {
   video: Video;
