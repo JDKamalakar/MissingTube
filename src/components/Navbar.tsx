@@ -85,13 +85,13 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [canScroll, showMobileMenu]);
 
-  // [MODIFIED] Added 'hoverAnim' property for specific icon animations
+  // [FIXED] Using arbitrary values for 360 rotation to ensure it works without custom config
   const navItems = useMemo(() => [
-    { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:-rotate-360' },
-    { name: 'API Key', icon: Key, label: 'API Key', action: () => setShowApiKeyModal(true), hoverAnim: 'group-hover:rotate-360' },
+    { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
+    { name: 'API Key', icon: Key, label: 'API Key', action: () => setShowApiKeyModal(true), hoverAnim: 'group-hover:[transform:rotate(360deg)]' },
     { name: 'Download', icon: Download, label: 'Download', action: () => setShowBackupModal(true), hoverAnim: 'group-hover:animate-bounce' },
-    { name: 'Compare', icon: GitCompare, label: 'Compare', action: () => setShowComparisonModal(true), hoverAnim: 'group-hover:-rotate-360' },
-    { name: 'About', icon: Info, label: 'About', action: () => setShowAboutModal(true), hoverAnim: 'group-hover:rotate-360' }
+    { name: 'Compare', icon: GitCompare, label: 'Compare', action: () => setShowComparisonModal(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
+    { name: 'About', icon: Info, label: 'About', action: () => setShowAboutModal(true), hoverAnim: 'group-hover:[transform:rotate(360deg)]' }
   ], []);
 
   const themeOptions = [
@@ -115,7 +115,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
-          {/* This is the Logo/Title div. Note the rounding for the unscrolled desktop view */}
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4">
@@ -133,9 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* This is the Nav Items (Buttons) div */}
           <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
-              // [MODIFIED] Added conditional rounding based on scroll state
               isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
           }`}>
             <div
@@ -157,8 +154,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-white/10'
                 }`}
               >
-                {/* [MODIFIED] Icon now uses specific hover animation from the 'navItems' array */}
-                <item.icon className={`w-4 h-4 transition-all duration-500 ease-in-out ${
+                {/* [FIXED] Using transition-transform to ensure rotation/bounce animation works correctly */}
+                <item.icon className={`w-4 h-4 transition-transform duration-500 ease-in-out ${
                     activeNavItem === item.name ? 'scale-110' : item.hoverAnim
                 }`} />
                 <span className={`transition-all duration-225 whitespace-nowrap hidden sm:inline ${
@@ -233,4 +230,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};44444
+};
