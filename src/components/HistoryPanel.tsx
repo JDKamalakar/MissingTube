@@ -70,10 +70,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       >
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl">
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* [MODIFIED] Added 'group' for hover effect on child icon */}
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              {/* [MODIFIED] Added rotation animation to History icon */}
-              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:rotate-360" />
+              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:rotate-30" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist History</h2>
           </div>
@@ -98,19 +96,23 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
               </p>
             </div>
           ) : (
-            // [MODIFIED] Container for the segmented list look
-            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-2 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30">
+            // [MODIFIED] Removed the extra wrapping div. The flex container below is for layout only.
+            <div className="flex flex-col">
               {playlists.map((playlist, index) => {
                 const isFirst = index === 0;
                 const isLast = index === playlists.length - 1;
-                const cornerClass = isFirst ? 'rounded-t-xl rounded-b-sm' : isLast ? 'rounded-b-xl rounded-t-sm' : 'rounded-sm';
+                // Middle items have no rounding to create the fused, segmented look
+                const cornerClass = isFirst ? 'rounded-t-2xl' : isLast ? 'rounded-b-2xl' : '';
+                // Negative margin collapses the border with the item above it
+                const marginClass = !isFirst ? '-mt-px' : '';
 
                 return (
-                  // [MODIFIED] Card is now a button with new styling and hover effects
                   <button
                     key={playlist.id}
                     onClick={() => handlePlaylistClick(playlist.id)}
-                    className={`group w-full text-left transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 p-3 sm:p-4 z-0 hover:z-10 ${cornerClass} text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10`}
+                    className={`group relative text-left transition-all duration-300 transform origin-center hover:scale-105 hover:-translate-y-1 p-3 sm:p-4 z-0 hover:z-10
+                                bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg border border-gray-300/30 dark:border-gray-700/30
+                                ${cornerClass} ${marginClass}`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
@@ -165,4 +167,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       </div>
     </div>
   );
-};1111
+};
