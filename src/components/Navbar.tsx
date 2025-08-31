@@ -131,11 +131,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-sm p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
+          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-xs p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
               isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
           }`}>
             <div
-              className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-[14px] transition-all duration-500 ease-out shadow-sm ${
+              className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-xs rounded-[14px] transition-all duration-500 ease-out shadow-sm ${
                 activeIndex !== -1 ? 'opacity-100' : 'opacity-0 scale-50'
               }`}
               style={{
@@ -192,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-xs rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
-                <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
+                <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-xs rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
                     theme === 'dark' ? 'left-[33.333%]' :
                     'left-[66.666%]'
@@ -221,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </nav>
 
-      {showMobileMenu && (<div className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-30 animate-fade-in" onClick={closeMobileMenu} />)}
+      {showMobileMenu && (<div className="sm:hidden fixed inset-0 bg-black/20 backdrop-blur-xs z-30 animate-fade-in" onClick={closeMobileMenu} />)}
 
       {showApiKeyModal && (<ApiKeyModal onClose={() => { setShowApiKeyModal(false); setActiveNavItem(null); }} onApiKeyChange={onApiKeyChange} />)}
       {showBackupModal && (<BackupManager onClose={() => { setShowBackupModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
