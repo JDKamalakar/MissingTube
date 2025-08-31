@@ -86,7 +86,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
           </button>
         </div>
 
-        <div className="p-1 sm:p-2">
+        <div className="p-2 sm:p-4">
           {playlists.length === 0 ? (
             <div className="text-center py-12">
               <div className="p-4 bg-surface-container rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
@@ -99,7 +99,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
             </div>
           ) : (
             // [MODIFIED] Container for the segmented list look
-            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-2 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30">
+            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30">
               {playlists.map((playlist, index) => {
                 const isFirst = index === 0;
                 const isLast = index === playlists.length - 1;
