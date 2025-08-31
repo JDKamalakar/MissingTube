@@ -33,8 +33,8 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
       <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-6">
         <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6">
           {/* MODIFIED: Added hover:scale to the icon's parent div */}
-          <div className="p-2 sm:p-3 bg-primary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-110 groupM">
-            <Search className="w-4 h-4 sm:w-6 sm:h-6 text-on-primary-container transition-transform duration-1000 groupM-hover:[transform:rotate(-360deg)]" />
+          <div className="p-2 sm:p-3 bg-primary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-11  group">
+            <Search className="w-4 h-4 sm:w-6 sm:h-6 text-on-primary-container transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
           </div>
           <div>
             <h2 className="text-base sm:text-xl font-semibold text-on-surface">Analyze Playlist</h2>
