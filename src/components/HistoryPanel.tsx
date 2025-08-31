@@ -142,7 +142,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                             e.stopPropagation();
                             window.open(`https://www.youtube.com/playlist?list=${playlist.id}`, '_blank');
                           }}
-                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-xl transition-all duration-300 hover:scale-125 active:scale-95"
+                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-xl transition-all duration-300 hover:scale-125 active:scale-95 group/link"
                           title="Open in YouTube"
                         >
                           <ExternalLink className="w-4 h-4" />
