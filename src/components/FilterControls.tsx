@@ -22,7 +22,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
   
-  // [MODIFIED] Added 'color' and 'hoverAnim' properties to match the structure from Code 1
   const filterOptions = [
     { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
     { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12' },
@@ -113,20 +112,17 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
           </button>
           
-          {/* [MODIFIED] Dropdown container with exact animation and styling from Code 1 */}
           <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-0.5 w-full transform transition-all duration-500 ease-out origin-top-right ${
             isMobileMenuOpen
               ? 'opacity-100 scale-100 translate-y-0 rotate-0 pointer-events-auto'
               : 'opacity-0 scale-75 -translate-y-4 rotate-12 pointer-events-none'
           }`}>
             {filterOptions.map((option, index) => {
-              // [MODIFIED] Logic for corner rounding from Code 1
               const isFirst = index === 0;
               const isLast = index === filterOptions.length - 1;
               const cornerClass = isFirst ? 'rounded-t-xl rounded-sm' : isLast ? 'rounded-b-xl rounded-sm' : 'rounded-sm';
 
               return (
-                // [MODIFIED] Button styling and staggered animation logic from Code 1
                 <button
                   key={option.mode}
                   onClick={() => handleFilterChange(option.mode)}
@@ -140,14 +136,17 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
                     opacity: isMobileMenuOpen ? 1 : 0,
                   }}
                 >
-                  {/* [MODIFIED] Icon styling and animation logic from Code 1 */}
                   <option.icon
                     size={18}
-                    className={`transition-all duration-300 group-hover:scale-110 ${option.color} ${option.hoverAnim} ${
+                    className={`transition-all duration-300 group-hover:scale-110 ${
+                      // [MODIFIED] Icon is now white when selected, otherwise it's the primary color
+                      option.mode === filterMode ? 'text-white' : option.color
+                    } ${option.hoverAnim} ${
                       option.mode === filterMode ? 'scale-110' : ''
                     }`}
                   />
-                  <span>{`${option.label} (${option.count})`}</span>
+                  {/* [MODIFIED] Added 'whitespace-nowrap' to prevent text from wrapping to a new line */}
+                  <span className="whitespace-nowrap">{`${option.label} (${option.count})`}</span>
                 </button>
               );
             })}
@@ -160,4 +159,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       )}
     </>
   );
-};22222
+};
