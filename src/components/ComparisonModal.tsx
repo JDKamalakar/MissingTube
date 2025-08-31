@@ -455,7 +455,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   </>
                 ) : (
                   <>
-                    <GitCompare className="w-5 h-5 transition-transform duration-300 group-hover:rotate-[360deg]" />
+                    <GitCompare className="w-5 h-5 transition-transform duration-1000 group-hover:rotate-[360deg]" />
                     Compare Files
                   </>
                 )}
