@@ -114,17 +114,17 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-xl border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding gap-0.5 ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
-          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 sm:rounded-2xl' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
+          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-xs w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 sm:rounded-2xl' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-xs rounded-xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                   <img src="/assets/Icon_Light_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain dark:hidden" />
                   <img src="/assets/Icon_Dark_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain hidden dark:block" />
                 </div>
                 <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">MissingTube</h1>
               </div>
               <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="ml-auto sm:hidden group relative flex items-center justify-center w-8 h-8 transition-all duration-300 hover:scale-110 active:scale-95 z-50" aria-label="Toggle mobile menu">
-                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-xl border border-white/30 dark:border-white/20 shadow-lg"></div>
+                <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-xs rounded-xl border border-white/30 dark:border-white/20 shadow-lg"></div>
                 <Menu className={`relative z-10 w-4 h-4 transition-all duration-500 ${showMobileMenu ? 'opacity-0 rotate-[360deg] scale-0' : 'opacity-100 rotate-0 scale-100'}`} />
                 <X className={`absolute z-10 w-4 h-4 transition-all duration-500 text-red-500 ${showMobileMenu ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-[360deg] scale-0'}`} />
               </button>
@@ -180,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.label}
                   onClick={() => { item.action(); closeMobileMenu(); }}
-                  className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20 ${cornerClass}`}
+                  className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-xs border border-white/30 dark:border-white/20 ${cornerClass}`}
                 >
                   <div className={`absolute inset-0 bg-black/5 dark:bg-white/10 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center ${cornerClass}`}></div>
                   {/* [MODIFIED] Consistent animation with desktop view */}
@@ -190,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               );
             })}
 
-            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
+            <div className="bg-white/30 dark:bg-black/30 backdrop-blur-xs rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-sm rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'light' ? 'left-0.5' :
