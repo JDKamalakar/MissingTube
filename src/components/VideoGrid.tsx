@@ -187,7 +187,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
             {/* Content */}
             <div className="p-4 pt-2 flex-1 flex flex-col">
               <h3
-                className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark-hover:text-primary transition-colors duration-225 mb-2 flex-1 ${
+                className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 mb-2 flex-1 ${
                   video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
                 }`}
                 onClick={(e) => handleShowDescription(video, e)}
