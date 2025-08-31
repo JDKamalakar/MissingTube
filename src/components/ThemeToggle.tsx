@@ -51,7 +51,7 @@ export const ThemeToggle: React.FC = () => {
       // [MODIFIED] Added `hidden` to hide on mobile and `sm:block` to show on desktop
       className={`hidden sm:block fixed z-40 transition-all duration-300 ease-in-out ${
         isScrolled
-          ? 'top-[16px] right-6'  // Scrolled
+          ? 'top-[17px] right-6'  // Scrolled
           : 'top-[26px] right-14' // Default Sate
       }`}
       style={{
