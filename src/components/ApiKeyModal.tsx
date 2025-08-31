@@ -150,7 +150,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                 <button
                   onClick={handleSave}
                   disabled={isLoading || !apiKey.trim()}
-                  className="w-full py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 border border-primary/50 dark:border-primary-dark/50"
+                  className="w-full py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-1000 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 border border-primary/50 dark:border-primary-dark/50"
                 >
                   {isLoading ? (
                     <>
