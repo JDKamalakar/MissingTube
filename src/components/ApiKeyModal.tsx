@@ -102,7 +102,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
             {/* Close Button: Same effect as ConfirmationModal's X button */}
             <button
               onClick={onClose}
-              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 group-hover:[transform:rotate(360deg)] hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-1000 group-hover:[transform:rotate(360deg)] hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
               aria-label="Close modal"
             >
               {/* X icon in red, spins and scales on hover */}
