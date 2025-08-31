@@ -113,7 +113,7 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
             aria-label="Close modal"
           >
             {/* X icon in red, spins and scales on hover */}
-            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
+            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:[transform:rotate(360deg)] group-hover:scale-110" />
           </button>
         </div>
 
