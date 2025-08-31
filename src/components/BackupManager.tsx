@@ -101,8 +101,8 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
         <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm"> {/* Added border-b and shadow-sm for separator effect */}
           <div className="flex items-center gap-3">
             {/* Modal icon with transparency, depth, and scale on hover */}
-            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <Download className="w-6 h-6 text-primary" />
+            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
+              <Download className="w-6 h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(360deg)]" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Download Data</h2>
           </div>
