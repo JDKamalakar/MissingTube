@@ -3,79 +3,95 @@ import { Grid3X3, List, ChevronDown } from 'lucide-react';
 import { ViewMode } from '../types';
 
 interface ViewToggleProps {
-  viewMode: ViewMode;
-  onViewModeChange: (mode: ViewMode) => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
 }
 
 export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChange }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleViewChange = (newMode: ViewMode) => {
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-    if (newMode === viewMode) return;
-    
-    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
-    if (container) {
-      container.classList.add('opacity-50', 'scale-95');
-      setTimeout(() => {
-        onViewModeChange(newMode);
-        setTimeout(() => {
-          container.classList.remove('opacity-50', 'scale-95');
-        }, 150);
-      }, 150);
-    } else {
-      onViewModeChange(newMode);
-    }
-  };
+  const handleViewChange = (newMode: ViewMode) => {
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+    if (newMode === viewMode) return;
+    
+    const container = document.querySelector('[data-filter-container]') || document.querySelector('[data-view-container]');
+    if (container) {
+      container.classList.add('opacity-50', 'scale-95');
+      setTimeout(() => {
+        onViewModeChange(newMode);
+        setTimeout(() => {
+          container.classList.remove('opacity-50', 'scale-95');
+        }, 150);
+      }, 150);
+    } else {
+      onViewModeChange(newMode);
+    }
+  };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    if (isMobileMenuOpen) {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    }
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isMobileMenuOpen]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    if (isMobileMenuOpen) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMobileMenuOpen]);
 
-  const viewOptions = [
-    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3 },
-    { mode: 'table' as ViewMode, label: 'Table', icon: List },
-  ];
+  const viewOptions = [
+    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3 },
+    { mode: 'table' as ViewMode, label: 'Table', icon: List },
+  ];
 
-  return (
+  return (
     <>
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View --- */}
+        {/* --- [MODIFIED] Desktop View now uses mapping --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto">
           <div className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${viewMode === 'grid' ? 'left-1 w-[calc(50%-4px)]' : 'left-[50%] w-[calc(50%-4px)]'}`} />
-          <button onClick={() => handleViewChange('grid')} className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${viewMode === 'grid' ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'}`}>
-            <Grid3X3 className={`w-4 h-4 transition-all duration-225 ${viewMode === 'grid' ? 'scale-110' : 'group-hover:rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
-            <span className={`transition-all duration-225 ${viewMode === 'grid' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Grid</span>
-          </button>
-          <button onClick={() => handleViewChange('table')} className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${viewMode === 'table' ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'}`}>
-            <List className={`w-4 h-4 transition-all duration-225 ${viewMode === 'table' ? 'scale-110' : 'group-hover:-rotate-12 group-hover:text-white dark:group-hover:text-primary'}`} />
-            <span className={`transition-all duration-225 ${viewMode === 'table' ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>Table</span>
-          </button>
+          {viewOptions.map(option => (
+            <button
+              key={option.mode}
+              onClick={() => handleViewChange(option.mode)}
+              className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${
+                viewMode === option.mode
+                  ? 'text-white'
+                  : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
+              }`}
+            >
+              <option.icon className={`w-4 h-4 transition-all duration-225 ${
+                viewMode === option.mode
+                  ? 'scale-110'
+                  : `group-hover:text-white dark:group-hover:text-primary ${option.mode === 'grid' ? 'group-hover:rotate-12' : 'group-hover:-rotate-12'}`
+              }`} />
+              <span className={`transition-all duration-225 ${
+                viewMode === option.mode
+                  ? 'font-semibold text-white'
+                  : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'
+              }`}>
+                {option.label}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* --- Mobile View (Dropdown) --- */}
@@ -110,4 +126,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       )}
     </>
   );
-};1111
+};
