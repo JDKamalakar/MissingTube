@@ -73,6 +73,7 @@ export const ThemeToggle: React.FC = () => {
         }`}
         aria-label="Toggle theme"
       >
+        {/* [FIXED] Corrected typo from "sm-h-6" to "sm:h-6" */}
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out ${
             isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-6 sm:h-6'
           } ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}
@@ -111,17 +112,16 @@ export const ThemeToggle: React.FC = () => {
           const isLast = index === themePopoverOptions.length - 1;
 
           const cornerClass = isFirst
-            ? 'rounded-t-2xl rounded-sm'
+            ? 'rounded-t-xl rounded-sm'
             : isLast
-              ? 'rounded-b-2xl rounded-sm'
+              ? 'rounded-b-xl rounded-sm'
               : 'rounded-sm';
 
           return (
             <button
               key={option.value}
               onClick={() => handleThemeSelect(option.value)}
-              // [FIXED] Added 'justify-center' to make the internal gaps consistent
-              className={`group w-full flex items-center justify-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs sm:text-sm font-medium ${cornerClass} ${
+              className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs sm:text-sm font-medium ${cornerClass} ${
                 option.active
                   ? 'bg-primary/80 text-white'
                   : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
