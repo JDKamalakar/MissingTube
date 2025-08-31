@@ -149,7 +149,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                         </button>
                         <button
                           onClick={(e) => handleDeletePlaylist(playlist.id, e)}
-                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-all duration-300 hover:scale-125 active:scale-95 group/delete"
+                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-xl transition-all duration-300 hover:scale-125 active:scale-95 group/delete"
                           title="Remove from history"
                         >
                           <Trash2 className="w-4 h-4 transition-all duration-500 group-hover/delete:animate-bounce-short-slow group-hover/delete:scale-[1.1] group-hover/delete:stroke-[2.5px]" />
