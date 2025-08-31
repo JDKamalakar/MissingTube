@@ -229,4 +229,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};
+};2222
