@@ -76,7 +76,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
         </div>
 
         {/* --- Mobile View (Dropdown) --- */}
-        <div className="sm:hidden -mx-4)">
+        <div className="sm:hidden -mx-8)">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95">
             <div className="grid items-center">
               {viewOptions.map(option => (
