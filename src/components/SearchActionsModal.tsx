@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, 'useEffect' from 'react';
 import { Video } from '../types';
 import { X, Search, Archive, Twitter } from 'lucide-react';
 import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
@@ -85,7 +85,8 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
         <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              <Search className="w-6 h-6 text-primary duration-1000 group-hover:[transform:rotate(-360deg)]" />
+              {/* --- FIX: Added pointer-events-none --- */}
+              <Search className="w-6 h-6 text-primary duration-1000 group-hover:[transform:rotate(-360deg)] pointer-events-none" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Search Actions</h2>
           </div>
@@ -94,14 +95,13 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
             className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110" />
+            {/* --- FIX: Added pointer-events-none for consistency --- */}
+            <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110 pointer-events-none" />
           </button>
         </div>
 
         <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          {/* --- MODIFICATION 1: Removed group-hover and active scale from this container --- */}
           <div className="space-y-4">
-            {/* --- MODIFICATION 2: Added direct transition, hover, and active scale classes here --- */}
             <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
               <img
                 src={video.thumbnail}
@@ -171,4 +171,4 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
       </div>
     </div>
   );
-};3333
+};
