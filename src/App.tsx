@@ -4,7 +4,6 @@ import { YouTubeService } from './services/youtube';
 import { decryptApiKey } from './utils/youtube';
 import { getApiKey, savePlaylists, getPlaylists, saveViewMode, getViewMode, saveFilterMode, getFilterMode } from './utils/storage';
 import { usePlaylistStats } from './hooks/usePlaylistStats';
-
 import testData from './assets/test_test.json'; 
 
 import { Navbar } from './components/Navbar';
@@ -35,32 +34,25 @@ function App() {
 
   const stats = usePlaylistStats(videos);
 
-  // Test Data Handler
-
-    const handleFetchPlaylist = async (playlistId: string) => {
-    // Check for the special 'test_test' identifier first
-    if (playlistId === 'test_test') {
-      setIsLoading(true);
-      setVideos([]);
-      setPlaylistInfo(null);
-      
-      // Simulate a network delay for a better user experience
-      setTimeout(() => {
-        // Here we cast the imported JSON to the correct types
-        setPlaylistInfo(testData.playlistInfo as PlaylistInfo);
-        setVideos(testData.videos as Video[]);
-        setLastPlaylistId('test_test'); // Set this to prevent refetch confirmation
-        setIsLoading(false);
-      }, 500); // 0.5 second delay
-      return; // Important: exit the function here
-    }
-
-      
   const handleApiKeyChange = useCallback((newApiKey: string) => {
     setApiKey(newApiKey);
   }, []);
 
   const handleFetchPlaylist = async (playlistId: string) => {
+    if (playlistId === 'test_test') {
+      setIsLoading(true);
+      setVideos([]);
+      setPlaylistInfo(null);
+      
+      setTimeout(() => {
+        setPlaylistInfo(testData.playlistInfo as PlaylistInfo);
+        setVideos(testData.videos as Video[]);
+        setLastPlaylistId('test_test');
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
+
     if (!apiKey) {
       console.warn('Please configure your API key first');
       return;
@@ -77,21 +69,16 @@ function App() {
 
   const fetchPlaylistData = async (playlistId: string) => {
     setIsLoading(true);
-    
     setVideos([]);
     setPlaylistInfo(null);
-    
     try {
       const youtubeService = new YouTubeService(apiKey);
-      
       const info = await youtubeService.fetchPlaylistInfo(playlistId);
       if (!info) {
         console.error('Failed to fetch playlist information');
         return;
       }
-      
       setPlaylistInfo(info);
-      
       const fetchedVideos = await youtubeService.fetchVideos(playlistId);
       setVideos(fetchedVideos);
       setLastPlaylistId(playlistId);
@@ -138,13 +125,10 @@ function App() {
 
   const handleViewModeChange = (newViewMode: ViewMode) => {
     if (newViewMode === viewMode) return;
-    
     setIsTransitioning(true);
-    
     setTimeout(() => {
       setViewMode(newViewMode);
       saveViewMode(newViewMode);
-      
       setTimeout(() => {
         setIsTransitioning(false);
       }, 50);
@@ -164,8 +148,8 @@ function App() {
   }, []);
 
   const unavailableCount = videos.filter(v => v.unavailable).length;
-  const showViewToggle = videos.length > 0; // Show view toggle when there's data
-  const showFilterControls = unavailableCount > 0 && videos.length > 0; // Show filters only when there are unavailable videos
+  const showViewToggle = videos.length > 0;
+  const showFilterControls = unavailableCount > 0 && videos.length > 0;
 
   return (
     <ThemeProvider>
