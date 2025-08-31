@@ -69,6 +69,9 @@ export default {
         'swipe-in-left': 'swipe-in-left 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         'swipe-in-right': 'swipe-in-right 300ms cubic-bezier(0.4, 0, 0.2, 1)',
         'slide-up': 'slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        // --- ADDED WIGGLE AND SHAKE ANIMATIONS ---
+        'wiggle': 'wiggle 0.5s ease-in-out infinite',
+        'shake': 'shake 0.4s linear infinite',
       },
       keyframes: {
         'fade-in': {
@@ -164,6 +167,17 @@ export default {
             transform: 'translateY(0)' 
           },
         },
+        // --- ADDED WIGGLE AND SHAKE KEYFRAMES ---
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-5deg)' },
+          '75%': { transform: 'rotate(5deg)' },
+        },
+        'shake': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-5px)' },
+          '75%': { transform: 'translateX(5px)' },
+        },
       },
       boxShadow: {
         'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.05)',
@@ -174,25 +188,6 @@ export default {
         'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
       },
-      // NEW: Custom text and drop shadows
-
-      // Add your custom animations here
-      animation: {
-        wiggle: 'wiggle 0.5s ease-in-out infinite',
-        shake: 'shake 0.4s linear infinite',
-      },
-      keyframes: {
-        wiggle: {
-          '0%, 100%': { transform: 'rotate(0deg)' },
-          '25%': { transform: 'rotate(-5deg)' },
-          '75%': { transform: 'rotate(5deg)' },
-        },
-        shake: {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '25%': { transform: 'translateX(-5px)' },
-          '75%': { transform: 'translateX(5px)' },
-        },
-        
       textShadow: {
         'sm': '0px 1px 2px rgba(0, 0, 0, 0.4)',
         'md': '0px 2px 4px rgba(0, 0, 0, 0.5)',
@@ -218,7 +213,6 @@ export default {
       fontFamily: {
         'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
-      // Mobile-specific responsive breakpoints
       screens: {
         'xs': '475px',
         'sm': '640px',
@@ -227,14 +221,12 @@ export default {
         'xl': '1280px',
         '2xl': '1536px',
       },
-      // Mobile-optimized spacing
       spacing: {
         'safe-top': 'var(--mobile-safe-area-top)',
         'safe-bottom': 'var(--mobile-safe-area-bottom)',
         'safe-left': 'var(--mobile-safe-area-left)',
         'safe-right': 'var(--mobile-safe-area-right)',
       },
-      // Mobile-optimized heights
       height: {
         'dvh': '100dvh',
         'svh': '100svh',
@@ -253,7 +245,6 @@ export default {
     },
   },
   plugins: [
-    // NEW: Plugin to generate text-shadow and drop-shadow utilities
     function ({ addUtilities, theme }) {
       const newTextShadows = {};
       for (const key in theme('textShadow')) {
@@ -261,7 +252,7 @@ export default {
           'text-shadow': theme('textShadow')[key],
         };
       }
-      addUtilities(newTextShadows, ['responsive', 'hover', 'group-hover']); // Added group-hover variant
+      addUtilities(newTextShadows, ['responsive', 'hover', 'group-hover']);
 
       const newDropShadows = {};
       for (const key in theme('dropShadow')) {
@@ -269,33 +260,27 @@ export default {
           'filter': `drop-shadow(${theme('dropShadow')[key]})`,
         };
       }
-      addUtilities(newDropShadows, ['responsive', 'hover', 'group-hover']); // Added group-hover variant
+      addUtilities(newDropShadows, ['responsive', 'hover', 'group-hover']);
     },
   ],
   safelist: [
     'group-hover:-rotate-[30deg]',
     'group-hover:rotate-[360deg]',
     'group-hover:animate-bounce-short-slow',
-    'group-hover:drop-shadow-sm-icon', // Safelist new drop shadow
-    'group-hover:text-shadow-sm',   // Safelist new text shadow
-   
-    // Visibility for tooltips
+    'group-hover:drop-shadow-sm-icon',
+    'group-hover:text-shadow-sm', 
+    
     'invisible',
     'group-hover:visible',
-    'group-hover:opacity-100', // Tooltip opacity
-    'group-hover:-top-16',     // Tooltip position
+    'group-hover:opacity-100',
+    'group-hover:-top-16', 
 
-    // Collapsible sections (if they behave oddly)
     'max-h-0',
-    'max-h-screen', // For the collapsible content containers
+    'max-h-screen',
 
-    // Specific scales if they are generated dynamically
-    'hover:scale-[1.005]', // Subtler scale for main sections
-    'hover:scale-[1.04]',  // Stronger scale for individual video items
-    'hover:shadow-xl',      // Shadow for main sections
-    'hover:shadow-md',      // Shadow for individual items
-
-    // Also add other transition-related classes just to be safe if they cause issues
-    // e.g., 'transition-all', 'duration-200', 'duration-300', 'duration-500', etc.
+    'hover:scale-[1.005]',
+    'hover:scale-[1.04]', 
+    'hover:shadow-xl', 
+    'hover:shadow-md',
   ],
 };
