@@ -66,7 +66,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             </>
           ) : (
             <>
-              <Search className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-1000 group-hover:[transform:rotate(360deg)]" />
               <span>Analyze Playlist</span>
             </>
           )}
