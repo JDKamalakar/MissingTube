@@ -154,7 +154,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }`}
               >
                 {/* [MODIFIED] Slower rotation speed (1000ms) */}
-                <item.icon className={`w-4 h-4 transition-transform duration-500 ease-in-out ${
+                <item.icon className={`w-4 h-4 transition-transform duration-800 ease-in-out ${
                     activeNavItem === item.name ? 'scale-110' : item.hoverAnim
                 }`} />
                 <span className={`transition-all duration-225 whitespace-nowrap hidden sm:inline ${
