@@ -124,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* sm:mr-8 to the scrolled state to create a gap on the right */}
-          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[100px]' : 'rounded-b-2xl rounded-t-none'}`}>
+          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[60px]' : 'rounded-b-2xl rounded-t-none'}`}>
             {navItems.map((item, index) => (
               <button key={index} onClick={item.onClick} className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 h-10 ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}>
                 <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all origin-center rounded-2xl"></div>
