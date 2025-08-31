@@ -407,7 +407,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                   className="hidden"
                 />
 
-                <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
+                <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30 group-hover:animate-bounce-short-slow">
                   {/* Upload icon with bounce animation on hover */}
                   <Upload className="w-8 h-8 text-on-surface-variant transition-transform duration-300 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
                 </div>
