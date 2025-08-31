@@ -22,10 +22,11 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
   
+  // [MODIFIED] Added 'color' and 'hoverAnim' properties to match the structure from Code 1
   const filterOptions = [
-    { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter },
-    { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye },
-    { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff },
+    { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
+    { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12' },
+    { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
   ];
 
   useEffect(() => {
@@ -65,9 +66,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   return (
     <>
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View --- */}
+        {/* --- Desktop View (Unchanged) --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left sm:w-[540px]">
-          {/* Animated Selector Background */}
           <div 
             className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
               filterMode === 'all' 
@@ -113,15 +113,44 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
           </button>
           
-          <div className={`absolute top-full left-0 right-0 mt-2 w-full overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-xl border border-white/30 dark:border-white/20 p-2 space-y-1 shadow-2xl">
-              {filterOptions.map(option => (
-                <button key={option.mode} onClick={() => handleFilterChange(option.mode)} className={`group flex items-center gap-4 w-full px-4 py-3 rounded-lg transition-[color,background-color,box-shadow,transform] duration-200 text-left active:scale-95 ${option.mode === filterMode ? 'bg-primary/80 text-white font-semibold shadow-md' : 'text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>
-                  <option.icon className={`w-4 h-4 ${option.mode === filterMode ? 'text-white' : 'text-primary'}`} />
-                  <span className="text-xs font-semibold">{`${option.label} (${option.count})`}</span>
+          {/* [MODIFIED] Dropdown container with exact animation and styling from Code 1 */}
+          <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-0.5 w-full transform transition-all duration-500 ease-out origin-top-right ${
+            isMobileMenuOpen
+              ? 'opacity-100 scale-100 translate-y-0 rotate-0 pointer-events-auto'
+              : 'opacity-0 scale-75 -translate-y-4 rotate-12 pointer-events-none'
+          }`}>
+            {filterOptions.map((option, index) => {
+              // [MODIFIED] Logic for corner rounding from Code 1
+              const isFirst = index === 0;
+              const isLast = index === filterOptions.length - 1;
+              const cornerClass = isFirst ? 'rounded-t-xl rounded-sm' : isLast ? 'rounded-b-xl rounded-sm' : 'rounded-sm';
+
+              return (
+                // [MODIFIED] Button styling and staggered animation logic from Code 1
+                <button
+                  key={option.mode}
+                  onClick={() => handleFilterChange(option.mode)}
+                  className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-sm font-medium ${cornerClass} ${
+                    option.mode === filterMode
+                      ? 'bg-primary/80 text-white'
+                      : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
+                  }`}
+                  style={{
+                    transitionDelay: isMobileMenuOpen ? `${100 + index * 50}ms` : '0ms',
+                    opacity: isMobileMenuOpen ? 1 : 0,
+                  }}
+                >
+                  {/* [MODIFIED] Icon styling and animation logic from Code 1 */}
+                  <option.icon
+                    size={18}
+                    className={`transition-all duration-300 group-hover:scale-110 ${option.color} ${option.hoverAnim} ${
+                      option.mode === filterMode ? 'scale-110' : ''
+                    }`}
+                  />
+                  <span>{`${option.label} (${option.count})`}</span>
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -131,4 +160,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       )}
     </>
   );
-};1111
+};
