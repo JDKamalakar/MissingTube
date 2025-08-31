@@ -131,9 +131,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* --- MODIFIED THIS DIV --- */}
-          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-sm p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out rounded-2xl ${
-              isScrolled ? 'sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full'
+          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
+              isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
           }`}>
             <div
               className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-[14px] transition-all duration-500 ease-out shadow-sm ${
@@ -154,6 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-white/10'
                 }`}
               >
+                {/* [MODIFIED] Slower rotation speed (1000ms) */}
                 <item.icon className={`w-4 h-4 transition-transform duration-1000 ease-in-out ${
                     activeNavItem === item.name ? 'scale-110' : item.hoverAnim
                 }`} />
@@ -183,6 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20 ${cornerClass}`}
                 >
                   <div className={`absolute inset-0 bg-black/5 dark:bg-white/10 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center ${cornerClass}`}></div>
+                  {/* [MODIFIED] Consistent animation with desktop view */}
                   <item.icon className={`relative z-10 w-5 h-5 transition-transform duration-1000 ease-in-out ${item.hoverAnim}`} />
                   <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
                 </button>
