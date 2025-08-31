@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-lg p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
+          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-sm p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
               isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
           }`}>
             <div
