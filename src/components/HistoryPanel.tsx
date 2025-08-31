@@ -72,7 +72,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               {/* [MODIFIED] Using arbitrary value for rotation to ensure it works correctly */}
-              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:[transform:-rotate(360deg)]" />
+              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:[transform:rotate(-360deg)]" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist History</h2>
           </div>
