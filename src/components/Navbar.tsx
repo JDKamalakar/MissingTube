@@ -106,8 +106,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
-            <div className="flex items-center w-full gap-2 sm:gap-4">
-              <div className="flex items-center justify-center gap-2 sm:gap-4">
+            <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-2xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
                   <img src="/assets/Icon_Light_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain dark:hidden" />
                   <img src="/assets/Icon_Dark_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain hidden dark:block" />
