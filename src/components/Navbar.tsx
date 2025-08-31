@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const themeOptions = [
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-blue-400 dark:text-blue-800' },
+    { value: 'dark' as const, icon: Moon, color: 'text-blue-500 dark:text-blue-800' },
     { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
   ];
 
