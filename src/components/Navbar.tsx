@@ -85,7 +85,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [canScroll, showMobileMenu]);
 
-  // [FIXED] Using arbitrary values for 360 rotation to ensure it works without custom config
   const navItems = useMemo(() => [
     { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
     { name: 'API Key', icon: Key, label: 'API Key', action: () => setShowApiKeyModal(true), hoverAnim: 'group-hover:[transform:rotate(360deg)]' },
@@ -154,8 +153,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-white/10'
                 }`}
               >
-                {/* [FIXED] Using transition-transform to ensure rotation/bounce animation works correctly */}
-                <item.icon className={`w-4 h-4 transition-transform duration-500 ease-in-out ${
+                {/* [MODIFIED] Slower rotation speed (1000ms) */}
+                <item.icon className={`w-4 h-4 transition-transform duration-1000 ease-in-out ${
                     activeNavItem === item.name ? 'scale-110' : item.hoverAnim
                 }`} />
                 <span className={`transition-all duration-225 whitespace-nowrap hidden sm:inline ${
@@ -184,7 +183,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-lg border border-white/30 dark:border-white/20 ${cornerClass}`}
                 >
                   <div className={`absolute inset-0 bg-black/5 dark:bg-white/10 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center ${cornerClass}`}></div>
-                  <item.icon className="relative z-10 w-5 h-5 transition-all duration-500 group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
+                  {/* [MODIFIED] Consistent animation with desktop view */}
+                  <item.icon className={`relative z-10 w-5 h-5 transition-transform duration-1000 ease-in-out ${item.hoverAnim}`} />
                   <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
                 </button>
               );
@@ -230,4 +230,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};1111
+};
