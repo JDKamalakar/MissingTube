@@ -95,9 +95,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   // --- MODIFICATION 1: Reordered the theme options array ---
   const themeOptions = [
-    { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
+    { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-sky-400' },
+    { value: 'dark' as const, icon: Moon, color: 'text-blue-500 dark:text-blue-800' },
   ];
 
   const closeMobileMenu = useCallback(() => {
