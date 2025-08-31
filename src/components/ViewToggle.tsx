@@ -55,21 +55,30 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
     };
   }, [isMobileMenuOpen]);
 
+  // [MODIFIED] Added strokeWidth for better visual balance between icons
   const viewOptions = [
-    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
-    { mode: 'table' as ViewMode, label: 'Table', icon: List, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12' },
+    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3, color: 'text-primary', hoverAnim: 'group-hover:rotate-12', strokeWidth: 2 },
+    { mode: 'table' as ViewMode, label: 'Table', icon: List, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12', strokeWidth: 2.5 },
   ];
 
   return (
     <>
       <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
         {/* --- Desktop View (Segmented Control) --- */}
-        {/* [MODIFIED] Added 'min-w-[280px]' to increase the width of the desktop component */}
-        <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto min-w-[280px]">
+        {/* [MODIFIED] Increased min-width from 280px to 320px for a wider button */}
+        <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 w-auto min-w-[320px]">
           <div className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${viewMode === 'grid' ? 'left-1 w-[calc(50%-4px)]' : 'left-[50%] w-[calc(50%-4px)]'}`} />
           {viewOptions.map(option => (
             <button key={option.mode} onClick={() => handleViewChange(option.mode)} className={`group relative z-10 flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-225 flex-1 touch-target text-sm active:scale-95 ${viewMode === option.mode ? 'text-white' : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'}`}>
-              <option.icon className={`w-4 h-4 transition-all duration-225 ${viewMode === option.mode ? 'scale-110' : `group-hover:text-white dark:group-hover:text-primary ${option.mode === 'grid' ? 'group-hover:rotate-12' : 'group-hover:-rotate-12'}`}`} />
+              <option.icon
+                strokeWidth={option.strokeWidth}
+                className={`w-4 h-4 transition-all duration-225 ${
+                  // [MODIFIED] Explicitly set active icon to white
+                  viewMode === option.mode
+                    ? 'scale-110 text-white'
+                    : `text-gray-900 dark:text-white group-hover:text-white dark:group-hover:text-primary ${option.mode === 'grid' ? 'group-hover:rotate-12' : 'group-hover:-rotate-12'}`
+                }`}
+              />
               <span className={`transition-all duration-225 ${viewMode === option.mode ? 'font-semibold text-white' : 'text-gray-900 dark:text-white group-hover:font-semibold group-hover:text-white dark:group-hover:text-primary'}`}>{option.label}</span>
             </button>
           ))}
@@ -81,7 +90,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
             <div className="grid items-center">
               {viewOptions.map(option => (
                 <div key={option.mode} style={{ gridArea: '1 / 1' }} className={`flex items-center gap-2 transition-all duration-500 ease-out ${viewMode === option.mode ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
-                  <option.icon className="w-4 h-4 text-primary" />
+                  <option.icon strokeWidth={option.strokeWidth} className="w-4 h-4 text-primary" />
                   <span className="font-semibold text-sm pb-[1px]">{option.label}</span>
                 </div>
               ))}
@@ -96,7 +105,14 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
               const cornerClass = isFirst ? 'rounded-t-xl rounded-sm' : isLast ? 'rounded-b-xl rounded-sm' : 'rounded-sm';
               return (
                 <button key={option.mode} onClick={() => handleViewChange(option.mode)} className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-sm font-medium ${cornerClass} ${option.mode === viewMode ? 'bg-primary/80 text-white' : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'}`} style={{transitionDelay: isMobileMenuOpen ? `${100 + index * 50}ms` : '0ms', opacity: isMobileMenuOpen ? 1 : 0,}}>
-                  <option.icon size={18} className={`transition-all duration-300 group-hover:scale-110 ${option.color} ${option.hoverAnim} ${option.mode === viewMode ? 'scale-110' : ''}`}/>
+                  <option.icon
+                    size={18}
+                    strokeWidth={option.strokeWidth}
+                    className={`transition-all duration-300 group-hover:scale-110 ${option.hoverAnim} ${
+                      // [MODIFIED] Swaps between primary color and white for the icon
+                      option.mode === viewMode ? 'text-white scale-110' : option.color
+                    }`}
+                  />
                   <span>{option.label}</span>
                 </button>
               );
@@ -110,4 +126,4 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
       )}
     </>
   );
-};22222
+};
