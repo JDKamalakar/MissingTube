@@ -104,7 +104,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary pointer-events-none" />
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary pointer-events-none transition-transform group-hover:animate-shake" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface line-clamp-1 flex-1">
               Video Details
