@@ -115,7 +115,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110 pointer-events-none" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110 pointer-events-none" />
           </button>
         </div>
 
