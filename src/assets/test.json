@@ -1,0 +1,54 @@
+{
+  "playlists": [
+    {
+      "id": "PL7tQQT6M7t5K691LmAOA2_YWyri5uwWW0",
+      "title": "Anime Songs (No English Sub Found)",
+      "thumbnail": "https://i.ytimg.com/vi/HPsaZcpjBcM/hqdefault.jpg",
+      "lastAccessed": "2025-07-08T17:40:07.849Z",
+      "videoCount": 3,
+      "videos": [
+        {
+          "id": "PL7tQQT6M7t5K691LmAOA2_YWyri5uwWW0-HPsaZcpjBcM",
+          "index": 1,
+          "thumbnail": "https://i.ytimg.com/vi/HPsaZcpjBcM/default.jpg",
+          "title": "砂時計",
+          "duration": "02:50",
+          "unavailable": false,
+          "videoId": "HPsaZcpjBcM",
+          "channelTitle": "Release - Topic"
+        },
+        {
+          "id": "PL7tQQT6M7t5K691LmAOA2_YWyri5uwWW0-P8g-LUsKYOE",
+          "index": 2,
+          "thumbnail": "https://via.placeholder.com/120x90/cccccc/666666?text=Unavailable",
+          "title": "砂時",
+          "duration": "02:53",
+          "unavailable": false,
+          "videoId": "P8g-LUsKYOE",
+          "channelTitle": "Unknown Channel"
+        },
+        {
+          "id": "PL7tQQT6M7t5K691LmAOA2_YWyri5uwWW0--RP1wlv-F80",
+          "index": 3,
+          "thumbnail": "https://i.ytimg.com/vi/-RP1wlv-F80/default.jpg",
+          "title": "I'm Getting Married to a Girl I Hate in My Class - Ending FULL | Beyond Love and Hate",
+          "duration": "03:27",
+          "unavailable": false,
+          "videoId": "-RP1wlv-F80",
+          "channelTitle": "AniTheme – Anime Songs"
+        },
+      ]
+    }
+  ],
+  "createdAt": "2025-07-08T17:40:07.849Z",
+  "version": "1.0.0",
+  "metadata": {
+    "totalPlaylists": 1,
+    "totalVideos": 3,
+    "currentPlaylist": {
+      "id": "PL7tQQT6M7t5K691LmAOA2_YWyri5uwWW0",
+      "title": "Anime Songs (No English Sub Found)",
+      "videoCount": 3
+    }
+  }
+}
