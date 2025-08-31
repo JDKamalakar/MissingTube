@@ -85,7 +85,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           <div className="flex items-center gap-3">
             {/* Alert Icon Container: Transparent, blurred, with shadow and hover scale */}
             <div className={`p-3 ${iconBg} rounded-2xl shadow-md transition-all duration-1000 hover:scale-[1.08] group active:scale-95 hover:shadow-lg`}>
-              <AlertTriangle className={`w-6 h-6 ${iconColor} transition-all duration-1000 group-hover:scale-125 group-active:scale-95`} />
+              <AlertTriangle className={`w-6 h-6 ${iconColor} duration-1000 group-hover:animate-[scale-pulse_2s_ease-in-out_infinite]`} />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">
               {title}
