@@ -101,7 +101,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
         <div className="p-8 flex-1 overflow-y-auto group" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4 group-hover:scale-[1.02] group-active:scale-[0.98">
-            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm duration-1000 group-hover:scale-[1.02] group-active:scale-[0.98]">
+            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm duration-1000 group-hover:scale-[1.08] group-active:scale-95">
               <img
                 src={video.thumbnail}
                 alt={video.title}
