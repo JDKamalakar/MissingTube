@@ -175,6 +175,24 @@ export default {
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
       },
       // NEW: Custom text and drop shadows
+
+      // Add your custom animations here
+      animation: {
+        wiggle: 'wiggle 0.5s ease-in-out infinite',
+        shake: 'shake 0.4s linear infinite',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-5deg)' },
+          '75%': { transform: 'rotate(5deg)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-5px)' },
+          '75%': { transform: 'translateX(5px)' },
+        },
+        
       textShadow: {
         'sm': '0px 1px 2px rgba(0, 0, 0, 0.4)',
         'md': '0px 2px 4px rgba(0, 0, 0, 0.5)',
