@@ -83,7 +83,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               className={`relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
                 filterMode === option.mode
                   ? 'text-white'
-                  : 'text-gray-900 dark:text-white hover:text-white hover:bg-white/10'
+                  : 'text-gray-900 dark:text-primary hover:text-white hover:bg-white/10'
               }`}
             >
               <option.icon className={`w-4 h-4 transition-all duration-225 ${
