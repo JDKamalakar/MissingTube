@@ -70,10 +70,9 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       >
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl">
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* [MODIFIED] Added 'group' for hover effect on child icon */}
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              {/* [MODIFIED] Added rotation animation to History icon */}
-              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:rotate-360" />
+              {/* [MODIFIED] Using arbitrary value for rotation to ensure it works correctly */}
+              <History className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-500 group-hover:[transform:rotate(360deg)]" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface">Playlist History</h2>
           </div>
@@ -98,7 +97,6 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
               </p>
             </div>
           ) : (
-            // [MODIFIED] Container for the segmented list look
             <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-6 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30">
               {playlists.map((playlist, index) => {
                 const isFirst = index === 0;
@@ -106,7 +104,6 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                 const cornerClass = isFirst ? 'rounded-t-xl rounded-b-sm' : isLast ? 'rounded-b-xl rounded-t-sm' : 'rounded-sm';
 
                 return (
-                  // [MODIFIED] Card is now a button with new styling and hover effects
                   <button
                     key={playlist.id}
                     onClick={() => handlePlaylistClick(playlist.id)}
@@ -142,10 +139,12 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
                             e.stopPropagation();
                             window.open(`https://www.youtube.com/playlist?list=${playlist.id}`, '_blank');
                           }}
-                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-xl transition-all duration-300 hover:scale-125 active:scale-95"
+                          // [MODIFIED] Added group/link for specific hover scope
+                          className="p-1.5 sm:p-2 text-on-surface-variant hover:text-primary hover:bg-primary-container rounded-xl transition-all duration-300 hover:scale-125 active:scale-95 group/link"
                           title="Open in YouTube"
                         >
-                          <ExternalLink className="w-4 h-4" />
+                          {/* [MODIFIED] Added bounce animation */}
+                          <ExternalLink className="w-4 h-4 transition-transform group-hover/link:animate-bounce" />
                         </button>
                         <button
                           onClick={(e) => handleDeletePlaylist(playlist.id, e)}
@@ -165,4 +164,4 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       </div>
     </div>
   );
-};111
+};
