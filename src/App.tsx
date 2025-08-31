@@ -5,6 +5,8 @@ import { decryptApiKey } from './utils/youtube';
 import { getApiKey, savePlaylists, getPlaylists, saveViewMode, getViewMode, saveFilterMode, getFilterMode } from './utils/storage';
 import { usePlaylistStats } from './hooks/usePlaylistStats';
 
+import testData from './assets/test_test.json'; 
+
 import { Navbar } from './components/Navbar';
 import { PlaylistFetcher } from './components/PlaylistFetcher';
 import { PlaylistHeader } from './components/PlaylistHeader';
@@ -33,6 +35,27 @@ function App() {
 
   const stats = usePlaylistStats(videos);
 
+  // Test Data Handler
+
+    const handleFetchPlaylist = async (playlistId: string) => {
+    // Check for the special 'test_test' identifier first
+    if (playlistId === 'test_test') {
+      setIsLoading(true);
+      setVideos([]);
+      setPlaylistInfo(null);
+      
+      // Simulate a network delay for a better user experience
+      setTimeout(() => {
+        // Here we cast the imported JSON to the correct types
+        setPlaylistInfo(testData.playlistInfo as PlaylistInfo);
+        setVideos(testData.videos as Video[]);
+        setLastPlaylistId('test_test'); // Set this to prevent refetch confirmation
+        setIsLoading(false);
+      }, 500); // 0.5 second delay
+      return; // Important: exit the function here
+    }
+
+      
   const handleApiKeyChange = useCallback((newApiKey: string) => {
     setApiKey(newApiKey);
   }, []);
