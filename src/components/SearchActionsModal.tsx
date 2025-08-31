@@ -1,4 +1,4 @@
-import React, 'useEffect' from 'react';
+import React, { useEffect } from 'react';
 import { Video } from '../types';
 import { X, Search, Archive, Twitter } from 'lucide-react';
 import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
