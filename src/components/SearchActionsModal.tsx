@@ -10,7 +10,6 @@ interface SearchActionsModalProps {
   onClose: () => void;
 }
 
-// [FIX] Ensure the "export" keyword is present on this line
 export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, onClose }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -99,9 +98,11 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
           </button>
         </div>
 
-        <div className="p-8 flex-1 overflow-y-auto group" style={{ scrollbarWidth: 'thin' }}>
-          <div className="space-y-4 duration-1000 group-hover:scale-[1.02] group-active:scale-[0.98]">
-            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm duration-1000 group-hover:scale-[1.02] group-active:scale-[0.98]">
+        <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+          {/* --- MODIFICATION 1: Removed group-hover and active scale from this container --- */}
+          <div className="space-y-4">
+            {/* --- MODIFICATION 2: Added direct transition, hover, and active scale classes here --- */}
+            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
               <img
                 src={video.thumbnail}
                 alt={video.title}
@@ -135,14 +136,14 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
-                                shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
+                                  shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
                     >
                       <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} />
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
                           className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
-                            group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
+                                  group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (
                             <IconComponent className="w-5 h-5 text-white" />
@@ -170,4 +171,4 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
       </div>
     </div>
   );
-};3333
+};
