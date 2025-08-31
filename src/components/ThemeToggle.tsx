@@ -69,7 +69,7 @@ export const ThemeToggle: React.FC = () => {
         aria-label="Toggle theme"
       >
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out ${
-            isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-10 sm:h-10'
+            isScrolled ? 'w-10 h-10' : 'w-5 h-5 sm:w-6 sm:h-6'
           } ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}
         >
           <Monitor
