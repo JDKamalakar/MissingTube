@@ -94,9 +94,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   ], []);
 
   const themeOptions = [
-    { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
     { value: 'dark' as const, icon: Moon, color: 'text-blue-500 dark:text-blue-800' },
+    { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
   ];
 
   const closeMobileMenu = useCallback(() => {
@@ -230,4 +230,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};
+};111
