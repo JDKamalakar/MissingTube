@@ -226,7 +226,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         </div>
                       )}
           _              <div
-                          className={`cursor-pointer hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
+                          className={`cursor-pointer text-white dark:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
                             video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
                           }`}
                           onClick={(e) => handleShowDescription(video, e)}
