@@ -104,7 +104,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
-        <div className={`container mx-auto px-3 sm:pl-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
+        {/* [FIX 1] Changed sm:pl-8 to sm:px-8 for symmetrical padding on desktop */}
+        <div className={`container mx-auto px-3 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4">
@@ -122,7 +123,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow' : 'rounded-b-2xl rounded-t-none'}`}>
+          {/* [FIX 2] Added sm:mr-8 to the scrolled state to create a gap on the right */}
+          <div className={`hidden sm:flex flex-wrap justify-center p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full gap-6 transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-8' : 'rounded-b-2xl rounded-t-none'}`}>
             {navItems.map((item, index) => (
               <button key={index} onClick={item.onClick} className={`group relative flex items-center gap-2 px-3 py-2 text-gray-900 dark:text-white rounded-2xl transition-all duration-300 active:scale-95 h-10 ${isScrolled ? 'hover:scale-[1.05]' : 'hover:scale-[1.08]'}`}>
                 <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-all origin-center rounded-2xl"></div>
@@ -140,7 +142,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'rounded-t-2xl rounded-sm'// First item
                 : index === navItems.length - 1
                   ? 'rounded-b-2xl rounded-sm'// Last item
-                  : 'rounded-sm';      // [MODIFIED] Middle items now have a 4px radius
+                  : 'rounded-sm';     // [MODIFIED] Middle items now have a 4px radius
 
               return (
                 <button
@@ -195,4 +197,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => setShowComparisonModal(false)} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};1111
+};
