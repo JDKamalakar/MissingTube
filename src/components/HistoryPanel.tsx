@@ -86,7 +86,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
           </button>
         </div>
 
-        <div className="p-2 sm:p-4">
+        <div className="p-1 sm:p-2">
           {playlists.length === 0 ? (
             <div className="text-center py-12">
               <div className="p-4 bg-surface-container rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
