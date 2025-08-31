@@ -159,7 +159,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                     </>
                   ) : (
                     <>
-                      <Key className="w-5 h-5 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
+                      <Key className="w-5 h-5 transition-transform duration-1000 group-hover:[transform:rotate(360deg)]" />
                       Save API Key
                     </>
                   )}
