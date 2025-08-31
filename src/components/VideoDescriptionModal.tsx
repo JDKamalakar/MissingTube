@@ -119,7 +119,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             aria-label="Close modal"
           >
             {/* --- MODIFICATION: Changed to wiggle for consistency --- */}
-            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error pointer-events-none group-hover:animate-wiggle" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error pointer-events-none duration-1000 group-hover:[transform:rotate(360deg)]" />
           </button>
         </div>
 
