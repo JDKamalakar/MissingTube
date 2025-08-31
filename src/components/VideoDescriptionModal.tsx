@@ -5,6 +5,8 @@ import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
+// Assuming 'format' is from 'date-fns' or a similar library. If not, you might need to import it.
+import { format } from 'date-fns'; 
 
 interface VideoDescriptionModalProps {
   video: Video;
@@ -104,7 +106,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary pointer-events-none" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface line-clamp-1 flex-1">
               Video Details
@@ -115,13 +117,14 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110 pointer-events-none" />
           </button>
         </div>
 
         <div className="p-4 sm:p-6 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
+            {/* --- MODIFICATION: Added hover/active scale animations --- */}
+            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-lg">
               <img
                 src={video.thumbnail}
                 alt={video.title}
@@ -149,7 +152,8 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             </div>
 
             {isLoading && (
-              <div className="flex items-center justify-center py-12 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm">
+              // --- MODIFICATION: Added hover/active scale animations ---
+              <div className="flex items-center justify-center py-12 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-lg">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
                   <p className="text-on-surface-variant">Loading video details...</p>
@@ -158,7 +162,8 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             )}
 
             {error && (
-              <div className="p-4 bg-error-container/30 backdrop-blur-lg text-on-error-container rounded-2xl border border-error/30 shadow-sm">
+              // --- MODIFICATION: Added hover/active scale animations ---
+              <div className="p-4 bg-error-container/30 backdrop-blur-lg text-on-error-container rounded-2xl border border-error/30 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="w-5 h-5" />
                   <span className="font-medium">Unable to load details</span>
@@ -185,8 +190,8 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
                   ))}
                 </div>
 
-                {/* [MODIFIED] Description Card - added active:scale-[0.98] */}
-                <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/20 shadow-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg">
+                {/* --- MODIFICATION: Made scale consistent with others --- */}
+                <div className="bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-white/20 shadow-sm transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] hover:shadow-lg">
                   <h4 className="font-medium text-on-surface mb-2">Description</h4>
                   <div className="text-sm text-on-surface-variant leading-relaxed whitespace-pre-wrap max-h-48 sm:max-h-64 overflow-y-auto">
                     {videoDetails.description || 'No description available.'}
