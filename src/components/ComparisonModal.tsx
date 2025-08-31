@@ -316,7 +316,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
           <div className="flex items-center gap-3">
             {/* Icon container with transparency, depth, and hover effects - adjusted scale */}
             <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              <GitCompare className="w-6 h-6 text-primary" />
+              <GitCompare className="w-6 h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
             </div>
             {/* MODIFIED: Title and Playlist Info for Mobile View */}
             {/* Using text-center on mobile to stack and center text */}
