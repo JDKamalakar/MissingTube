@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-lg border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
+      <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-xl border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding gap-0.5 ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
           <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 sm:rounded-2xl' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
@@ -131,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
+          <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-xl p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
               isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
           }`}>
             <div
