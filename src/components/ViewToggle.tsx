@@ -83,7 +83,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
 
         {/* --- Mobile View (Dropdown) --- */}
         {/* [MODIFIED] Added '-mx-4 sm:mx-0' to make the component break out of its container's padding on mobile */}
-        <div className="sm:hidden w-full -mx-[10px] sm:mx-0">
+        <div className="sm:hidden w-full -mx-[100px] sm:mx-0">
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="flex items-center justify-between w-full bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-xl p-3 shadow-xl border border-white/30 dark:border-white/20 text-gray-900 dark:text-white transition-transform duration-200 active:scale-95">
             <div className="grid items-center">
               {viewOptions.map(option => (
