@@ -93,10 +93,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'About', icon: Info, label: 'About', action: () => setShowAboutModal(true), hoverAnim: 'group-hover:[transform:rotate(360deg)]' }
   ], []);
 
+  // --- MODIFICATION 1: Reordered the theme options array ---
   const themeOptions = [
+    { value: 'system' as const, icon: Monitor, color: 'text-slate-500 dark:text-slate-400' },
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-blue-500 dark:text-blue-800' },
-    { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
+    { value: 'dark' as const, icon: Moon, color: 'text-sky-400' },
   ];
 
   const closeMobileMenu = useCallback(() => {
@@ -153,7 +154,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-white/10'
                 }`}
               >
-                {/* [MODIFIED] Slower rotation speed (1000ms) */}
                 <item.icon className={`w-4 h-4 transition-transform duration-1000 ease-in-out ${
                     activeNavItem === item.name ? 'scale-110' : item.hoverAnim
                 }`} />
@@ -183,7 +183,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className={`group relative flex items-center gap-4 w-full px-4 py-3 text-gray-900 dark:text-white transition-all duration-300 hover:scale-[1.02] active:scale-98 bg-white/30 dark:bg-black/30 backdrop-blur-xs border border-white/30 dark:border-white/20 ${cornerClass}`}
                 >
                   <div className={`absolute inset-0 bg-black/5 dark:bg-white/10 opacity-0 group-hover:opacity-100 scale-0 group-hover:scale-100 transition-opacity origin-center ${cornerClass}`}></div>
-                  {/* [MODIFIED] Consistent animation with desktop view */}
                   <item.icon className={`relative z-10 w-5 h-5 transition-transform duration-1000 ease-in-out ${item.hoverAnim}`} />
                   <span className="relative z-10 transition-all duration-300 group-hover:font-semibold">{item.label}</span>
                 </button>
@@ -192,9 +191,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-xs rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
+                {/* --- MODIFICATION 2: Updated the positioning logic for the sliding indicator --- */}
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-xs rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
-                    theme === 'light' ? 'left-0.5' :
-                    theme === 'dark' ? 'left-[33.333%]' :
+                    theme === 'system' ? 'left-0.5' :
+                    theme === 'light' ? 'left-[33.333%]' :
                     'left-[66.666%]'
                   }`}
                 />
@@ -230,4 +230,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};111
+};
