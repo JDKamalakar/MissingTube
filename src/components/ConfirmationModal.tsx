@@ -114,7 +114,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               onClick={onClose}
               className="flex-1 py-3 px-6 bg-surface-container/80 dark:bg-gray-700/80 backdrop-blur-sm text-on-surface rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-outline-variant/50 elevation-3" // ADDED shadow-lg hover:shadow-xl and elevation-3
             >
-              <X className="w-4 h-4 text-error transition-transform duration-500 group-hover:rotate-[360deg] group-hover:scale-110" />
+              <X className="w-4 h-4 text-error transition-transform duration-1000 group-hover:rotate-[360deg] group-hover:scale-110" />
               {cancelText}
             </button>
             {/* Confirm button: With transparency, shadow, depth, and hover effects including icon animation */}
