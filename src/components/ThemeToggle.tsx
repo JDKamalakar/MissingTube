@@ -114,7 +114,7 @@ export const ThemeToggle: React.FC = () => {
           const cornerClass = isFirst
             ? 'rounded-t-2xl rounded-sm'
             : isLast
-              ? 'rounded-b-2xl rounded-sm'
+              ? 'rounded-b-xl rounded-sm'
               : 'rounded-sm';
 
           return (
