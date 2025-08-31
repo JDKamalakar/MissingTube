@@ -118,7 +118,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
-                  {/* [FIXED] Corrected typo sm-8 to sm:h-8 */}
                   <img src="/assets/Icon_Light_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain dark:hidden" />
                   <img src="/assets/Icon_Dark_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain hidden dark:block" />
                 </div>
@@ -148,16 +147,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => handleNavClick(item)}
                 className={`group relative z-10 flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl font-medium transition-all duration-225 flex-1 text-sm active:scale-95 ${
                   activeNavItem === item.name
-                    ? 'text-white' // Active state
-                    // [FIXED] Updated hover state to change text color to primary
-                    : 'text-gray-900 dark:text-white hover:text-primary dark:hover:text-primary hover:bg-black/5 dark:hover:bg-white/5'
+                    ? 'text-white'
+                    // [FIXED] Using exact hover classes from your ViewToggle example
+                    : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-white/10 dark:hover:bg-gray-800/10'
                 }`}
               >
                 <item.icon className={`w-4 h-4 transition-all duration-300 ${
-                    activeNavItem === item.name ? 'scale-110' : 'group-hover:scale-110 group-hover:rotate-6'
+                    activeNavItem === item.name ? 'scale-110' : 'group-hover:scale-110'
                 }`} />
                 <span className={`transition-all duration-225 whitespace-nowrap hidden sm:inline ${
-                    activeNavItem === item.name ? 'font-semibold' : ''
+                    activeNavItem === item.name ? 'font-semibold' : 'group-hover:font-semibold'
                 }`}>
                   {item.label}
                 </span>
@@ -166,7 +165,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* [FIXED] Restored the entire mobile menu view */ }
         <div className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${showMobileMenu ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="px-4 pb-4 flex flex-col gap-0.5">
             {navItems.map((item, index) => {
@@ -229,4 +227,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};2222
+};
