@@ -57,7 +57,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
         <button
           type="submit"
           disabled={isLoading || !url.trim()}
-          className="w-full py-2 sm:py-3 h-12 sm:h-16 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 sm:gap-3 mobile-button touch-target text-sm sm:text-base mobile-button-compact"
+          className="w-full py-2 sm:py-3 h-12 sm:h-16 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 sm:gap-3 mobile-button touch-target text-sm sm:text-base mobile-button-compact group"
         >
           {isLoading ? (
             <>
@@ -66,7 +66,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
             </>
           ) : (
             <>
-              <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
               <span>Analyze Playlist</span>
             </>
           )}
