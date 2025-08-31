@@ -261,6 +261,15 @@
   }
 }
 
+@keyframes scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
 @keyframes oceanGradientDark {
   0%, 100% {
     background-position: 0% 50%;
