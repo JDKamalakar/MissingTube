@@ -122,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <img src="/assets/Icon_Light_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain dark:hidden" />
                   <img src="/assets/Icon_Dark_NB.png" alt="MissingTube Logo" className="w-5 h-5 sm:w-8 sm:h-8 object-contain hidden dark:block" />
                 </div>
-                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent">MissingTube</h1>
+                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary to-tertiary bg-clip-text text-transparent text-shadow-sm">MissingTube</h1>
               </div>
               <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="ml-auto sm:hidden group relative flex items-center justify-center w-8 h-8 transition-all duration-300 hover:scale-110 active:scale-95 z-50" aria-label="Toggle mobile menu">
                 <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-xs rounded-xl border border-white/30 dark:border-white/20 shadow-lg"></div>
