@@ -45,10 +45,16 @@ export const ThemeToggle: React.FC = () => {
     setShowOptions(false);
   };
 
+  // [FIXED] Added more data for colors and animations to use in the map
+  const themePopoverOptions = [
+    { label: 'System', value: 'system' as const, icon: Monitor, active: isSystemActive, color: 'text-blue-500', hoverAnim: 'group-hover:rotate-12' },
+    { label: 'Light', value: 'light' as const, icon: Sun, active: isLightActive, color: 'text-yellow-500', hoverAnim: 'group-hover:rotate-180' },
+    { label: 'Dark', value: 'dark' as const, icon: Moon, active: isDarkActive, color: 'text-blue-500 dark:text-blue-400', hoverAnim: 'group-hover:rotate-[360deg]' }
+  ];
+
   return (
     <div
       ref={themeToggleRef}
-      // [MODIFIED] Added `hidden` to hide on mobile and `sm:block` to show on desktop
       className={`hidden sm:block fixed z-40 transition-all duration-300 ease-in-out ${
         isScrolled
           ? 'top-[17px] right-6'  // Scrolled
@@ -69,7 +75,7 @@ export const ThemeToggle: React.FC = () => {
         aria-label="Toggle theme"
       >
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out ${
-            isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-6 sm:h-6' // Typo fixed here
+            isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-6 sm:h-6'
           } ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}
         >
           <Monitor
@@ -96,37 +102,37 @@ export const ThemeToggle: React.FC = () => {
         </div>
       </button>
 
-      {/* [MODIFIED] Theme Options Popover with animation from Code 2 */}
-      <div className={`absolute top-full mt-2 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl sm:rounded-2xl shadow-xl p-2 min-w-[160px] transform transition-all duration-500 ease-out origin-top-right ${
+      {/* Popover with corrected animations, gaps, and styles */}
+      <div className={`absolute top-full mt-2 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl sm:rounded-2xl shadow-xl p-3 min-w-[160px] space-y-2 transform transition-all duration-500 ease-out origin-top-right ${
         showOptions
           ? 'opacity-100 scale-100 translate-y-0 rotate-0 pointer-events-auto'
           : 'opacity-0 scale-75 -translate-y-4 rotate-12 pointer-events-none'
       }`}>
-        {[
-          { label: 'System', value: 'system' as const, icon: Monitor, active: isSystemActive },
-          { label: 'Light', value: 'light' as const, icon: Sun, active: isLightActive },
-          { label: 'Dark', value: 'dark' as const, icon: Moon, active: isDarkActive },
-        ].map((option, index) => ( // Added 'index' for stagger effect
+        {themePopoverOptions.map((option, index) => (
           <button
             key={option.value}
             onClick={() => handleThemeSelect(option.value)}
-            // [MODIFIED] Added animation classes and hover effects from Code 2
-            className={`group w-full flex items-center gap-3 px-3 py-2 rounded-lg sm:rounded-xl transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs sm:text-sm font-medium ${
+            className={`group w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs sm:text-sm font-medium ${
               option.active
                 ? 'bg-primary/80 text-white'
                 : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
             }`}
-            // [MODIFIED] Added inline style for staggered fade-in animation
             style={{
               transitionDelay: showOptions ? `${100 + index * 50}ms` : '0ms',
               opacity: showOptions ? 1 : 0,
             }}
           >
-            <option.icon className="w-4 h-4" />
+            {/* [FIXED] Icon now has correct size, color, and animations */}
+            <option.icon
+              size={18}
+              className={`transition-all duration-300 group-hover:scale-110 ${option.color} ${option.hoverAnim} ${
+                option.active ? 'scale-110' : ''
+              }`}
+            />
             <span>{option.label}</span>
           </button>
         ))}
       </div>
     </div>
   );
-};222
+};
