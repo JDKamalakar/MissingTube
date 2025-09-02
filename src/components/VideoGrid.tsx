@@ -212,7 +212,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                 </button>
                 <button
                   onClick={() => handleVideoClick(video.videoId)}
-                  className="flex items-center justify-center p-3 bg-primary/40 text-white rounded-2xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md"
+                  className="flex items-center justify-center p-3 bg-primary text-white rounded-2xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md"
                 >
                   <ExternalLink className="w-3 h-3" />
                 </button>
