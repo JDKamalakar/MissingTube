@@ -68,7 +68,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
         {/* --- Desktop View (Unchanged) --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left sm:w-[540px]">
           <div 
-            className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
+            className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm group ${
               filterMode === 'all' 
                 ? 'left-1 w-[calc(33.333%-4px)]' 
                 : filterMode === 'available'
