@@ -22,7 +22,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
   
-  // [MODIFIED] Updated hover animations
   const filterOptions = [
     { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
     { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:[transform:rotate(360deg)]' },
@@ -81,15 +80,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             <button
               key={option.mode}
               onClick={() => handleFilterChange(option.mode)}
-              className={`relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
+              // [FIX 1] Added 'group' class to the button
+              className={`group relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
                 filterMode === option.mode
                   ? 'text-white'
                   : 'text-gray-900 dark:text-white dark:hover:text-primary hover:text-white hover:bg-white/10'
               }`}
             >
-              {/* [MODIFIED] Desktop icon now uses dynamic hover animation */}
-              <option.icon className={`w-4 h-4 transition-all duration-500 ${
-                filterMode === option.mode ? 'scale-110' : option.hoverAnim.replace('group-hover:', 'hover:')
+              {/* [FIX 2] Corrected icon class to use option.hoverAnim directly */}
+              <option.icon className={`w-4 h-4 transition-all duration-500 ${ 
+                filterMode === option.mode ? 'scale-110' : option.hoverAnim
               }`} />
               <span className={`transition-all duration-225 whitespace-nowrap ${
                 filterMode === option.mode ? 'font-semibold' : ''
@@ -140,7 +140,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
                 >
                   <option.icon
                     size={18}
-                    className={`transition-all duration-500 group-hover:scale-110 ${ // Optional: increased duration
+                    className={`transition-all duration-500 group-hover:scale-110 ${
                       option.mode === filterMode ? 'text-white' : option.color
                     } ${option.hoverAnim} ${
                       option.mode === filterMode ? 'scale-110' : ''
@@ -159,4 +159,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       )}
     </>
   );
-};11111
+};
