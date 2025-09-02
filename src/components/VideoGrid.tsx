@@ -202,10 +202,10 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               </p>
 
               {/* Action buttons */}
-              <div className="flex gap-2 mt-auto">
+              <div className="flex gap-2 mt-auto group">
                 <button
                   onClick={(e) => handleSearchActions(video, e)}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-2xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-2xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md"
                 >
                   <Search className="w-3 h-3 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)" />
                   Search
