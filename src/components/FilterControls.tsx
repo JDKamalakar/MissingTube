@@ -64,7 +64,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   return (
     <>
-      <div ref={dropdownRef} className={`relative w-full sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
+      <div ref={dropdownRef} className={`relative flex-1 sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
         {/* --- Desktop View (Unchanged) --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left sm:w-[540px]">
           <div 

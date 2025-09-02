@@ -213,7 +213,7 @@ function App() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
-                  <div className="flex items-center gap-4 animate-slide-in-left">
+                  <div className="flex items-center gap-2 sm:gap-4 animate-slide-in-left w-full sm:w-auto">
                     {showFilterControls && (
                       <FilterControls
                         filterMode={filterMode}
@@ -222,9 +222,14 @@ function App() {
                         totalCount={videos.length}
                       />
                     )}
+                    {showViewToggle && (
+                      <div className="sm:hidden animate-slide-in-right">
+                        <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+                      </div>
+                    )}
                   </div>
                   {showViewToggle && (
-                    <div className="animate-slide-in-right">
+                    <div className="hidden sm:block animate-slide-in-right">
                       <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
                     </div>
                   )}
