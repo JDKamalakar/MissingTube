@@ -22,7 +22,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
   
-const filterOptions = [
+  // [MODIFIED] Updated hover animations
+  const filterOptions = [
     { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
     { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:[transform:rotate(360deg)]' },
     { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff, color: 'text-primary', hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
@@ -65,7 +66,7 @@ const filterOptions = [
   return (
     <>
       <div ref={dropdownRef} className={`relative flex-1 sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View (Unchanged) --- */}
+        {/* --- Desktop View --- */}
         <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left sm:w-[540px]">
           <div 
             className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
@@ -80,16 +81,16 @@ const filterOptions = [
             <button
               key={option.mode}
               onClick={() => handleFilterChange(option.mode)}
-              className={`relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1
-              ${
+              className={`relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
                 filterMode === option.mode
                   ? 'text-white'
                   : 'text-gray-900 dark:text-white dark:hover:text-primary hover:text-white hover:bg-white/10'
               }`}
             >
-              <option.icon className={`w-4 h-4 transition-all duration-500 ${ // Optional: increased duration for smoother spin
-              filterMode === option.mode ? 'scale-110' : option.hoverAnim.replace('group-hover:', 'hover:')
-            }`} />
+              {/* [MODIFIED] Desktop icon now uses dynamic hover animation */}
+              <option.icon className={`w-4 h-4 transition-all duration-500 ${
+                filterMode === option.mode ? 'scale-110' : option.hoverAnim.replace('group-hover:', 'hover:')
+              }`} />
               <span className={`transition-all duration-225 whitespace-nowrap ${
                 filterMode === option.mode ? 'font-semibold' : ''
               }`}>
@@ -139,14 +140,12 @@ const filterOptions = [
                 >
                   <option.icon
                     size={18}
-                    className={`transition-all duration-300 group-hover:scale-110 ${
-                      // [MODIFIED] Icon is now white when selected, otherwise it's the primary color
+                    className={`transition-all duration-500 group-hover:scale-110 ${ // Optional: increased duration
                       option.mode === filterMode ? 'text-white' : option.color
                     } ${option.hoverAnim} ${
                       option.mode === filterMode ? 'scale-110' : ''
                     }`}
                   />
-                  {/* [MODIFIED] Added 'whitespace-nowrap' to prevent text from wrapping to a new line */}
                   <span className="whitespace-nowrap">{`${option.label} (${option.count})`}</span>
                 </button>
               );
@@ -160,4 +159,4 @@ const filterOptions = [
       )}
     </>
   );
-};111
+};
