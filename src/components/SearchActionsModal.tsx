@@ -67,9 +67,9 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
     // The last number (0.7) is the alpha (opacity) value. Adjust as needed.
     const colorMap = {
       internetArchiveLightBlue: 'bg-[rgba(93,107,140,0.7)] text-white', // Original: #5D6B8C
-      braveOrange: 'bg-[rgba(251,84,43,0.7)] text-white',           // Original: #FB542B
-      twitterBlue: 'bg-[rgba(29,161,242,0.7)] text-white',          // Original: #1DA1F2
-      redditOrange: 'bg-[rgba(255,69,0,0.7)] text-white',           // Original: #FF4500
+      braveOrange: 'bg-[rgba(251,84,43,0.5)] text-white',           // Original: #FB542B
+      twitterBlue: 'bg-[rgba(29,161,242,0.5)] text-white',          // Original: #1DA1F2
+      redditOrange: 'bg-[rgba(255,69,0,0.5)] text-white',           // Original: #FF4500
     };
     // --- MODIFICATION END ---
     return colorMap[color as keyof typeof colorMap] || '';
