@@ -225,7 +225,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                       )}
-          _              <div
+                         <div
                           className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
                             video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
                           }`}
