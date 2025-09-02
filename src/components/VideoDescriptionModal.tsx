@@ -1,4 +1,4 @@
-import React, 'useState', 'useEffect' } from 'react';
+import { React, 'useState', 'useEffect' } from 'react';
 import { createPortal } from 'react-dom'; // Portal is imported here
 import { Video } from '../types';
 import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Eye, Heart } from 'lucide-react';
@@ -6,7 +6,6 @@ import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
-import { format } from 'date-fns'; // Added for the formatDate function
 
 interface VideoDescriptionModalProps {
   video: Video;
