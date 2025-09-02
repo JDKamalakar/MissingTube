@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, 'useState', 'useEffect' } from 'react';
+import { createPortal } from 'react-dom'; // Portal is imported here
 import { Video } from '../types';
 import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Eye, Heart } from 'lucide-react';
 import { YouTubeService } from '../services/youtube';
 import { getApiKey } from '../utils/storage';
 import { decryptApiKey } from '../utils/youtube';
 import UnavailableImage from '../assets/Unavailable.png';
-
+import { format } from 'date-fns'; // Added for the formatDate function
 
 interface VideoDescriptionModalProps {
   video: Video;
@@ -90,7 +91,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
     }
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
@@ -104,9 +105,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
       >
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* --- FIX 1: Added the 'group' class to this div --- */}
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              {/* --- FIX 2: Changed to 'animate-wiggle' --- */}
               <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary pointer-events-none duration-1000 group-hover:animate-wiggle" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface line-clamp-1 flex-1">
@@ -118,7 +117,6 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
             className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            {/* --- MODIFICATION: Changed to wiggle for consistency --- */}
             <X className="w-4 h-4 sm:w-5 sm:h-5 text-error pointer-events-none duration-1000 group-hover:[transform:rotate(360deg)]" />
           </button>
         </div>
@@ -137,7 +135,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
                   {video.title}
                 </h3>
                 <p className="text-sm text-on-surface-variant mt-1">
-                  <span className="inline-flex items-center gap-1"><Hash className="w-3 h-3" /> {video.index}</span> • 
+                  <span className="inline-flex items-center gap-1"><Hash className="w-3 h-3" /> {video.index}</span> •
                   <span className="inline-flex items-center gap-1 ml-2"><Clock className="w-3 h-3" /> {video.duration}</span>
                 </p>
                 <a
@@ -200,6 +198,7 @@ export const VideoDescriptionModal: React.FC<VideoDescriptionModalProps> = ({ vi
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body // The portal renders the modal here
   );
-};111
+};
