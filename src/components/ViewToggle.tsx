@@ -57,7 +57,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
 
   // [MODIFIED] Added color and hoverAnim properties for exact replication
   const viewOptions = [
-    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
+    { mode: 'grid' as ViewMode, label: 'Grid', icon: Grid3X3, color: 'text-primary', hoverAnim: 'transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]' },
     { mode: 'table' as ViewMode, label: 'Table', icon: List, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12' },
   ];
 
