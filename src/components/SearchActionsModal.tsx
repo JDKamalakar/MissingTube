@@ -146,7 +146,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
-                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/60 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
+                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
                                     group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (
