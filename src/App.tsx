@@ -229,7 +229,7 @@ function App() {
                     )}
                   </div>
                   {showViewToggle && (
-                    <div className="hidden sm:block animate-slide-in-right">
+                    <div className="hidden flex sm:block animate-slide-in-right">
                       <ViewToggle viewMode={viewMode} onViewModeChange={handleViewModeChange} />
                     </div>
                   )}
