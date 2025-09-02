@@ -22,10 +22,10 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
   const availableCount = totalCount - unavailableCount;
   
-  const filterOptions = [
+const filterOptions = [
     { mode: 'all' as FilterMode, label: 'All', count: totalCount, icon: Filter, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
-    { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:-rotate-12' },
-    { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff, color: 'text-primary', hoverAnim: 'group-hover:rotate-12' },
+    { mode: 'available' as FilterMode, label: 'Available', count: availableCount, icon: Eye, color: 'text-primary', hoverAnim: 'group-hover:[transform:rotate(360deg)]' },
+    { mode: 'unavailable' as FilterMode, label: 'Unavailable', count: unavailableCount, icon: EyeOff, color: 'text-primary', hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
   ];
 
   useEffect(() => {
