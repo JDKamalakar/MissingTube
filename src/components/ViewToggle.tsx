@@ -120,7 +120,9 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
                   {/* [MODIFIED] Exact icon classes and logic from Code 1 */}
                   <option.icon
                     size={18}
-                    className={`transition-all duration-300 group-hover:scale-110 ${option.color} ${option.hoverAnim} ${
+                    className={`transition-all duration-300 group-hover:scale-110 ${
+                      option.mode === viewMode ? 'text-white' : option.color
+                    } ${option.hoverAnim} ${
                       option.mode === viewMode ? 'scale-110' : ''
                     }`}
                   />
