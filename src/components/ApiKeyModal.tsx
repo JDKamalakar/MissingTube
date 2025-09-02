@@ -94,19 +94,19 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
           <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
             <div className="flex items-center gap-3">
               {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
-              <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-                <Key className="w-6 h-6 text-primary" />
+              <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
+                <Key className="w-6 h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(360deg)]" />
               </div>
               <h2 className="text-xl font-semibold text-on-surface">YouTube API Key</h2>
             </div>
             {/* Close Button: Same effect as ConfirmationModal's X button */}
             <button
               onClick={onClose}
-              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group" // Added group
+              className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
               aria-label="Close modal"
             >
               {/* X icon in red, spins and scales on hover */}
-              <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
+              <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(-360deg)] group-hover:scale-110" />
             </button>
           </div>
 
@@ -150,7 +150,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                 <button
                   onClick={handleSave}
                   disabled={isLoading || !apiKey.trim()}
-                  className="w-full py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 border border-primary/50 dark:border-primary-dark/50"
+                  className="w-full py-3 bg-primary/80 dark:bg-primary-dark/80 backdrop-blur-sm text-on-primary rounded-2xl font-medium hover:bg-primary/90 dark:hover:bg-primary-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-1000 group shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 border border-primary/50 dark:border-primary-dark/50"
                 >
                   {isLoading ? (
                     <>
@@ -159,7 +159,7 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                     </>
                   ) : (
                     <>
-                      <Key className="w-5 h-5" />
+                      <Key className="w-5 h-5 transition-transform duration-1000 group-hover:[transform:rotate(360deg)]" />
                       Save API Key
                     </>
                   )}
@@ -173,13 +173,14 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onClose, onApiKeyChang
                   <span className="text-emerald-800 dark:text-emerald-200 font-medium">API Key Is Configured</span>
                 </div>
 
-                {/* Clear API Key button: Same effect as ConfirmationModal's Trash button */}
+                {/* Clear API Key button: Now with bounce animation on Trash2 icon */}
                 <button
                   onClick={() => setShowConfirmClear(true)}
-                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50" // Added group
+                  // MODIFIED: Added shadow-lg, hover:shadow-xl, and elevation-3
+                  className="w-full py-3 bg-error/80 dark:bg-error-dark/80 backdrop-blur-sm text-on-error rounded-2xl font-medium hover:bg-error/90 dark:hover:bg-error-dark/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.08] active:scale-[0.92] flex items-center justify-center gap-2 group border border-error/50 dark:border-error-dark/50 elevation-3"
                 >
-                  {/* Trash icon with translateY and scale on group-hover */}
-                  <Trash2 className="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-110" />
+                  {/* Trash icon with bounce animation, scale, and stroke increase */}
+                  <Trash2 className="w-5 h-5 transition-all duration-500 group-hover:animate-bounce-short-slow group-hover:scale-[1.1] group-hover:stroke-[2.5px]" />
                   Clear API Key
                 </button>
               </div>

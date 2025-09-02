@@ -171,7 +171,7 @@ export const downloadBackup = (currentVideos: any[] = [], currentPlaylistInfo: a
     ? currentPlaylistInfo.title.replace(/[^a-zA-Z0-9\s-_]/g, '').replace(/\s+/g, '_').substring(0, 30)
     : 'playlist';
   
-  const filename = `youtube-${playlistName}-${timestamp}.json`;
+  const filename = `${playlistName}-${timestamp}.json`;
 
   // Create and trigger download
   const jsonString = JSON.stringify(backup, null, 2);

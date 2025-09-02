@@ -66,6 +66,12 @@ export default {
         'bounce-up': 'bounce-up 1s infinite',
         'bounce-short-slow': 'bounce-short-slow 1.5s infinite',
         'super-fast-bounce': 'super-fast-bounce 0.3s infinite',
+        'swipe-in-left': 'swipe-in-left 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'swipe-in-right': 'swipe-in-right 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        'slide-up': 'slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+        // --- ADDED WIGGLE AND SHAKE ANIMATIONS ---
+        'wiggle': 'wiggle 0.5s ease-in-out infinite',
+        'shake': 'shake 0.4s linear infinite',
       },
       keyframes: {
         'fade-in': {
@@ -131,6 +137,47 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-6px)' },
         },
+        'swipe-in-left': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(-100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)' 
+          },
+        },
+        'swipe-in-right': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateX(100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateX(0)' 
+          },
+        },
+        'slide-up': {
+          '0%': { 
+            opacity: '0', 
+            transform: 'translateY(100%)' 
+          },
+          '100%': { 
+            opacity: '1', 
+            transform: 'translateY(0)' 
+          },
+        },
+        // --- ADDED WIGGLE AND SHAKE KEYFRAMES ---
+        'wiggle': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-5deg)' },
+          '75%': { transform: 'rotate(5deg)' },
+        },
+        'shake': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(-5px)' },
+          '75%': { transform: 'translateX(5px)' },
+        },
       },
       boxShadow: {
         'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.05)',
@@ -140,6 +187,14 @@ export default {
         'elevation-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.15)',
         'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
+      },
+      textShadow: {
+        'sm': '0px 1px 2px rgba(0, 0, 0, 0.4)',
+        'md': '0px 2px 4px rgba(0, 0, 0, 0.5)',
+      },
+      dropShadow: {
+        'sm-icon': '0px 1px 1px rgba(0, 0, 0, 0.3)',
+        'md-icon': '0px 2px 2px rgba(0, 0, 0, 0.4)',
       },
       transitionDuration: {
         '225': '225ms',
@@ -158,7 +213,74 @@ export default {
       fontFamily: {
         'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
+      screens: {
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      },
+      spacing: {
+        'safe-top': 'var(--mobile-safe-area-top)',
+        'safe-bottom': 'var(--mobile-safe-area-bottom)',
+        'safe-left': 'var(--mobile-safe-area-left)',
+        'safe-right': 'var(--mobile-safe-area-right)',
+      },
+      height: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+      },
+      minHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+      },
+      maxHeight: {
+        'dvh': '100dvh',
+        'svh': '100svh',
+        'lvh': '100lvh',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities, theme }) {
+      const newTextShadows = {};
+      for (const key in theme('textShadow')) {
+        newTextShadows[`.text-shadow-${key}`] = {
+          'text-shadow': theme('textShadow')[key],
+        };
+      }
+      addUtilities(newTextShadows, ['responsive', 'hover', 'group-hover']);
+
+      const newDropShadows = {};
+      for (const key in theme('dropShadow')) {
+        newDropShadows[`.drop-shadow-${key}`] = {
+          'filter': `drop-shadow(${theme('dropShadow')[key]})`,
+        };
+      }
+      addUtilities(newDropShadows, ['responsive', 'hover', 'group-hover']);
+    },
+  ],
+  safelist: [
+    'group-hover:-rotate-[30deg]',
+    'group-hover:rotate-[360deg]',
+    'group-hover:animate-bounce-short-slow',
+    'group-hover:drop-shadow-sm-icon',
+    'group-hover:text-shadow-sm', 
+    
+    'invisible',
+    'group-hover:visible',
+    'group-hover:opacity-100',
+    'group-hover:-top-16', 
+
+    'max-h-0',
+    'max-h-screen',
+
+    'hover:scale-[1.005]',
+    'hover:scale-[1.04]', 
+    'hover:shadow-xl', 
+    'hover:shadow-md',
+  ],
 };

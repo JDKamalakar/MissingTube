@@ -24,55 +24,57 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Enhanced backdrop with better blur */}
+      {/* MODIFIED: Consistent backdrop with bg-black/10 and backdrop-blur-xl */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-heavy transition-opacity duration-225 ease-out animate-fade-in"
+        className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* Main Modal Container with better contrast */}
+      {/* MODIFIED: Main Modal Container with consistent styling */}
       <div
-        className="relative bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-2xl border border-white/30 dark:border-white/20 w-full max-w-2xl animate-modal-enter elevation-3
-                     max-h-[85vh] overflow-y-auto custom-scrollbar"
+        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
+                   max-h-[85vh] overflow-y-auto custom-scrollbar mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
-        {/* Header with better contrast */}
-        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/30 dark:bg-black/40 backdrop-blur-heavy z-10 rounded-t-3xl border-b border-white/20">
+        {/* MODIFIED: Header with consistent styling */}
+        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg">
-              <Info className="w-6 h-6 text-primary" />
+            {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
+            <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
+              <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">About</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-on-surface">About</h2>
           </div>
+          {/* Close Button: Consistent styling, red X icon, spin and scale on hover */}
           <button
             onClick={onClose}
-            className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group border border-white/30 dark:border-white/20"
+            className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            <X className="w-5 h-5 text-error transition-transform duration-200 group-hover:rotate-90 group-hover:scale-110" />
+            <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110" />
           </button>
         </div>
 
-        {/* Content with better contrast */}
-        <div className="p-8">
-          <div className="space-y-6">
+        {/* Content with consistent card styling */}
+        <div className="p-4 sm:p-8">
+          <div className="space-y-4 sm:space-y-6">
 
             {/* MissingTube Title and Description Card */}
-            <div className="group relative text-center p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+            <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
                 MissingTube
               </h3>
-              <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+              <p className="text-on-surface-variant text-xs sm:text-sm leading-relaxed">
                 A modern, feature-rich tool to analyze YouTube playlists and recover missing video titles.
                 Built with React, TypeScript, and Tailwind CSS with Material Design 3.
               </p>
             </div>
 
             {/* Features Section Card */}
-            <div className="group relative p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-3">Features:</h4>
-              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+            <div className="group relative p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h4 className="font-medium text-on-surface mb-2 sm:mb-3 text-sm sm:text-base">Features:</h4>
+              <ul className="text-xs sm:text-sm text-on-surface-variant space-y-1 sm:space-y-2">
                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Comprehensive playlist analysis
@@ -113,58 +115,60 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
             </div>
 
             {/* Support Development Section Card */}
-            <div className="relative border-t border-white/20 pt-6 p-6 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-3xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+            <div className="relative border-t border-gray-300/30 dark:border-gray-700/30 pt-4 sm:pt-6 p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
+              <h4 className="font-medium text-on-surface mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                 <Heart className="w-5 h-5 text-error animate-pulse" />
                 Support Development
               </h4>
 
-              <div className="space-y-3">
-                <a
-                  href="https://buymeacoffee.com/developer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 w-full py-3 px-6 bg-warning text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning/90 hover:scale-105 active:scale-95 group"
-                >
-                  <Coffee className="w-5 h-5 animate-bounce group-hover:animate-super-fast-bounce" />
-                  Buy me a coffee
-                </a>
+              <div className="space-y-2 sm:space-y-3">
+                <div className="w-full">
+                  <a
+                    href="https://buymeacoffee.com/developer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 sm:gap-3 w-full py-2 sm:py-3 px-3 sm:px-6 bg-warning text-white rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-warning/90 hover:scale-105 active:scale-95 group text-xs sm:text-sm border border-warning/50 mobile-button-compact"
+                  >
+                    <Coffee className="w-3 h-3 sm:w-5 sm:h-5 animate-bounce group-hover:animate-super-fast-bounce flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">Buy me a coffee</span>
+                  </a>
+                </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <a
                     href="https://github.com/developer/missingtube"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
+                    className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
                   >
-                    <Github className="w-4 h-4 transition-transform duration-500 group-hover:rotate-[360deg]" />
-                    GitHub
+                    <Github className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-500 group-hover:rotate-[360deg] flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">GitHub</span>
                   </a>
 
                   <a
                     href="https://twitter.com/developer"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/40 hover:dark:bg-black/40 hover:scale-105 active:scale-95 group border border-white/30 dark:border-white/20"
+                    className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
                   >
-                    <Twitter className="w-4 h-4 transition-transform duration-225 group-hover:rotate-45" />
-                    Twitter
+                    <Twitter className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:rotate-45 flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">Twitter</span>
                   </a>
 
                   <a
                     href="https://developer-portfolio.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary text-white rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50"
+                    className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 text-xs sm:text-sm mobile-button-compact"
                   >
-                    <Globe className="w-4 h-4 transition-transform duration-225 group-hover:animate-spin" />
-                    Portfolio
+                    <Globe className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:animate-spin flex-shrink-0" />
+                    <span className="truncate text-xs sm:text-sm">Portfolio</span>
                   </a>
                 </div>
               </div>
             </div>
 
-            <div className="text-center text-xs text-gray-600 dark:text-gray-400">
+            <div className="text-center text-xs text-on-surface-variant">
               Made with ❤️ for the YouTube community
             </div>
           </div>

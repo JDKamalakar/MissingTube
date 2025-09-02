@@ -34,7 +34,7 @@ export const ScrollToTop: React.FC = () => {
                   group // Enable group-hover effects for icon and button
                   
                   // --- Base Styling: Transparency, Depth, Subtle Color, and FAINT GLOW ---
-                  bg-primary-container/80 dark:bg-primary-container/30 
+                  bg-primary-container/40 dark:bg-primary-container/30 
                   backdrop-blur-lg // Blurs content *behind* the button
                   border border-gray-300/30 dark:border-gray-700/30 
                   text-on-primary-container 
