@@ -1,4 +1,4 @@
-import { React, 'useState', 'useEffect' } from 'react';
+import React, { 'useState', 'useEffect' } from 'react';
 import { createPortal } from 'react-dom'; // Portal is imported here
 import { Video } from '../types';
 import { FileText, ExternalLink, Clock, Hash, AlertTriangle, X, Eye, Heart } from 'lucide-react';
