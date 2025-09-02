@@ -86,9 +86,9 @@ const filterOptions = [
                   : 'text-gray-900 dark:text-white dark:hover:text-primary hover:text-white hover:bg-white/10'
               }`}
             >
-              <option.icon className={`w-4 h-4 transition-all duration-225 ${
-                filterMode === option.mode ? 'scale-110' : 'hover:rotate-12'
-              }`} />
+              <option.icon className={`w-4 h-4 transition-all duration-500 ${ // Optional: increased duration for smoother spin
+              filterMode === option.mode ? 'scale-110' : option.hoverAnim.replace('group-hover:', 'hover:')
+            }`} />
               <span className={`transition-all duration-225 whitespace-nowrap ${
                 filterMode === option.mode ? 'font-semibold' : ''
               }`}>
