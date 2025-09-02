@@ -62,12 +62,16 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
   ];
 
   const getColorClasses = (color: string) => {
+    // --- MODIFICATION START ---
+    // Changed hex codes to RGBA for transparency.
+    // The last number (0.7) is the alpha (opacity) value. Adjust as needed.
     const colorMap = {
-      internetArchiveLightBlue: 'bg-[rgba(93,107,140,0.5)] text-white',
-      braveOrange: 'bg-[rgba(251,84,43,0.5)] text-white',
-      twitterBlue: 'bg-[rgba(29,161,242,0.5)] text-white',
-      redditOrange: 'bg-[rgba(255,69,0,0.5)] text-white',
+      internetArchiveLightBlue: 'bg-[rgba(93,107,140,0.5)] text-white', // Original: #5D6B8C
+      braveOrange: 'bg-[rgba(251,84,43,0.5)] text-white',           // Original: #FB542B
+      twitterBlue: 'bg-[rgba(29,161,242,0.5)] text-white',          // Original: #1DA1F2
+      redditOrange: 'bg-[rgba(255,69,0,0.5)] text-white',           // Original: #FF4500
     };
+    // --- MODIFICATION END ---
     return colorMap[color as keyof typeof colorMap] || '';
   };
 
@@ -78,26 +82,21 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
         onClick={onClose}
       />
 
-      {/* --- MODIFICATION START --- */}
-      {/* Set background to dark mode equivalent and border to dark mode equivalent */}
       <div
-        className="relative bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
+        className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-3xl animate-modal-enter elevation-3 max-h-[85vh] flex flex-col"
         role="dialog"
         aria-modal="true"
       >
-        {/* Set background to dark mode equivalent and border to dark mode equivalent */}
-        <div className="flex items-center justify-between p-6 sticky top-0 bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-700/30 flex-shrink-0 shadow-sm">
+        <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
-             {/* Set background to dark mode equivalent and border to dark mode equivalent */}
-            <div className="p-3 bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
+            <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Search className="w-6 h-6 text-primary duration-1000 group-hover:[transform:rotate(-360deg)] pointer-events-none" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Search Actions</h2>
           </div>
           <button
             onClick={onClose}
-            // Set background to dark mode equivalent
-            className="p-3 bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
+            className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
             <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110 pointer-events-none" />
@@ -106,9 +105,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
         <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4">
-            {/* Set background to dark mode equivalent and border to dark mode equivalent */}
-            <div className="flex items-start gap-4 p-4 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
-            {/* --- MODIFICATION END --- */}
+            <div className="flex items-start gap-4 p-4 bg-white/30 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
               <img
                 src={video.thumbnail}
                 alt={video.title}
@@ -136,22 +133,20 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                   const colorClasses = getColorClasses(action.color);
 
                   return (
-                    // --- MODIFICATION START ---
-                    // Set border to dark mode equivalent
                     <a
                       key={index}
                       href={action.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/20
-                                shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
+                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
+                                  shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
                     >
-                    {/* --- MODIFICATION END --- */}
-                      <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} />
+                      {/* This div now uses the RGBA background for transparency */}
+                      <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} /> 
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
-                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/20 shadow-md transition-all duration-700 ease-in-out
+                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
                                     group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (
