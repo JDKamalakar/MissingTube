@@ -105,7 +105,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
         <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-white/30 bg-black/30 backdrop-blur-lg rounded-2xl border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
+            <div className="flex items-start gap-4 p-4 bg-white/30 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
               <img
                 src={video.thumbnail}
                 alt={video.title}
@@ -138,7 +138,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                       href={action.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border-white/20
+                      className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
                                   shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
                     >
                       {/* This div now uses the RGBA background for transparency */}
@@ -146,7 +146,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
-                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border-white/20 shadow-md transition-all duration-700 ease-in-out
+                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
                                     group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (
@@ -176,4 +176,4 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
     </div>,
     document.body
   );
-};
+};111
