@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'; // Import useMemo
+import React, { useState, useMemo } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink, AlertTriangle, Search, FileText, Clock, Play } from 'lucide-react';
 import { Video, FilterMode } from '../types';
 import { getVideoUrl } from '../utils/youtube';
@@ -15,6 +15,11 @@ interface VideoTableProps {
 type SortField = 'index' | 'title' | 'duration' | 'channel';
 type SortDirection = 'asc' | 'desc';
 
+// --- MODIFICATION START ---
+// 1. Define a constant for the truncation threshold.
+const TITLE_TRUNCATE_THRESHOLD = 40;
+// --- MODIFICATION END ---
+
 export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'all' }) => {
   const [sortField, setSortField] = useState<SortField>('index');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
@@ -23,16 +28,13 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
   const [showDescription, setShowDescription] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // --- MODIFICATION START ---
-  // 1. Calculate the average title length using useMemo for efficiency.
   const avgTitleLength = useMemo(() => {
     if (!videos || videos.length === 0) {
-      return 25; // Return a default value if there are no videos
+      return 25;
     }
     const totalLength = videos.reduce((acc, video) => acc + video.title.length, 0);
     return totalLength / videos.length;
   }, [videos]);
-  // --- MODIFICATION END ---
 
 
   const filteredVideos = videos.filter(video => {
@@ -196,7 +198,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
               </tr>
             </thead>
             <tbody className="divide-y divide-white/20">
-              {sortedVideos.map((video, index) => (
+              {sortedVideos.map((video, index) => {
+                // --- MODIFICATION START ---
+                // 2. Check if the specific title needs truncation.
+                const needsTruncation = video.title.length > TITLE_TRUNCATE_THRESHOLD;
+                // --- MODIFICATION END ---
+                return (
                 <tr
                   key={video.id}
                   className={`hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 ${
@@ -208,7 +215,10 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       {video.index}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  {/* --- MODIFICATION START --- */}
+                  {/* 3. Reduced right padding to tighten the gap. */}
+                  <td className="pl-6 pr-3 py-4 whitespace-nowrap">
+                  {/* --- MODIFICATION END --- */}
                     <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
                       <img
                         src={video.thumbnail}
@@ -231,8 +241,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </td>
                   {/* --- MODIFICATION START --- */}
-                  {/* 2. Removed max-w-xs to allow dynamic width control */}
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
+                  {/* 4. Reduced left padding and added responsive max-width to the cell. */}
+                  <td className="pl-3 pr-6 py-4 text-sm text-gray-900 dark:text-white w-full max-w-xs md:max-w-md">
                   {/* --- MODIFICATION END --- */}
                     <div className="flex items-center gap-3">
                       {video.unavailable && (
@@ -240,17 +250,18 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                       )}
-                        {/* --- MODIFICATION START --- */}
-                        {/* 3. Replaced line-clamp-2 with truncate and applied dynamic inline style */}
                         <div
-                          className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 truncate font-medium flex-1 ${
+                          // 5. Conditionally apply truncation class. Use 'whitespace-normal' to allow wrapping for shorter titles.
+                          className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 font-medium flex-1 ${
+                            needsTruncation ? 'truncate' : 'whitespace-normal'
+                          } ${
                             video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
                           }`}
                           onClick={(e) => handleShowDescription(video, e)}
                           title={video.title}
-                          style={{ maxWidth: `${Math.round(avgTitleLength / 2)}ch` }}
+                          // 6. Conditionally apply the dynamic max-width style only when needed.
+                          style={needsTruncation ? { maxWidth: `${Math.round(avgTitleLength / 1.5)}ch` } : {}}
                         >
-                        {/* --- MODIFICATION END --- */}
                           {video.title}
                         </div>
                     </div>
@@ -284,7 +295,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       </button>
                       <button
                         onClick={(e) => handleShowDescription(video, e)}
-                            // [FIX] Removed "hidden" class to make the button visible on mobile. Changed "sm:flex" to "flex".
                         className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                         title="View description"
                       >
@@ -293,7 +303,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -321,4 +332,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};222
+};
