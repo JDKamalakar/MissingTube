@@ -49,7 +49,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 href={`http://googleusercontent.com/youtube.com/playlist?list=${playlistInfo.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1 sm:p-1.5 bg-white/20 rounded-md sm:rounded-lg transition-all duration-200 hover:scale-110 sm:hover:scale-135 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
+                className="p-1 sm:p-1.5 bg-white/20 hover:bg-white/30 rounded-md sm:rounded-lg transition-all duration-200 hover:scale-110 sm:hover:scale-135 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
               >
                 <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5" /> 
               </a>
