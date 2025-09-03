@@ -65,8 +65,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   return (
     <>
       <div ref={dropdownRef} className={`relative flex-1 sm:w-auto ${isMobileMenuOpen ? 'z-20' : 'z-auto'}`}>
-        {/* --- Desktop View (Now Responsive) --- */}
-        <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left">
+        {/* --- Desktop View --- */}
+        <div className="hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl p-1 shadow-xl border border-white/30 dark:border-white/20 animate-slide-in-left sm:w-[540px]">
           <div 
             className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-sm rounded-2xl transition-all duration-300 ease-out shadow-sm ${
               filterMode === 'all' 
@@ -80,16 +80,18 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             <button
               key={option.mode}
               onClick={() => handleFilterChange(option.mode)}
-              className={`group relative z-10 flex items-center justify-center gap-2 px-4 md:px-6 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
+              // [FIX 1] Added 'group' class to the button
+              className={`group relative z-10 flex items-center justify-center gap-2 px-8 py-3 rounded-2xl font-medium transition-all duration-225 text-sm min-w-0 flex-1 ${
                 filterMode === option.mode
                   ? 'text-white'
                   : 'text-gray-900 dark:text-white dark:hover:text-primary hover:text-white hover:bg-white/10'
               }`}
             >
+              {/* [FIX 2] Corrected icon class to use option.hoverAnim directly */}
               <option.icon className={`w-4 h-4 transition-all duration-500 ${ 
                 filterMode === option.mode ? 'scale-110' : option.hoverAnim
               }`} />
-              <span className={`hidden md:inline transition-all duration-225 whitespace-nowrap ${
+              <span className={`transition-all duration-225 whitespace-nowrap ${
                 filterMode === option.mode ? 'font-semibold' : ''
               }`}>
                 {`${option.label} (${option.count})`}
