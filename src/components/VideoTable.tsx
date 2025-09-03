@@ -15,10 +15,7 @@ interface VideoTableProps {
 type SortField = 'index' | 'title' | 'duration' | 'channel';
 type SortDirection = 'asc' | 'desc';
 
-// --- MODIFICATION START ---
-// 1. Define a constant for the truncation threshold.
 const TITLE_TRUNCATE_THRESHOLD = 40;
-// --- MODIFICATION END ---
 
 export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'all' }) => {
   const [sortField, setSortField] = useState<SortField>('index');
@@ -199,10 +196,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
             </thead>
             <tbody className="divide-y divide-white/20">
               {sortedVideos.map((video, index) => {
-                // --- MODIFICATION START ---
-                // 2. Check if the specific title needs truncation.
                 const needsTruncation = video.title.length > TITLE_TRUNCATE_THRESHOLD;
-                // --- MODIFICATION END ---
                 return (
                 <tr
                   key={video.id}
@@ -215,10 +209,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       {video.index}
                     </div>
                   </td>
-                  {/* --- MODIFICATION START --- */}
-                  {/* 3. Reduced right padding to tighten the gap. */}
                   <td className="pl-6 pr-3 py-4 whitespace-nowrap">
-                  {/* --- MODIFICATION END --- */}
                     <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
                       <img
                         src={video.thumbnail}
@@ -240,10 +231,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       </div>
                     </div>
                   </td>
-                  {/* --- MODIFICATION START --- */}
-                  {/* 4. Reduced left padding and added responsive max-width to the cell. */}
                   <td className="pl-3 pr-6 py-4 text-sm text-gray-900 dark:text-white w-full max-w-xs md:max-w-md">
-                  {/* --- MODIFICATION END --- */}
                     <div className="flex items-center gap-3">
                       {video.unavailable && (
                         <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
@@ -251,15 +239,15 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         </div>
                       )}
                         <div
-                          // 5. Conditionally apply truncation class. Use 'whitespace-normal' to allow wrapping for shorter titles.
-                          className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 font-medium flex-1 ${
+                          // --- FIX ---
+                          // Added min-w-0 here. This allows the flex item to shrink and enables truncation on mobile.
+                          className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 font-medium flex-1 min-w-0 ${
                             needsTruncation ? 'truncate' : 'whitespace-normal'
                           } ${
                             video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
                           }`}
                           onClick={(e) => handleShowDescription(video, e)}
                           title={video.title}
-                          // 6. Conditionally apply the dynamic max-width style only when needed.
                           style={needsTruncation ? { maxWidth: `${Math.round(avgTitleLength / 1.5)}ch` } : {}}
                         >
                           {video.title}
@@ -332,4 +320,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};2222
+};
