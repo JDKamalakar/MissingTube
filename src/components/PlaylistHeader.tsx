@@ -64,7 +64,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
               <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-200 hover:scale-110">
                 {playlistInfo.videoCount} videos
-              </span>
+              </span>hover
               {unavailableCount > 0 && (
                 <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-200 hover:scale-110">
                   {unavailableCount} unavailable
