@@ -49,7 +49,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 href={`http://googleusercontent.com/youtube.com/playlist?list=${playlistInfo.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1 sm:p-1.5 bg-white/20 hover:bg-white/30 rounded-md sm:rounded-lg transition-all duration-200 hover:scale-110 sm:hover:scale-135 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
+                className="p-1 sm:p-1.5 bg-white/20 rounded-md sm:rounded-lg transition-all duration-200 hover:scale-110 sm:hover:scale-135 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-bounce"
               >
                 <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5" /> 
               </a>
@@ -64,7 +64,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
               <span className="bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-200 hover:scale-110">
                 {playlistInfo.videoCount} videos
-              </span>hover
+              </span>
               {unavailableCount > 0 && (
                 <span className="bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-200 hover:scale-110">
                   {unavailableCount} unavailable
