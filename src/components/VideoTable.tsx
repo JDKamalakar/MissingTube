@@ -116,8 +116,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
-        <div className="overflow-x-auto">
-          <table className="w-full hover:scale-105 active:scale-95">
+        <div className="overflow-x-auto hover:scale-105 active:scale-95">
+          <table className="w-full">
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
                 <th
