@@ -54,7 +54,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
         onMouseLeave={(e) => {
           e.currentTarget.blur();
         }}
-        className="w-full p-4 sm:p-6 flex items-center justify-between hover:bg-white/10 dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
+        className="w-full p-4 sm:p-6 flex items-center justify-between dark:hover:bg-gray-800/10 transition-all duration-225 state-layer focus:outline-none"
       >
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="p-2 sm:p-3 bg-secondary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-110">
