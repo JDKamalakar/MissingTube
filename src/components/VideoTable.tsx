@@ -25,6 +25,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
   const [showDescription, setShowDescription] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // This calculation is no longer used for styling but kept in case you want to reuse it.
   const avgTitleLength = useMemo(() => {
     if (!videos || videos.length === 0) {
       return 25;
@@ -231,16 +232,17 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       </div>
                     </div>
                   </td>
-                  <td className="pl-3 pr-6 py-4 text-sm text-gray-900 dark:text-white w-full max-w-xs md:max-w-md">
-                    <div className="flex items-center gap-3">
+                  {/* --- FIX START --- */}
+                  {/* Removed width constraints from the <td> */}
+                  <td className="pl-3 pr-6 py-4 text-sm text-gray-900 dark:text-white">
+                    {/* Added width constraints to this inner div instead, for more reliable flexbox behavior */}
+                    <div className="flex items-center gap-3 w-full max-w-xs md:max-w-md">
                       {video.unavailable && (
                         <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                       )}
                         <div
-                          // --- FIX ---
-                          // Added min-w-0 here. This allows the flex item to shrink and enables truncation on mobile.
                           className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 font-medium flex-1 min-w-0 ${
                             needsTruncation ? 'truncate' : 'whitespace-normal'
                           } ${
@@ -248,12 +250,13 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           }`}
                           onClick={(e) => handleShowDescription(video, e)}
                           title={video.title}
-                          style={needsTruncation ? { maxWidth: `${Math.round(avgTitleLength / 1.5)}ch` } : {}}
+                          // The inline style has been removed in favor of the max-w-* classes on the parent div
                         >
                           {video.title}
                         </div>
                     </div>
                   </td>
+                  {/* --- FIX END --- */}
                   <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {video.channelTitle || 'Unknown Channel'}
@@ -320,4 +323,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};3333
+};
