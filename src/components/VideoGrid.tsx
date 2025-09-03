@@ -145,7 +145,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         {sortedVideos.map((video) => (
           <div
             key={video.id}
-            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
+            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
           >
             {/* Thumbnail Container with Padding */}
             <div className="relative p-4 pb-2">
