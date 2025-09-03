@@ -112,7 +112,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
     <>
       <div 
         data-filter-container
-        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 ${
+        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
