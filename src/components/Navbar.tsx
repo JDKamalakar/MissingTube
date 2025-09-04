@@ -54,42 +54,36 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
   }, []);
 
-  // ##### CORRECTED SCROLL EFFECT #####
   useEffect(() => {
     const handleScroll = () => {
       if (canScroll) {
         const currentScrollY = window.scrollY;
         const isDesktop = window.innerWidth >= 640;
-
         setIsScrolled(currentScrollY > SHRINK_THRESHOLD);
-
         if (!isDesktop) {
-          // Hide navbar on scroll down, show on scroll up
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
-            // This part already handles closing the menu when the navbar hides
             if (showMobileMenu) setShowMobileMenu(false);
           } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
+          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+            setShowMobileMenu(false);
+          }
         } else {
-          // On desktop, never hide the navbar and ensure mobile menu is closed
           setIsNavbarHidden(false);
           if (showMobileMenu) setShowMobileMenu(false);
         }
         lastScrollY.current = currentScrollY;
       } else {
-        // Reset state if page is not scrollable
         setIsScrolled(false);
         setIsNavbarHidden(false);
         if (showMobileMenu) setShowMobileMenu(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [canScroll, showMobileMenu]);
-  // #####################################
 
   const navItems = useMemo(() => [
     { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
