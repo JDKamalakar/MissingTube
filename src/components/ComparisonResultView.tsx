@@ -64,9 +64,11 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
       <div className="flex flex-col flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
         
         {/* Recovered Videos Section (Top) */}
-        <div className="w-full flex-shrink-0">
+        {/* MODIFIED: The transition and hover:scale classes are now on this wrapper div */}
+        <div className="w-full flex-shrink-0 transition-transform duration-300 ease-out hover:scale-[1.02]">
           {comparisonResult.unavailableMatches.length > 0 ? (
-            <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col transition-transform duration-300 ease-out hover:scale-[1.02] hover:shadow-xl">
+            // MODIFIED: The transition and hover:scale classes have been REMOVED from the inner panel
+            <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg hover:shadow-xl h-full flex flex-col">
               <button
                 onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
                 className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
@@ -109,8 +111,10 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         </div>
 
         {/* All Videos Section (Bottom) */}
-        <div className="w-full flex-shrink-0">
-          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col transition-transform duration-300 ease-out hover:scale-[1.02] hover:shadow-xl">
+        {/* MODIFIED: The transition and hover:scale classes are now on this wrapper div */}
+        <div className="w-full flex-shrink-0 transition-transform duration-300 ease-out hover:scale-[1.02]">
+          {/* MODIFIED: The transition and hover:scale classes have been REMOVED from the inner panel */}
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg hover:shadow-xl h-full flex flex-col">
              <button
                 onClick={() => setShowAllVideos(!showAllVideos)}
                 className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
