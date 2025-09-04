@@ -26,7 +26,7 @@ export const FileUploadView: React.FC<FileUploadViewProps> = ({
   onCompare,
 }) => {
   return (
-    <div className="w-full flex-shrink-0 space-y-6 p-6">
+    <div className="w-full flex-shrink-0 space-y-6 px-6">
       <div className="text-center">
         <div className="p-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 mb-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.04]">
           <h3 className="text-lg font-semibold text-on-surface mb-2">
