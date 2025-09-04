@@ -9,12 +9,12 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export const Modal: React.FC<ModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  children, 
+export const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  children,
   title,
-  size = 'md' 
+  size = 'md'
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +27,9 @@ export const Modal: React.FC<ModalProps> = ({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-      
+      // MODIFIED: Use Tailwind class to disable body scroll
+      document.body.classList.add('overflow-hidden');
+
       // Focus management
       const focusableElements = modalRef.current?.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -40,7 +41,8 @@ export const Modal: React.FC<ModalProps> = ({
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      // MODIFIED: Remove class to re-enable body scroll
+      document.body.classList.remove('overflow-hidden');
     };
   }, [isOpen, onClose]);
 
@@ -56,13 +58,13 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop with enhanced blur effect matching navbar */}
-      <div 
+      <div
         className="fixed inset-0 bg-scrim/60 blur-subtle transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
-      
+
       {/* Modal with navbar-like transparency and blur */}
-      <div 
+      <div
         ref={modalRef}
         className={`relative bg-surface/90 blur-light rounded-2xl shadow-2xl border border-outline-variant w-full ${sizeClasses[size]} animate-modal-enter elevation-3`}
         role="dialog"
@@ -83,7 +85,7 @@ export const Modal: React.FC<ModalProps> = ({
             </button>
           </div>
         )}
-        
+
         <div className="p-6">
           {children}
         </div>
