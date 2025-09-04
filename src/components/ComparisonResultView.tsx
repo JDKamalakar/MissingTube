@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { FileText, CheckCircle, AlertTriangle, GitCompare, ChevronDown, Download } from 'lucide-react';
-import { ComparisonResult } from './ComparisonModal'; // Assuming type is exported from parent
+import { ComparisonResult } from './ComparisonModal';
 
 interface ComparisonResultViewProps {
   comparisonResult: ComparisonResult;
@@ -34,7 +34,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
   };
 
   return (
-    <div className="w-full flex-shrink-0 px-6 h-full flex flex-col">
+    <div className="w-full flex-shrink-0 p-6 h-full flex flex-col">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
         <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
@@ -61,13 +61,12 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         </div>
       </div>
 
-      {/* MODIFICATION: The main change is here. Removed `sm:flex-row` to keep the layout vertical. */}
       <div className="flex flex-col flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
         
         {/* Recovered Videos Section (Top) */}
         <div className="w-full flex-shrink-0">
           {comparisonResult.unavailableMatches.length > 0 ? (
-            <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col">
+            <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col transition-transform duration-300 ease-out hover:scale-[1.02] hover:shadow-xl">
               <button
                 onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
                 className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
@@ -81,7 +80,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 </div>
               </button>
               <div className={`transition-all duration-300 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar">
+                <div className="p-4 pt-0 space-y-4 overflow-y-auto custom-scrollbar">
                   {comparisonResult.unavailableMatches.map((match, index) => (
                      <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                         <div className="flex items-center justify-between mb-1">
@@ -111,7 +110,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
 
         {/* All Videos Section (Bottom) */}
         <div className="w-full flex-shrink-0">
-          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col transition-transform duration-300 ease-out hover:scale-[1.02] hover:shadow-xl">
              <button
                 onClick={() => setShowAllVideos(!showAllVideos)}
                 className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
@@ -120,7 +119,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
              </button>
              <div className={`transition-all duration-300 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar">
+                <div className="p-4 pt-0 space-y-4 overflow-y-auto custom-scrollbar">
                    {comparisonResult.allVideos.map((video, index) => (
                       <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
                          <div className="flex items-center justify-between mb-2">
