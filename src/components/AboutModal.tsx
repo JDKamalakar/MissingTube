@@ -14,13 +14,11 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
     };
 
     document.addEventListener('keydown', handleEscape);
-    // MODIFIED: Use Tailwind class to disable body scroll
-    document.body.classList.add('overflow-hidden');
+    document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      // MODIFIED: Remove class to re-enable body scroll
-      document.body.classList.remove('overflow-hidden');
+      document.body.style.overflow = 'unset';
     };
   }, [onClose]);
 
