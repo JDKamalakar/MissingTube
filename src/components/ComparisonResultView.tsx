@@ -61,9 +61,11 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
-        {/* Unavailable Videos Section */}
-        <div className="w-full sm:flex-1 flex-shrink-0">
+      {/* MODIFICATION: The main change is here. Removed `sm:flex-row` to keep the layout vertical. */}
+      <div className="flex flex-col flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
+        
+        {/* Recovered Videos Section (Top) */}
+        <div className="w-full flex-shrink-0">
           {comparisonResult.unavailableMatches.length > 0 ? (
             <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col">
               <button
@@ -107,8 +109,8 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
           )}
         </div>
 
-        {/* All Videos Section */}
-        <div className="w-full sm:flex-1 flex-shrink-0">
+        {/* All Videos Section (Bottom) */}
+        <div className="w-full flex-shrink-0">
           <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
              <button
                 onClick={() => setShowAllVideos(!showAllVideos)}
@@ -139,4 +141,4 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
       </div>
     </div>
   );
-};111
+};
