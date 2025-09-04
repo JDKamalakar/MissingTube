@@ -12,6 +12,7 @@ interface ComparisonModalProps {
   currentPlaylistInfo?: PlaylistInfo | null;
 }
 
+// Export this interface so child components can use it
 export interface ComparisonResult {
   unavailableMatches: Array<{
     currentIndex: number;
@@ -250,9 +251,9 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
           </button>
         </div>
 
-        <div className="flex-grow relative overflow-x-hidden">
+        <div className="p-6 flex-grow relative overflow-x-hidden">
           <div className={`flex transition-transform duration-500 ease-in-out h-full ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`} style={{ width: '200%' }}>
-            
+            {/* View 1: File Upload */}
             <FileUploadView
                 file={file}
                 currentPlaylistInfo={currentPlaylistInfo}
@@ -264,6 +265,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
                 onCompare={handleCompare}
             />
             
+            {/* View 2: Comparison Results */}
             {comparisonResult && (
                 <ComparisonResultView
                     comparisonResult={comparisonResult}
