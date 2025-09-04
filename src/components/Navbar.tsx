@@ -63,27 +63,27 @@ export const Navbar: React.FC<NavbarProps> = ({
         if (!isDesktop) {
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
-            if (showMobileMenu) setShowMobileMenu(false);
+            setShowMobileMenu(false);
           } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
-          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+          // Only close mobile menu when scrolling down, not up
+          if (showMobileMenu && currentScrollY > lastScrollY.current) {
             setShowMobileMenu(false);
           }
         } else {
           setIsNavbarHidden(false);
-          if (showMobileMenu) setShowMobileMenu(false);
+          setShowMobileMenu(false);
         }
         lastScrollY.current = currentScrollY;
       } else {
         setIsScrolled(false);
         setIsNavbarHidden(false);
-        if (showMobileMenu) setShowMobileMenu(false);
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]);
+  }, [canScroll]);
 
   const navItems = useMemo(() => [
     { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
