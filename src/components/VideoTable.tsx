@@ -6,7 +6,7 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// 1. New Reusable Tooltip Component
+// 1. MODIFIED Tooltip Component
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -15,11 +15,12 @@ interface TooltipProps {
 
 const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle }) => {
   return (
-    <div className="group relative flex justify-center">
+    <div className="group relative flex">
       {children}
       <div className="absolute bottom-full mb-2 w-max max-w-xs hidden group-hover:flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-        <div className="bg-gray-900/80 dark:bg-black/80 text-white backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-center">
-          <p className="font-semibold text-sm">{title}</p>
+        {/* MODIFIED: Changed background color for light mode and text alignment */}
+        <div className="bg-primary/80 dark:bg-black/80 text-white backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-left">
+          <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
         </div>
       </div>
@@ -246,12 +247,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                       )}
-                       {/* 2. MODIFIED: Video title wrapped with Tooltip */}
                        <Tooltip title={video.title} subtitle="Tap for description">
                           <div
-                            className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
-                              video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
-                            }`}
+                            className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 text-left`}
                             onClick={(e) => handleShowDescription(video, e)}
                           >
                             {video.title}
@@ -259,10 +257,13 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                        </Tooltip>
                     </div>
                   </td>
-                  <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {video.channelTitle || 'Unknown Channel'}
-                    </span>
+                  {/* 2. MODIFIED: Added Tooltip to Channel column and truncated the text */}
+                  <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap max-w-xs">
+                    <Tooltip title={video.channelTitle || 'Unknown Channel'}>
+                      <span className="text-sm text-gray-700 dark:text-gray-300 truncate block">
+                        {video.channelTitle || 'Unknown Channel'}
+                      </span>
+                    </Tooltip>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
@@ -272,7 +273,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-1">
-                      {/* 3. MODIFIED: Action buttons wrapped with Tooltip */}
                       <Tooltip title="Open in YouTube">
                         <button
                           onClick={() => handleVideoClick(video.videoId)}
@@ -328,4 +328,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};111
+};
