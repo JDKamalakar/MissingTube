@@ -32,5 +32,29 @@
       "likeCount": "0",
       "commentCount": "0"
     }
+    {
+      "id": "sample_video_3",
+      "title": "Sample Video 3 - Working",
+      "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+      "duration": "PT3M32S",  
+      "channelTitle": "Sample Channel",
+      "publishedAt": "2025-01-01T00:00:00Z",
+      "unavailable": false,
+      "viewCount": "123456",
+      "likeCount": "7890",
+      "commentCount": "123"
+    }
+    {
+      "id": "sample_video_2",
+      "title": "[Private video]",
+      "thumbnail": "",
+      "duration": "PT0S",  
+      "channelTitle": "Sample Channel",
+      "publishedAt": "2025-01-02T00:00:00Z",
+      "unavailable": true,
+      "viewCount": "0",
+      "likeCount": "0",
+      "commentCount": "0"
+    }
   ]
 }
