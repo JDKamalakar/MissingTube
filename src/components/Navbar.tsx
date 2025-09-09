@@ -150,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className={`group relative z-10 flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl font-medium transition-all duration-225 flex-1 text-sm active:scale-95 ${
                   activeNavItem === item.name
                     ? 'text-white'
-                    : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-primary/60 dark:hover:bg-white/10'
+                    : 'text-gray-900 dark:text-white hover:text-white dark:hover:text-primary hover:shadow-lg hover:bg-primary/20 dark:hover:bg-white/10'
                 }`}
               >
                 <item.icon className={`w-4 h-4 transition-transform duration-1000 ease-in-out ${
