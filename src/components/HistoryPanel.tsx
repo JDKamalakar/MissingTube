@@ -89,7 +89,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
               {playlists.map((playlist, index) => {
                 const isFirst = index === 0;
                 const isLast = index === playlists.length - 1;
-                const cornerClass = isFirst ? 'rounded-t-xl rounded-b-sm' : isLast ? 'rounded-b-xl rounded-t-sm' : 'rounded-sm';
+                const cornerClass = isFirst ? 'rounded-t-xl rounded-b' : isLast ? 'rounded-b-xl rounded-t' : 'rounded';
                 return (
                   <button
                     key={playlist.id}
