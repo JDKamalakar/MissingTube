@@ -176,4 +176,4 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
       </div>
     </div>
   );
-};
+};qqq
