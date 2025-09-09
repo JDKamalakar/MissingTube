@@ -297,7 +297,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
                           </button>
                         </Tooltip>
-                        <Tooltip title="Search actions">
+                        <Tooltip title="Search Actions">
                           <button
                             onClick={(e) => handleSearchActions(video, e)}
                             className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
@@ -305,7 +305,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
                           </button>
                         </Tooltip>
-                        <Tooltip title="View description">
+                        <Tooltip title="View Description">
                           <button
                             onClick={(e) => handleShowDescription(video, e)}
                             className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
