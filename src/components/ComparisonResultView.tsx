@@ -82,75 +82,71 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 </div>
               </button>
               <div className={`transition-all duration-700 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0">
-                   {/* MODIFICATION: Applied hover effect to a wrapper div */}
-                   <div className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-3 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 transition-all duration-300 transform origin-center hover:scale-[1.02] hover:-translate-y-1 z-0 hover:z-10">
-                    {comparisonResult.unavailableMatches.map((match, index) => {
-                      // Removed specific corner classes on individual items
-                      return (
-                        <div key={index} className="w-full text-left p-3 text-on-surface hover:bg-white/10 dark:hover:bg-black/10 rounded-lg transition-colors duration-150">
-                            <div className="flex items-center justify-between mb-1">
-                                <div className="text-sm font-medium">Index {match.currentIndex} - Index {match.fileIndex}</div>
-                                <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
-                            </div>
-                            <div className="text-xs text-on-surface-variant space-y-1">
-                                <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
-                                <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
-                                <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                            </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                {/* MODIFICATION: Restored space-y for separation and styled items as individual cards */}
+                <div className="p-4 pt-2 space-y-3">
+                  {comparisonResult.unavailableMatches.map((match, index) => (
+                    <div 
+                      key={index} 
+                      className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-300 hover:shadow-xl hover:scale-[1.03] hover:-translate-y-1 hover:border-primary/40 dark:hover:border-primary-dark/40"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                          <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
+                          <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
+                      </div>
+                      <div className="text-xs text-on-surface-variant space-y-1">
+                          <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
+                          <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
+                          <div className="text-xs opacity-75">ID: {match.videoId}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           ) : (
-              <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
-                <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
-                    <CheckCircle className="w-8 h-8 text-on-surface-variant" />
-                </div>
-                <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
-                <p className="text-on-surface-variant">No unavailable video titles were recovered.</p>
+            <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
+              <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
+                  <CheckCircle className="w-8 h-8 text-on-surface-variant" />
               </div>
+              <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
+              <p className="text-on-surface-variant">No unavailable video titles were recovered.</p>
+            </div>
           )}
         </div>
 
         {/* All Videos Section (Bottom) */}
         <div className="w-full flex-shrink-0">
           <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
-              <button
-                onClick={() => setShowAllVideos(!showAllVideos)}
-                className={`group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 ${
-                  showAllVideos ? 'rounded-t-2xl' : 'rounded-2xl'
-                }`}
-              >
-                <h4 className="font-medium text-on-surface flex items-center gap-2"><FileText className="w-5 h-5" />All Videos ({comparisonResult.allVideos.length})</h4>
-                <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
-              </button>
-              <div className={`transition-all duration-700 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0">
-                  {/* MODIFICATION: Applied hover effect to a wrapper div */}
-                  <div className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl p-3 flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 transition-all duration-300 transform origin-center hover:scale-[1.02] hover:-translate-y-1 z-0 hover:z-10">
-                    {comparisonResult.allVideos.map((video, index) => {
-                      // Removed specific corner classes on individual items
-                      return (
-                        <div key={index} className="w-full text-left p-3 text-on-surface hover:bg-white/10 dark:hover:bg-black/10 rounded-lg transition-colors duration-150">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="text-sm font-medium">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
-                              <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>{getStatusLabel(video.status)}</div>
-                            </div>
-                            <div className="text-xs text-on-surface-variant space-y-1">
-                              <p className="truncate">Current: {video.currentTitle}</p>
-                              {video.fileTitle && (<p className="truncate">File: {video.fileTitle}</p>)}
-                              <p className="text-xs opacity-75">ID: {video.videoId}</p>
-                            </div>
-                        </div>
-                      );
-                    })}
+            <button
+              onClick={() => setShowAllVideos(!showAllVideos)}
+              className={`group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 ${
+                showAllVideos ? 'rounded-t-2xl' : 'rounded-2xl'
+              }`}
+            >
+              <h4 className="font-medium text-on-surface flex items-center gap-2"><FileText className="w-5 h-5" />All Videos ({comparisonResult.allVideos.length})</h4>
+              <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
+            </button>
+            <div className={`transition-all duration-700 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+              {/* MODIFICATION: Restored space-y for separation and styled items as individual cards */}
+              <div className="p-4 pt-2 space-y-2">
+                {comparisonResult.allVideos.map((video, index) => (
+                  <div 
+                    key={index} 
+                    className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-md border border-gray-300/30 dark:border-gray-700/30 transition-all duration-300 hover:shadow-xl hover:scale-[1.03] hover:-translate-y-1 hover:border-gray-400/50 dark:hover:border-gray-600/50"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="text-sm font-medium text-on-surface">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
+                      <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>{getStatusLabel(video.status)}</div>
+                    </div>
+                    <div className="text-xs text-on-surface-variant space-y-1">
+                      <p className="truncate">Current: {video.currentTitle}</p>
+                      {video.fileTitle && (<p className="truncate">File: {video.fileTitle}</p>)}
+                      <p className="text-xs opacity-75">ID: {video.videoId}</p>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
+            </div>
           </div>
         </div>
       </div>
