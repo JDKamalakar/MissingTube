@@ -6,7 +6,7 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// 1. MODIFIED Tooltip Component
+// Final Tooltip Component
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -18,8 +18,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle }) => {
     <div className="group relative flex">
       {children}
       <div className="absolute bottom-full mb-2 w-max max-w-xs hidden group-hover:flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
-        {/* MODIFIED: Changed background color for light mode and text alignment */}
-        <div className="bg-primary/30 dark:bg-black/80 text-white backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-left">
+        <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
         </div>
@@ -257,7 +256,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                        </Tooltip>
                     </div>
                   </td>
-                  {/* 2. MODIFIED: Added Tooltip to Channel column and truncated the text */}
                   <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap max-w-xs">
                     <Tooltip title={video.channelTitle || 'Unknown Channel'}>
                       <span className="text-sm text-gray-700 dark:text-gray-300 truncate block">
