@@ -111,7 +111,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   return (
     <>
       {/* Sort Controls */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2">
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
         <span className="text-sm font-medium text-gray-900 dark:text-white">Sort by:</span>
         <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
           {[
@@ -145,7 +145,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
         {sortedVideos.map((video) => (
           <div
             key={video.id}
-            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
+            className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
           >
             {/* Thumbnail Container with Padding */}
             <div className="relative p-4 pb-2">

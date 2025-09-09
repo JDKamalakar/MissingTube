@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Video } from '../types';
 import { X, Search, Archive, Twitter } from 'lucide-react';
 import BraveIconUrl from '../assets/icons8-brave-web-browser.svg';
@@ -61,16 +62,19 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
   ];
 
   const getColorClasses = (color: string) => {
+    // --- MODIFICATION START ---
+    // Reverted to solid hex codes to remove the white tint caused by transparency.
     const colorMap = {
       internetArchiveLightBlue: 'bg-[#5D6B8C] text-white',
       braveOrange: 'bg-[#FB542B] text-white',
       twitterBlue: 'bg-[#1DA1F2] text-white',
       redditOrange: 'bg-[#FF4500] text-white',
     };
+    // --- MODIFICATION END ---
     return colorMap[color as keyof typeof colorMap] || '';
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
@@ -85,7 +89,6 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
         <div className="flex items-center justify-between p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
-              {/* --- FIX: Added pointer-events-none --- */}
               <Search className="w-6 h-6 text-primary duration-1000 group-hover:[transform:rotate(-360deg)] pointer-events-none" />
             </div>
             <h2 className="text-xl font-semibold text-on-surface">Search Actions</h2>
@@ -95,14 +98,16 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
             className="p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
             aria-label="Close modal"
           >
-            {/* --- FIX: Added pointer-events-none for consistency --- */}
             <X className="w-5 h-5 text-error transition-transform duration-1000 group-hover:[transform:rotate(360deg)] group-hover:scale-110 pointer-events-none" />
           </button>
         </div>
 
         <div className="p-8 flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
           <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
+            {/* --- MODIFICATION START --- */}
+            {/* Removed bg-white/30 to eliminate the white tint on this div */}
+            <div className="flex items-start gap-4 p-4 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-sm transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]">
+            {/* --- MODIFICATION END --- */}
               <img
                 src={video.thumbnail}
                 alt={video.title}
@@ -136,14 +141,15 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`group relative flex items-center gap-4 w-full p-4 rounded-2xl font-medium transition-all duration-300 ease-out cursor-pointer border border-white/30 dark:border-white/20
-                                  shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
+                                      shadow-sm hover:shadow-xl hover:scale-[1.03] active:scale-[0.98] z-0 hover:z-10`}
                     >
+                      {/* This div uses the solid background color */}
                       <div className={`absolute inset-0 rounded-2xl ${colorClasses}`} />
 
                       <div className="relative flex items-center gap-4 w-full z-10">
                         <div
-                          className="p-3 bg-white/30 dark:bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
-                                  group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
+                          className="p-3 bg-black/30 backdrop-blur-lg rounded-2xl border border-white/30 dark:border-white/20 shadow-md transition-all duration-700 ease-in-out
+                                       group-hover:scale-[1.08] group-hover:shadow-lg group-active:scale-95 group-hover:rotate-[360deg] flex-shrink-0 flex items-center justify-center"
                         >
                           {IconComponent ? (
                             <IconComponent className="w-5 h-5 text-white" />
@@ -169,6 +175,7 @@ export const SearchActionsModal: React.FC<SearchActionsModalProps> = ({ video, o
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

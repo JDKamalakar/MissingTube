@@ -139,11 +139,11 @@ export const BackupManager: React.FC<BackupManagerProps> = ({ onClose, currentVi
                 <div className="space-y-2 text-sm text-on-tertiary-container">
                   <div className="font-medium truncate">{currentPlaylistInfo.title}</div>
                   <div className="flex items-center gap-4 text-xs">
-                    <span>{videoCount} total videos</span>
+                    <span>{videoCount} Total Videos</span>
                     <span>•</span>
-                    <span>{availableCount} available</span>
+                    <span>{availableCount} Available</span>
                     <span>•</span>
-                    <span>{unavailableCount} unavailable</span>
+                    <span>{unavailableCount} Unavailable</span>
                   </div>
                   <div className="text-xs opacity-75 mt-2">
                     Latest analysis data with complete video information

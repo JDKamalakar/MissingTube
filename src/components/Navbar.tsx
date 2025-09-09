@@ -63,27 +63,27 @@ export const Navbar: React.FC<NavbarProps> = ({
         if (!isDesktop) {
           if (currentScrollY > HIDE_THRESHOLD && currentScrollY > lastScrollY.current) {
             setIsNavbarHidden(true);
-            if (showMobileMenu) setShowMobileMenu(false);
+            setShowMobileMenu(false);
           } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
-          if (showMobileMenu && currentScrollY !== lastScrollY.current) {
+          // Only close mobile menu when scrolling down, not up
+          if (showMobileMenu && currentScrollY > lastScrollY.current) {
             setShowMobileMenu(false);
           }
         } else {
           setIsNavbarHidden(false);
-          if (showMobileMenu) setShowMobileMenu(false);
+          setShowMobileMenu(false);
         }
         lastScrollY.current = currentScrollY;
       } else {
         setIsScrolled(false);
         setIsNavbarHidden(false);
-        if (showMobileMenu) setShowMobileMenu(false);
       }
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll, showMobileMenu]);
+  }, [canScroll]);
 
   const navItems = useMemo(() => [
     { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
@@ -93,7 +93,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'About', icon: Info, label: 'About', action: () => setShowAboutModal(true), hoverAnim: 'group-hover:[transform:rotate(360deg)]' }
   ], []);
 
-  // --- MODIFICATION 1: Reordered the theme options array ---
   const themeOptions = [
     { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
     { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
@@ -115,7 +114,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className={`bg-white/30 dark:bg-black/40 backdrop-blur-xl border-b border-white/30 dark:border-white/20 sticky top-0 z-40 shadow-xl rounded-b-3xl transition-all duration-300 ease-in-out ${isNavbarHidden ? 'transform -translate-y-full' : 'transform translate-y-0'}`}>
         <div className={`container mx-auto px-3 sm:px-8 max-w-7xl flex transition-all duration-300 ease-in-out mobile-container-padding gap-0.5 ${isScrolled ? 'py-3 flex-col sm:flex-row sm:justify-center sm:items-center sm:gap-4' : 'py-3 sm:py-4 flex-col items-center'}`}>
-          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-xs w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 sm:rounded-2xl' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-b-none'}`}>
+          <div className={`flex items-center gap-4 p-3 bg-white/30 dark:bg-black/30 backdrop-blur-xs w-full transition-all duration-300 ease-in-out border border-white/30 dark:border-white/20 ${isScrolled ? 'rounded-2xl sm:w-auto sm:flex-shrink-0 sm:rounded-2xl' : 'rounded-2xl sm:rounded-t-2xl sm:rounded-sm'}`}>
             <div className="flex items-center justify-center w-full gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/20 dark:bg-black/20 backdrop-blur-xs rounded-xl flex items-center justify-center border border-white/30 dark:border-white/20 shadow-lg transition-all duration-225 hover:scale-110 active:scale-95">
@@ -133,7 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <div className={`hidden sm:relative sm:flex items-center bg-white/30 dark:bg-black/40 backdrop-blur-xs p-1 shadow-xl border border-white/30 dark:border-white/20 transition-all duration-300 ease-in-out ${
-              isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl sm:rounded-t-none'
+              isScrolled ? 'rounded-2xl sm:w-auto sm:flex-grow sm:mr-[64px]' : 'w-full rounded-b-2xl rounded-sm'
           }`}>
             <div
               className={`absolute top-1 bottom-1 bg-primary/80 backdrop-blur-xs rounded-[14px] transition-all duration-500 ease-out shadow-sm ${
@@ -191,7 +190,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="bg-white/30 dark:bg-black/30 backdrop-blur-xs rounded-2xl border border-white/30 dark:border-white/20 p-2 mt-2">
               <div className="relative flex items-center bg-black/5 dark:bg-white/5 rounded-xl p-0.5">
-                {/* --- MODIFICATION 2: Updated the positioning logic for the sliding indicator --- */}
                 <div className={`absolute top-0.5 bottom-0.5 bg-primary/80 backdrop-blur-xs rounded-lg transition-all duration-300 ease-out shadow-sm w-[calc(33.333%-2px)] ${
                     theme === 'system' ? 'left-0.5' :
                     theme === 'light' ? 'left-[33.333%]' :
