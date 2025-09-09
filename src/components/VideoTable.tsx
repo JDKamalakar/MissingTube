@@ -146,7 +146,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-225 select-none relative rounded-tl-3xl ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-225 select-none relative rounded-tl-3xl ${
                     sortField === 'index' ? 'bg-primary/20' : ''
                   }`}
                   onClick={() => handleSort('index')}
@@ -162,11 +162,11 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </Tooltip>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider">
                   Thumbnail
                 </th>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
                     sortField === 'title' ? 'bg-primary/20' : ''
                   }`}
                   onClick={() => handleSort('title')}
@@ -181,7 +181,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </Tooltip>
                 </th>
-                <th className={`hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                <th className={`hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
                   sortField === 'channel' ? 'bg-primary/20' : ''
                 }`}
                   onClick={() => handleSort('channel')}
@@ -197,7 +197,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   </Tooltip>
                 </th>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
                     sortField === 'duration' ? 'bg-primary/20' : ''
                   }`}
                   onClick={() => handleSort('duration')}
@@ -212,7 +212,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </Tooltip>
                 </th>
-                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider rounded-tr-3xl">
+                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider rounded-tr-3xl">
                   Actions
                 </th>
               </tr>
