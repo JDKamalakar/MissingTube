@@ -52,7 +52,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
           <div className="relative group w-full sm:w-auto">
             <button
               onClick={onCompareAnother}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-1000 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
             >
               <GitCompare className="w-5 h-5 transition-transform duration-500 group-hover:rotate-[360deg]" />
               Compare Another
