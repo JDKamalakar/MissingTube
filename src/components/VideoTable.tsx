@@ -6,19 +6,22 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// Upgraded Tooltip to use named groups for better hover scoping
+// 1. MODIFIED: Added a `position` prop to the Tooltip component
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
   subtitle?: string;
   className?: string;
+  position?: 'top' | 'bottom';
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className }) => {
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top' }) => {
+  const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
+  
   return (
     <div className={`group/tooltip relative flex ${className}`}>
       {children}
-      <div className="absolute bottom-full mb-2 w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+      <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -132,7 +135,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
 
   return (
     <>
-      {/* 1. MODIFIED: Removed `overflow-hidden` to prevent tooltip clipping */}
       <div 
         data-filter-container
         className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
@@ -141,7 +143,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       >
         <div className="overflow-x-auto">
           <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-            {/* 2. MODIFIED: Added specific classes to round the header */}
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
                 <th
@@ -153,7 +154,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   {sortField === 'index' && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                   )}
-                  <Tooltip title="Sort by Index">
+                  {/* 2. MODIFIED: Added position="bottom" to sort tooltips */}
+                  <Tooltip title="Sort by Index" position="bottom">
                     <div className="flex items-center gap-2">
                       #
                       {getSortIcon('index')}
@@ -172,7 +174,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   {sortField === 'title' && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                   )}
-                  <Tooltip title="Sort by Title">
+                  <Tooltip title="Sort by Title" position="bottom">
                     <div className="flex items-center gap-2">
                       Title
                       {getSortIcon('title')}
@@ -187,7 +189,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   {sortField === 'channel' && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                   )}
-                  <Tooltip title="Sort by Channel">
+                  <Tooltip title="Sort by Channel" position="bottom">
                     <div className="flex items-center gap-2">
                       Channel
                       {getSortIcon('channel')}
@@ -203,7 +205,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   {sortField === 'duration' && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                   )}
-                   <Tooltip title="Sort by Duration">
+                   <Tooltip title="Sort by Duration" position="bottom">
                     <div className="flex items-center gap-2">
                       Duration
                       {getSortIcon('duration')}
@@ -217,7 +219,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
             </thead>
             <tbody className="divide-y divide-white/20">
               {sortedVideos.map((video, index) => {
-                // 3. MODIFIED: Added logic to detect the last row for rounding
                 const isLastRow = index === sortedVideos.length - 1;
                 return (
                   <tr
@@ -279,13 +280,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         </span>
                       </Tooltip>
                     </td>
+                    {/* 3. MODIFIED: Removed Tooltip from Duration cell */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <Tooltip title={`Duration: ${video.duration}`}>
-                        <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
-                          <Clock className="w-3 h-3" />
-                          {video.duration}
-                        </span>
-                      </Tooltip>
+                      <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
+                        <Clock className="w-3 h-3" />
+                        {video.duration}
+                      </span>
                     </td>
                     <td className={`px-3 sm:px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-br-3xl' : ''}`}>
                       <div className="flex items-center gap-1">
@@ -345,4 +345,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};555
+};
