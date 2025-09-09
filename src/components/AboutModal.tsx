@@ -5,6 +5,7 @@ interface AboutModalProps {
   onClose: () => void;
 }
 
+// MODIFIED: Changed to a named export
 export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -24,29 +25,27 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* MODIFIED: Consistent backdrop with bg-black/10 and backdrop-blur-xl */}
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* MODIFIED: Main Modal Container with consistent styling */}
+      {/* FIXED: Added flex-col to enable vertical stacking. */}
+      {/* FIXED: Removed overflow-y-auto from the main container. */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
-                   max-h-[85vh] overflow-y-auto custom-scrollbar mobile-modal-full"
+                       max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
-        {/* MODIFIED: Header with consistent styling */}
+        {/* Header is sticky and remains in place. */}
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
-            {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface">About</h2>
           </div>
-          {/* Close Button: Consistent styling, red X icon, spin and scale on hover */}
           <button
             onClick={onClose}
             className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
@@ -56,11 +55,9 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Content with consistent card styling */}
-        <div className="p-4 sm:p-8">
+        {/* FIXED: The content area now has flex-grow and its own scrollbar. */}
+        <div className="p-4 sm:p-8 flex-grow overflow-y-auto overflow-x-hidden custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
-
-            {/* MissingTube Title and Description Card */}
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
                 MissingTube
@@ -71,7 +68,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </p>
             </div>
 
-            {/* Features Section Card */}
             <div className="group relative p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h4 className="font-medium text-on-surface mb-2 sm:mb-3 text-sm sm:text-base">Features:</h4>
               <ul className="text-xs sm:text-sm text-on-surface-variant space-y-1 sm:space-y-2">
@@ -114,7 +110,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </ul>
             </div>
 
-            {/* Support Development Section Card */}
             <div className="relative border-t border-gray-300/30 dark:border-gray-700/30 pt-4 sm:pt-6 p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h4 className="font-medium text-on-surface mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                 <Heart className="w-5 h-5 text-error animate-pulse" />
@@ -176,4 +171,5 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
       </div>
     </div>
   );
-};qqq
+};
+// MODIFIED: Removed the default export
