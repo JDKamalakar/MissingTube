@@ -226,7 +226,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               </Tooltip>
 
               <div className="flex gap-2 mt-auto">
-                <Tooltip title="Search for this video" className="flex-1">
+                <Tooltip title="Search Actions" className="flex-1">
                   <button
                     onClick={(e) => handleSearchActions(video, e)}
                     className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-2xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
