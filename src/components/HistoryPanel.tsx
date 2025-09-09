@@ -53,7 +53,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({ onClose, onPlaylistS
       />
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-3xl animate-modal-enter elevation-3
-                   max-h-[85vh] overflow-y-auto"
+                   max-h-[85vh] overflow-y-auto custom-scrollbar"
         role="dialog"
         aria-modal="true"
       >
