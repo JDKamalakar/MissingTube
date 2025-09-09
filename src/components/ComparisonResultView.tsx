@@ -39,7 +39,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
           {comparisonResult.hasNewData && (
-             <div className="relative group w-full sm:w-auto">
+              <div className="relative group w-full sm:w-auto">
                 <button
                     onClick={onDownloadMerged}
                     className="group w-full flex items-center justify-center gap-2 px-4 py-2 bg-cyan-600/80 dark:bg-cyan-700/80 backdrop-blur-sm text-white rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-cyan-600/90 dark:hover:bg-cyan-700/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-cyan-500/50 dark:border-cyan-700/50"
@@ -47,7 +47,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                     <Download className="w-4 h-4 transition-transform duration-300 group-hover:animate-bounce-short-slow" />
                     Download All ({comparisonResult.mergedVideos.length})
                 </button>
-             </div>
+              </div>
           )}
           <div className="relative group w-full sm:w-auto">
             <button
@@ -61,7 +61,6 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         </div>
       </div>
 
-      {/* MODIFICATION: The main change is here. Removed `sm:flex-row` to keep the layout vertical. */}
       <div className="flex flex-col flex-grow gap-6 pb-6 overflow-y-auto custom-scrollbar">
         
         {/* Recovered Videos Section (Top) */}
@@ -70,7 +69,9 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
             <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col">
               <button
                 onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                className="group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 rounded-t-2xl transition-all duration-200"
+                className={`group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 transition-all duration-200 ${
+                  showUnavailableVideos ? 'rounded-t-2xl' : 'rounded-2xl'
+                }`}
               >
                 <h4 className="font-medium text-on-primary-container flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" />
@@ -83,62 +84,64 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
               <div className={`transition-all duration-300 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
                 <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar">
                   {comparisonResult.unavailableMatches.map((match, index) => (
-                     <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
-                        <div className="flex items-center justify-between mb-1">
-                           <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
-                           <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
-                        </div>
-                        <div className="text-xs text-on-surface-variant space-y-1">
-                           <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
-                           <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
-                           <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                        </div>
-                     </div>
+                      <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
+                          <div className="flex items-center justify-between mb-1">
+                              <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
+                              <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
+                          </div>
+                          <div className="text-xs text-on-surface-variant space-y-1">
+                              <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
+                              <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
+                              <div className="text-xs opacity-75">ID: {match.videoId}</div>
+                          </div>
+                      </div>
                   ))}
                 </div>
               </div>
             </div>
           ) : (
-             <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
+              <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
                 <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
-                   <CheckCircle className="w-8 h-8 text-on-surface-variant" />
+                    <CheckCircle className="w-8 h-8 text-on-surface-variant" />
                 </div>
                 <h3 className="text-lg font-semibold text-on-surface mb-2">No Recoverable Titles Found</h3>
                 <p className="text-on-surface-variant">No unavailable video titles were recovered.</p>
-             </div>
+              </div>
           )}
         </div>
 
         {/* All Videos Section (Bottom) */}
         <div className="w-full flex-shrink-0">
           <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
-             <button
+              <button
                 onClick={() => setShowAllVideos(!showAllVideos)}
-                className="group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 rounded-t-2xl transition-all duration-200"
-             >
+                className={`group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 ${
+                  showAllVideos ? 'rounded-t-2xl' : 'rounded-2xl'
+                }`}
+              >
                 <h4 className="font-medium text-on-surface flex items-center gap-2"><FileText className="w-5 h-5" />All Videos ({comparisonResult.allVideos.length})</h4>
                 <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
-             </button>
-             <div className={`transition-all duration-300 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+              </button>
+              <div className={`transition-all duration-300 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
                 <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar">
-                   {comparisonResult.allVideos.map((video, index) => (
+                    {comparisonResult.allVideos.map((video, index) => (
                       <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
-                         <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center justify-between mb-2">
                             <div className="text-sm font-medium text-on-surface">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
                             <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>{getStatusLabel(video.status)}</div>
-                         </div>
-                         <div className="text-xs text-on-surface-variant space-y-1">
+                          </div>
+                          <div className="text-xs text-on-surface-variant space-y-1">
                             <p className="truncate">Current: {video.currentTitle}</p>
                             {video.fileTitle && (<p className="truncate">File: {video.fileTitle}</p>)}
                             <p className="text-xs opacity-75">ID: {video.videoId}</p>
-                         </div>
+                          </div>
                       </div>
-                   ))}
+                    ))}
                 </div>
-             </div>
+              </div>
           </div>
         </div>
       </div>
     </div>
   );
-};111
+};
