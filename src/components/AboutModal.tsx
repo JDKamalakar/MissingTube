@@ -29,21 +29,19 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
-      {/* MODIFIED: 
-        - Re-added `flex flex-col` to structure the modal vertically.
-        - Removed `overflow-y-auto` so the container itself doesn't scroll.
-      */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
                        max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
-        {/* MODIFIED:
-          - The header is now a non-growing flex item.
-          - Re-added a semi-opaque background to it.
+        {/* MODIFIED HEADER: 
+            - Added `relative` for pseudo-element positioning (though not strictly needed *here* for this method, good practice).
+            - Removed `border-b`.
+            - `rounded-t-2xl` is kept for top corners.
+            - Explicit background `bg-white/20 dark:bg-gray-800/20`
         */}
-        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
+        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
@@ -59,12 +57,16 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* MODIFIED: 
-          - This content wrapper is now the scrollable element.
-          - `flex-grow` makes it fill the available space.
-          - `overflow-y-auto` makes it scrollable.
+        {/* MODIFIED CONTENT DIV: 
+            - Added `relative` for pseudo-element positioning.
+            - Added `rounded-b-2xl` for bottom corners.
+            - Added custom CSS for pseudo-elements to create the inverted corners.
+            - The `z-index` here ensures the pseudo-elements are above the main modal's background but below the header.
         */}
-        <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar">
+        <div className="relative p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar rounded-b-2xl
+                      before:content-[''] before:absolute before:top-0 before:left-0 before:w-6 before:h-6 before:rounded-br-2xl before:shadow-[0_2px_0_0_theme(colors.gray.300/30),_2px_0_0_0_theme(colors.gray.300/30),_2px_2px_0_0_theme(colors.white/20)] before:dark:shadow-[0_2px_0_0_theme(colors.gray.700/30),_2px_0_0_0_theme(colors.gray.700/30),_2px_2px_0_0_theme(colors.gray.800/20)] before:z-20
+                      after:content-[''] after:absolute after:top-0 after:right-0 after:w-6 after:h-6 after:rounded-bl-2xl after:shadow-[0_2px_0_0_theme(colors.gray.300/30),_-2px_0_0_0_theme(colors.gray.300/30),_-2px_2px_0_0_theme(colors.white/20)] after:dark:shadow-[0_2px_0_0_theme(colors.gray.700/30),_-2px_0_0_0_theme(colors.gray.700/30),_-2px_2px_0_0_theme(colors.gray.800/20)] after:z-20
+            ">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
@@ -87,8 +89,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Grid and table view modes
                 </li>
-                {/* ... other list items ... */}
-                 <li className="flex items-center gap-2">
+                <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Multi-platform search actions
                 </li>
@@ -180,4 +181,4 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
       </div>
     </div>
   );
-};qq
+};
