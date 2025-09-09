@@ -19,7 +19,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle }) => {
       {children}
       <div className="absolute bottom-full mb-2 w-max max-w-xs hidden group-hover:flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
         {/* MODIFIED: Changed background color for light mode and text alignment */}
-        <div className="bg-primary/80 dark:bg-black/80 text-white backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-left">
+        <div className="bg-primary/30 dark:bg-black/80 text-white backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
         </div>
