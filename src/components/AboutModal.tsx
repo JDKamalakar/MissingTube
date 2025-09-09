@@ -31,12 +31,14 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
+      {/* MODIFIED: Main modal container now uses a flex column layout. Scrolling properties have been removed. */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
                    max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
+        {/* MODIFIED: Header is now a static flex item. 'sticky' and 'z-10' are removed as they are no longer needed. */}
         <div className="flex items-center justify-between p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
@@ -53,6 +55,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
+        {/* MODIFIED: This content wrapper is now the scrollable container, using 'flex-grow' to fill available space. */}
         <div className="p-4 sm:p-8 overflow-y-auto custom-scrollbar flex-grow">
           <div className="space-y-4 sm:space-y-6">
 
@@ -159,7 +162,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   >
                     <Globe className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:animate-spin flex-shrink-0" />
                     <span className="truncate text-xs sm:text-sm">Portfolio</span>
-                  </a>{/* <-- FIXED ERROR HERE */}
+    _C_E_I_P_>
                 </div>
               </div>
             </div>
