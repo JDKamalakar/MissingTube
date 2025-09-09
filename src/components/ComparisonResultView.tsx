@@ -82,7 +82,8 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 </div>
               </button>
               <div className={`transition-all duration-700 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-2">
+                {/* MODIFICATION: Increased padding for more breathing room */}
+                <div className="p-6">
                   <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 overflow-hidden">
                     {comparisonResult.unavailableMatches.map((match, index) => {
                       const isFirst = index === 0;
@@ -134,7 +135,8 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
               <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
             </button>
             <div className={`transition-all duration-700 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-              <div className="p-4 pt-2">
+              {/* MODIFICATION: Increased padding for more breathing room */}
+              <div className="p-6">
                 <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 overflow-hidden">
                   {comparisonResult.allVideos.map((video, index) => {
                     const isFirst = index === 0;
@@ -166,4 +168,4 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
       </div>
     </div>
   );
-};222
+};
