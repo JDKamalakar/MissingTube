@@ -6,7 +6,7 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// 1. MODIFIED: Upgraded Tooltip to use named groups for better hover scoping
+// Upgraded Tooltip to use named groups for better hover scoping
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -132,19 +132,20 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
 
   return (
     <>
+      {/* 1. MODIFIED: Removed `overflow-hidden` to prevent tooltip clipping */}
       <div 
         data-filter-container
-        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
+        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+            {/* 2. MODIFIED: Added specific classes to round the header */}
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
-                {/* 2. MODIFIED: Added Tooltips to all sortable headers */}
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-225 select-none relative rounded-tl-3xl ${
                     sortField === 'index' ? 'bg-primary/20' : ''
                   }`}
                   onClick={() => handleSort('index')}
@@ -209,110 +210,114 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </div>
                   </Tooltip>
                 </th>
-                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
+                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider rounded-tr-3xl">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/20">
-              {sortedVideos.map((video, index) => (
-                <tr
-                  key={video.id}
-                  className={`hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 ${
-                    video.unavailable ? 'opacity-60' : ''
-                  } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
-                      {video.index}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="w-full h-full object-cover cursor-pointer"
-                        onClick={() => handleVideoClick(video.videoId)}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = UnavailableImage;
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
-                        onClick={() => handleVideoClick(video.videoId)}
-                      >
-                        <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-110 transition-transform duration-225 border border-white/30">
-                          <Play className="w-6 h-6 text-white fill-white" />
+              {sortedVideos.map((video, index) => {
+                // 3. MODIFIED: Added logic to detect the last row for rounding
+                const isLastRow = index === sortedVideos.length - 1;
+                return (
+                  <tr
+                    key={video.id}
+                    className={`hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 ${
+                      video.unavailable ? 'opacity-60' : ''
+                    } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
+                  >
+                    <td className={`px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
+                      <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
+                        {video.index}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
+                        <img
+                          src={video.thumbnail}
+                          alt={video.title}
+                          className="w-full h-full object-cover cursor-pointer"
+                          onClick={() => handleVideoClick(video.videoId)}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = UnavailableImage;
+                          }}
+                        />
+                        <div
+                          className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
+                          onClick={() => handleVideoClick(video.videoId)}
+                        >
+                          <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-110 transition-transform duration-225 border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                    <div className="flex items-center gap-3">
-                      {video.unavailable && (
-                         <Tooltip title="This video is unavailable">
-                          <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
-                            <AlertTriangle className="w-4 h-4" />
-                          </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
+                      <div className="flex items-center gap-3">
+                        {video.unavailable && (
+                          <Tooltip title="This video is unavailable">
+                            <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
+                              <AlertTriangle className="w-4 h-4" />
+                            </div>
+                          </Tooltip>
+                        )}
+                        <Tooltip title={video.title} subtitle="Tap for description" className="flex-1">
+                            <div
+                              className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium text-left`}
+                              onClick={(e) => handleShowDescription(video, e)}
+                            >
+                              {video.title}
+                            </div>
                         </Tooltip>
-                      )}
-                       <Tooltip title={video.title} subtitle="Tap for description" className="flex-1">
-                          <div
-                            className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium text-left`}
-                            onClick={(e) => handleShowDescription(video, e)}
+                      </div>
+                    </td>
+                    <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap max-w-xs">
+                      <Tooltip title={video.channelTitle || 'Unknown Channel'}>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 truncate block">
+                          {video.channelTitle || 'Unknown Channel'}
+                        </span>
+                      </Tooltip>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Tooltip title={`Duration: ${video.duration}`}>
+                        <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
+                          <Clock className="w-3 h-3" />
+                          {video.duration}
+                        </span>
+                      </Tooltip>
+                    </td>
+                    <td className={`px-3 sm:px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-br-3xl' : ''}`}>
+                      <div className="flex items-center gap-1">
+                        <Tooltip title="Open in YouTube">
+                          <button
+                            onClick={() => handleVideoClick(video.videoId)}
+                            className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                           >
-                            {video.title}
-                          </div>
-                       </Tooltip>
-                    </div>
-                  </td>
-                  <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap max-w-xs">
-                    <Tooltip title={video.channelTitle || 'Unknown Channel'}>
-                      <span className="text-sm text-gray-700 dark:text-gray-300 truncate block">
-                        {video.channelTitle || 'Unknown Channel'}
-                      </span>
-                    </Tooltip>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Tooltip title={`Duration: ${video.duration}`}>
-                      <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
-                        <Clock className="w-3 h-3" />
-                        {video.duration}
-                      </span>
-                    </Tooltip>
-                  </td>
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-1">
-                      <Tooltip title="Open in YouTube">
-                        <button
-                          onClick={() => handleVideoClick(video.videoId)}
-                          className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        >
-                          <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
-                        </button>
-                      </Tooltip>
-                      <Tooltip title="Search actions">
-                        <button
-                          onClick={(e) => handleSearchActions(video, e)}
-                          className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        >
-                          <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
-                        </button>
-                      </Tooltip>
-                      <Tooltip title="View description">
-                        <button
-                          onClick={(e) => handleShowDescription(video, e)}
-                          className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        >
-                          <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:animate-wiggle" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                            <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Search actions">
+                          <button
+                            onClick={(e) => handleSearchActions(video, e)}
+                            className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                          >
+                            <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="View description">
+                          <button
+                            onClick={(e) => handleShowDescription(video, e)}
+                            className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                          >
+                            <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:animate-wiggle" />
+                          </button>
+                        </Tooltip>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
@@ -340,4 +345,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};222
+};
