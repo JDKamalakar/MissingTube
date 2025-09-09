@@ -152,4 +152,4 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
       </div>
     </div>
   );
-};
+};11111
