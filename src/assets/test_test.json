@@ -47,7 +47,7 @@
     {
       "id": "sample_video_4",
       "title": "[Private video]",
-      "thumbnail": "",
+      "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
       "duration": "PT0S",  
       "channelTitle": "Sample Channel",
       "publishedAt": "2025-01-02T00:00:00Z",
