@@ -19,7 +19,6 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
   const [showAllVideos, setShowAllVideos] = useState(false);
 
   const getStatusColor = (status: string) => {
-    // Keeping this logic as it's specific to the component's data
     return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-800/50 dark:text-cyan-200';
   };
 
@@ -36,29 +35,24 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
 
   return (
     <div className="w-full flex-shrink-0 px-6 h-full flex flex-col">
-      {/* MODIFIED: Button container layout updated for mobile */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
-        <h3 className="text-lg font-semibold text-on-surface flex-shrink-0">Comparison Results</h3>
-        <div className="flex flex-row items-center gap-3 w-full sm:w-auto">
+        <h3 className="text-lg font-semibold text-on-surface">Comparison Results</h3>
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
           {comparisonResult.hasNewData && (
-            // MODIFIED: flex-1 to share space
-            <div className="relative group flex-1">
-              <button
-                onClick={onDownloadMerged}
-                // MODIFIED: Styles from Code 2's primary button
-                className="group w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-primary/90 transition-all duration-225 hover:scale-[1.05] active:scale-[0.95] border border-primary/50"
-              >
-                <Download className="w-4 h-4 transition-transform duration-300 group-hover:animate-bounce-short-slow" />
-                Download All ({comparisonResult.mergedVideos.length})
-              </button>
-            </div>
+              <div className="relative group w-full sm:w-auto">
+                <button
+                    onClick={onDownloadMerged}
+                    className="group w-full flex items-center justify-center gap-2 px-4 py-2 bg-cyan-600/80 dark:bg-cyan-700/80 backdrop-blur-sm text-white rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-cyan-600/90 dark:hover:bg-cyan-700/90 transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] border border-cyan-500/50 dark:border-cyan-700/50"
+                >
+                    <Download className="w-4 h-4 transition-transform duration-300 group-hover:animate-bounce-short-slow" />
+                    Download All ({comparisonResult.mergedVideos.length})
+                </button>
+              </div>
           )}
-          {/* MODIFIED: flex-1 to share space */}
-          <div className="relative group flex-1">
+          <div className="relative group w-full sm:w-auto">
             <button
               onClick={onCompareAnother}
-              // MODIFIED: Styles from Code 2's secondary button
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-225 hover:scale-[1.05] active:scale-[0.95] border border-gray-300/30 dark:border-gray-700/30"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md text-on-surface rounded-2xl font-medium shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] border border-gray-300/30 dark:border-gray-700/30"
             >
               <GitCompare className="w-5 h-5 transition-transform duration-1000 group-hover:rotate-[360deg]" />
               Compare Another
@@ -72,17 +66,15 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
         {/* Recovered Videos Section (Top) */}
         <div className="w-full flex-shrink-0">
           {comparisonResult.unavailableMatches.length > 0 ? (
-            // MODIFIED: Container style from Code 2
-            <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
+            <div className="bg-primary-container/80 dark:bg-primary-dark-container/80 backdrop-blur-md rounded-2xl border border-primary/50 dark:border-primary-dark/50 shadow-lg h-full flex flex-col">
               <button
                 onClick={() => setShowUnavailableVideos(!showUnavailableVideos)}
-                 // MODIFIED: Hover state from Code 2
-                className={`group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 ${
+                className={`group w-full p-4 flex items-center justify-between hover:bg-primary-container/90 dark:hover:bg-primary-dark-container/90 transition-all duration-200 ${
                   showUnavailableVideos ? 'rounded-t-2xl' : 'rounded-2xl'
                 }`}
               >
-                <h4 className="font-medium text-on-surface flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-error" />
+                <h4 className="font-medium text-on-primary-container flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5" />
                   Recovered Videos ({comparisonResult.unavailableMatches.length})
                 </h4>
                 <div className={`transition-transform duration-200 ${showUnavailableVideos ? 'rotate-180' : ''}`}>
@@ -100,8 +92,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                       return (
                         <div 
                           key={index} 
-                          // MODIFIED: Hover effect from Code 2
-                          className={`group bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm p-3 transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10 ${cornerClass}`}
+                          className={`group bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm p-3 rounded transition-all duration-300 transform origin-center hover:scale-[1.02] hover:-translate-y-1 z-0 hover:z-10 ${cornerClass}`}
                         >
                           <div className="flex items-center justify-between mb-1">
                               <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
@@ -120,8 +111,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
               </div>
             </div>
           ) : (
-            // MODIFIED: Container style from Code 2
-            <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
+            <div className="text-center py-8 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md border border-gray-300/30 dark:border-gray-700/30 h-full flex flex-col justify-center">
               <div className="p-4 bg-white/20 dark:bg-gray-800/20 rounded-2xl w-16 h-16 mx-auto mb-4 flex items-center justify-center shadow-inner border border-gray-300/30 dark:border-gray-700/30">
                   <CheckCircle className="w-8 h-8 text-on-surface-variant" />
               </div>
@@ -133,8 +123,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
 
         {/* All Videos Section (Bottom) */}
         <div className="w-full flex-shrink-0">
-          {/* MODIFIED: Container style from Code 2 */}
-          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
+          <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-lg h-full flex flex-col">
             <button
               onClick={() => setShowAllVideos(!showAllVideos)}
               className={`group w-full p-4 flex items-center justify-between hover:bg-white/30 dark:hover:bg-gray-700/30 transition-all duration-200 ${
@@ -155,8 +144,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                     return (
                       <div 
                         key={index}
-                        // MODIFIED: Hover effect from Code 2
-                        className={`group bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm p-3 transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10 ${cornerClass}`}
+                        className={`group bg-white/30 dark:bg-gray-800/30 rounded backdrop-blur-sm p-3 transition-all duration-300 transform origin-center hover:scale-[1.02] hover:-translate-y-1 z-0 hover:z-10 ${cornerClass}`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="text-sm font-medium text-on-surface">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
