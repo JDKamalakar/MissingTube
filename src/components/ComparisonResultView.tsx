@@ -81,21 +81,31 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                   <ChevronDown className="w-5 h-5" />
                 </div>
               </button>
-              <div className={`transition-all duration-500 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar">
-                  {comparisonResult.unavailableMatches.map((match, index) => (
-                      <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
-                          <div className="flex items-center justify-between mb-1">
-                              <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
-                              <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
-                          </div>
-                          <div className="text-xs text-on-surface-variant space-y-1">
-                              <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
-                              <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
-                              <div className="text-xs opacity-75">ID: {match.videoId}</div>
-                          </div>
-                      </div>
-                  ))}
+              {/* MODIFICATION: Increased duration to 700ms */}
+              <div className={`transition-all duration-700 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+                {/* MODIFICATION: Updated list container and item styles to match HistoryPanel */}
+                <div className="p-4 pt-0">
+                   <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 overflow-hidden">
+                    {comparisonResult.unavailableMatches.map((match, index) => {
+                      const isFirst = index === 0;
+                      const isLast = index === comparisonResult.unavailableMatches.length - 1;
+                      const cornerClass = isFirst ? 'rounded-t-xl' : isLast ? 'rounded-b-xl' : '';
+
+                      return (
+                        <div key={index} className={`group w-full text-left transition-all duration-300 transform origin-center hover:scale-105 hover:-translate-y-1 p-3 z-0 hover:z-10 ${cornerClass} text-on-surface hover:bg-white/20 dark:hover:bg-black/20`}>
+                            <div className="flex items-center justify-between mb-1">
+                                <div className="text-sm font-medium">Index {match.currentIndex} - Index {match.fileIndex}</div>
+                                <div className="text-xs px-2 py-1 rounded-lg bg-cyan-100/80 dark:bg-cyan-800/80 text-cyan-800 dark:text-cyan-200 shadow-sm">100% Match</div>
+                            </div>
+                            <div className="text-xs text-on-surface-variant space-y-1">
+                                <div className="flex items-center gap-2 text-error"><AlertTriangle className="w-3 h-3" /><span className="truncate">Current: {match.currentTitle}</span></div>
+                                <div className="truncate font-medium text-cyan-600 dark:text-cyan-400">Recovered: {match.fileTitle}</div>
+                                <div className="text-xs opacity-75">ID: {match.videoId}</div>
+                            </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,21 +132,31 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 <h4 className="font-medium text-on-surface flex items-center gap-2"><FileText className="w-5 h-5" />All Videos ({comparisonResult.allVideos.length})</h4>
                 <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
               </button>
-              <div className={`transition-all duration-500 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
-                <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar">
-                    {comparisonResult.allVideos.map((video, index) => (
-                      <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="text-sm font-medium text-on-surface">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
-                            <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>{getStatusLabel(video.status)}</div>
-                          </div>
-                          <div className="text-xs text-on-surface-variant space-y-1">
-                            <p className="truncate">Current: {video.currentTitle}</p>
-                            {video.fileTitle && (<p className="truncate">File: {video.fileTitle}</p>)}
-                            <p className="text-xs opacity-75">ID: {video.videoId}</p>
-                          </div>
-                      </div>
-                    ))}
+              {/* MODIFICATION: Increased duration to 700ms */}
+              <div className={`transition-all duration-700 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+                {/* MODIFICATION: Updated list container and item styles to match HistoryPanel */}
+                <div className="p-4 pt-0">
+                  <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl flex flex-col gap-0.5 border border-gray-300/30 dark:border-gray-700/30 overflow-hidden">
+                    {comparisonResult.allVideos.map((video, index) => {
+                      const isFirst = index === 0;
+                      const isLast = index === comparisonResult.allVideos.length - 1;
+                      const cornerClass = isFirst ? 'rounded-t-xl' : isLast ? 'rounded-b-xl' : '';
+                      
+                      return (
+                        <div key={index} className={`group w-full text-left transition-all duration-300 transform origin-center hover:scale-105 hover:-translate-y-1 p-3 z-0 hover:z-10 ${cornerClass} text-on-surface hover:bg-white/20 dark:hover:bg-black/20`}>
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="text-sm font-medium">Index {video.currentIndex}{video.fileIndex && ` - Index ${video.fileIndex}`}</div>
+                              <div className={`text-xs px-2 py-1 rounded-lg ${getStatusColor(video.status)} shadow-sm`}>{getStatusLabel(video.status)}</div>
+                            </div>
+                            <div className="text-xs text-on-surface-variant space-y-1">
+                              <p className="truncate">Current: {video.currentTitle}</p>
+                              {video.fileTitle && (<p className="truncate">File: {video.fileTitle}</p>)}
+                              <p className="text-xs opacity-75">ID: {video.videoId}</p>
+                            </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
           </div>
