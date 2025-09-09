@@ -81,7 +81,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                   <ChevronDown className="w-5 h-5" />
                 </div>
               </button>
-              <div className={`transition-all duration-300 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+              <div className={`transition-all duration-500 ease-out overflow-hidden ${showUnavailableVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
                 <div className="p-4 pt-0 space-y-3 overflow-y-auto custom-scrollbar">
                   {comparisonResult.unavailableMatches.map((match, index) => (
                       <div key={index} className="group bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
@@ -122,7 +122,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                 <h4 className="font-medium text-on-surface flex items-center gap-2"><FileText className="w-5 h-5" />All Videos ({comparisonResult.allVideos.length})</h4>
                 <div className={`transition-transform duration-200 ${showAllVideos ? 'rotate-180' : ''}`}><ChevronDown className="w-5 h-5" /></div>
               </button>
-              <div className={`transition-all duration-300 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
+              <div className={`transition-all duration-500 ease-out overflow-hidden ${showAllVideos ? 'max-h-screen opacity-100 flex-grow' : 'max-h-0'}`}>
                 <div className="p-4 pt-0 space-y-2 overflow-y-auto custom-scrollbar">
                     {comparisonResult.allVideos.map((video, index) => (
                       <div key={index} className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl p-3 shadow-sm border border-gray-300/30 dark:border-gray-700/30 transition-all duration-200 hover:scale-[1.04] hover:shadow-md">
