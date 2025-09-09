@@ -5,7 +5,7 @@
     "description": "This is a sample playlist loaded from a local JSON file for testing and demonstration purposes.",
     "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
     "channelTitle": "Sample Channel",
-    "videoCount": 2
+    "videoCount": 4
   },
   "videos": [
     {
