@@ -121,7 +121,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
                 <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-primary/40 dark:hover:bg-grey/20 transition-all duration-225 select-none relative ${
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-primary/40 dark:hover:bg-white/20 transition-all duration-225 select-none relative ${
                     sortField === 'index' ? 'bg-primary/20' : ''
                   }`}
                   onClick={() => handleSort('index')}
