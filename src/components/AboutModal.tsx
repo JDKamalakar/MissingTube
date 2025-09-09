@@ -29,9 +29,10 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
+      {/* MODIFIED: Added `overflow-hidden` to ensure child elements are clipped by the rounded corners. */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
-                       max-h-[85vh] flex flex-col mobile-modal-full"
+                       max-h-[85vh] flex flex-col mobile-modal-full overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
@@ -51,8 +52,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* MODIFIED: Added `rounded-b-2xl` to round the bottom corners */}
-        <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar rounded-b-2xl">
+        {/* MODIFIED: Removed `rounded-b-2xl` as the parent now handles clipping. */}
+        <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
