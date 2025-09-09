@@ -92,7 +92,7 @@ export const ComparisonResultView: React.FC<ComparisonResultViewProps> = ({
                       return (
                         <div 
                           key={index} 
-                          className={`group bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm p-3 transition-all duration-300 transform origin-center hover:scale-105 hover:-translate-y-1 z-0 hover:z-10 ${cornerClass}`}
+                          className={`group bg-white/30 dark:bg-gray-800/30 backdrop-blur-sm p-3 rounded-sm transition-all duration-300 transform origin-center hover:scale-105 hover:-translate-y-1 z-0 hover:z-10 ${cornerClass}`}
                         >
                           <div className="flex items-center justify-between mb-1">
                               <div className="text-sm font-medium text-on-surface">Index {match.currentIndex} - Index {match.fileIndex}</div>
