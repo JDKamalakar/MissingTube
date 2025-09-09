@@ -251,7 +251,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ onClose, curre
           </button>
         </div>
 
-        <div className="p-6 flex-grow relative overflow-x-hidden">
+        <div className="p-6 flex-grow relative overflow-x-hidden custom-scrollbar">
           <div className={`flex transition-transform duration-500 ease-in-out h-full ${isComparisonView ? '-translate-x-full' : 'translate-x-0'}`} style={{ width: '200%' }}>
             {/* View 1: File Upload */}
             <FileUploadView
