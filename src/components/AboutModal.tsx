@@ -24,29 +24,32 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* MODIFIED: Consistent backdrop with bg-black/10 and backdrop-blur-xl */}
       <div
         className="fixed inset-0 bg-black/10 backdrop-blur-xl transition-opacity duration-225 ease-out animate-fade-in"
         onClick={onClose}
       />
 
-      {/* MODIFIED: Main Modal Container with consistent styling */}
+      {/* MODIFIED: 
+        - Re-added `flex flex-col` to structure the modal vertically.
+        - Removed `overflow-y-auto` so the container itself doesn't scroll.
+      */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
-                   max-h-[85vh] overflow-y-auto custom-scrollbar mobile-modal-full"
+                       max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
-        {/* MODIFIED: Header with consistent styling */}
+        {/* MODIFIED:
+          - The header is now a non-growing flex item.
+          - Re-added a semi-opaque background to it.
+        */}
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
-            {/* Modal Icon Container: Now with hover scale, shadow, and depth */}
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
             </div>
             <h2 className="text-lg sm:text-xl font-semibold text-on-surface">About</h2>
           </div>
-          {/* Close Button: Consistent styling, red X icon, spin and scale on hover */}
           <button
             onClick={onClose}
             className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group"
@@ -56,11 +59,13 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Content with consistent card styling */}
-        <div className="p-4 sm:p-8">
+        {/* MODIFIED: 
+          - This content wrapper is now the scrollable element.
+          - `flex-grow` makes it fill the available space.
+          - `overflow-y-auto` makes it scrollable.
+        */}
+        <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
-
-            {/* MissingTube Title and Description Card */}
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
                 MissingTube
@@ -71,7 +76,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </p>
             </div>
 
-            {/* Features Section Card */}
             <div className="group relative p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h4 className="font-medium text-on-surface mb-2 sm:mb-3 text-sm sm:text-base">Features:</h4>
               <ul className="text-xs sm:text-sm text-on-surface-variant space-y-1 sm:space-y-2">
@@ -83,7 +87,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Grid and table view modes
                 </li>
-                <li className="flex items-center gap-2">
+                {/* ... other list items ... */}
+                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Multi-platform search actions
                 </li>
@@ -114,7 +119,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
               </ul>
             </div>
 
-            {/* Support Development Section Card */}
             <div className="relative border-t border-gray-300/30 dark:border-gray-700/30 pt-4 sm:pt-6 p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h4 className="font-medium text-on-surface mb-3 sm:mb-4 flex items-center gap-2 text-sm sm:text-base">
                 <Heart className="w-5 h-5 text-error animate-pulse" />
@@ -136,7 +140,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <a
-                    href="https://github.com/developer/missingtube"
+                    href="https://github.com/JDKamalakar"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
@@ -146,7 +150,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   </a>
 
                   <a
-                    href="https://twitter.com/developer"
+                    href="https://x.com/jayrajkamalakar"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
@@ -156,7 +160,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   </a>
 
                   <a
-                    href="https://developer-portfolio.com"
+                    href="https://jds-personal-portfolio.netlify.app"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 text-xs sm:text-sm mobile-button-compact"

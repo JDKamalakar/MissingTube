@@ -6,300 +6,343 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
+// 1. MODIFIED: Added a `position` prop to the Tooltip component
+interface TooltipProps {
+  children: React.ReactElement;
+  title: string;
+  subtitle?: string;
+  className?: string;
+  position?: 'top' | 'bottom';
+}
+
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top' }) => {
+  const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
+  
+  return (
+    <div className={`group/tooltip relative flex ${className}`}>
+      {children}
+      <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
+        <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
+          <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
+          {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 interface VideoTableProps {
-  videos: Video[];
-  filterMode?: FilterMode;
+  videos: Video[];
+  filterMode?: FilterMode;
 }
 
 type SortField = 'index' | 'title' | 'duration' | 'channel';
 type SortDirection = 'asc' | 'desc';
 
 export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'all' }) => {
-  const [sortField, setSortField] = useState<SortField>('index');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
-  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
-  const [showSearchActions, setShowSearchActions] = useState(false);
-  const [showDescription, setShowDescription] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('index');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [showSearchActions, setShowSearchActions] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const filteredVideos = videos.filter(video => {
-    switch (filterMode) {
-      case 'available':
-        return !video.unavailable;
-      case 'unavailable':
-        return video.unavailable;
-      default:
-        return true;
-    }
-  });
+  const filteredVideos = videos.filter(video => {
+    switch (filterMode) {
+      case 'available':
+        return !video.unavailable;
+      case 'unavailable':
+        return video.unavailable;
+      default:
+        return true;
+    }
+  });
 
-  const handleSort = (field: SortField) => {
-    setIsAnimating(true);
-    
-    setTimeout(() => {
-      if (sortField === field) {
-        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-      } else {
-        setSortField(field);
-        setSortDirection('asc');
-      }
-      
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 150);
-    }, 150);
-  };
+  const handleSort = (field: SortField) => {
+    setIsAnimating(true);
+    
+    setTimeout(() => {
+      if (sortField === field) {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortField(field);
+        setSortDirection('asc');
+      }
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 150);
+    }, 150);
+  };
 
-  const sortedVideos = [...filteredVideos].sort((a, b) => {
-    let aValue: any = a[sortField === 'channel' ? 'channelTitle' : sortField];
-    let bValue: any = b[sortField === 'channel' ? 'channelTitle' : sortField];
-    const direction = sortDirection === 'asc' ? 1 : -1;
+  const sortedVideos = [...filteredVideos].sort((a, b) => {
+    let aValue: any = a[sortField === 'channel' ? 'channelTitle' : sortField];
+    let bValue: any = b[sortField === 'channel' ? 'channelTitle' : sortField];
+    const direction = sortDirection === 'asc' ? 1 : -1;
 
-    if (sortField === 'index') {
-      aValue = Number(aValue);
-      bValue = Number(bValue);
-    }
+    if (sortField === 'index') {
+      aValue = Number(aValue);
+      bValue = Number(bValue);
+    }
 
-    if (sortField === 'duration') {
-      const parseTime = (time: string) => {
-        if (time === 'Unavailable') return 0;
-        const parts = time.split(':').map(Number);
-        if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-        if (parts.length === 2) return parts[0] * 60 + parts[1];
-        return 0;
-      };
-      aValue = parseTime(aValue);
-      bValue = parseTime(bValue);
-    }
+    if (sortField === 'duration') {
+      const parseTime = (time: string) => {
+        if (time === 'Unavailable') return 0;
+        const parts = time.split(':').map(Number);
+        if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        if (parts.length === 2) return parts[0] * 60 + parts[1];
+        return 0;
+      };
+      aValue = parseTime(aValue);
+      bValue = parseTime(bValue);
+    }
 
-    if (typeof aValue === 'string') {
-      aValue = aValue.toLowerCase();
-      bValue = bValue.toLowerCase();
-    }
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
 
-    if (aValue < bValue) return -1 * direction;
-    if (aValue > bValue) return 1 * direction;
-    return 0;
-  });
+    if (aValue < bValue) return -1 * direction;
+    if (aValue > bValue) return 1 * direction;
+    return 0;
+  });
 
-  const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <ArrowUpDown className="w-4 h-4 opacity-50" />;
-    return sortDirection === 'asc' ?
-      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> :
-      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />;
-  };
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) return <ArrowUpDown className="w-4 h-4 opacity-50" />;
+    return sortDirection === 'asc' ?
+      <ArrowUp className="w-4 h-4 text-white dark:text-primary" /> :
+      <ArrowDown className="w-4 h-4 text-white dark:text-primary" />;
+  };
 
-  const handleVideoClick = (videoId: string) => {
-    window.open(getVideoUrl(videoId), '_blank');
-  };
+  const handleVideoClick = (videoId: string) => {
+    window.open(getVideoUrl(videoId), '_blank');
+  };
 
-  const handleSearchActions = (video: Video, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedVideo(video);
-    setShowSearchActions(true);
-  };
+  const handleSearchActions = (video: Video, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedVideo(video);
+    setShowSearchActions(true);
+  };
 
-  const handleShowDescription = (video: Video, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedVideo(video);
-    setShowDescription(true);
-  };
+  const handleShowDescription = (video: Video, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedVideo(video);
+    setShowDescription(true);
+  };
 
-  return (
-    <>
-      <div 
-        data-filter-container
-        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 overflow-hidden elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
-          isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
-        }`}
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
-              <tr>
-                <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
-                    sortField === 'index' ? 'bg-primary/20' : ''
-                  }`}
-                  onClick={() => handleSort('index')}
-                >
-                  {sortField === 'index' && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    #
-                    {getSortIcon('index')}
-                  </div>
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
-                  Thumbnail
-                </th>
-                <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
-                    sortField === 'title' ? 'bg-primary/20' : ''
-                  }`}
-                  onClick={() => handleSort('title')}
-                >
-                  {sortField === 'title' && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    Title
-                    {getSortIcon('title')}
-                  </div>
-                </th>
-                <th className={`hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
-                  sortField === 'channel' ? 'bg-primary/20' : ''
-                }`}
-                  onClick={() => handleSort('channel')}
-                >
-                  {sortField === 'channel' && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    Channel
-                    {getSortIcon('channel')}
-                  </div>
-                </th>
-                <th
-                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
-                    sortField === 'duration' ? 'bg-primary/20' : ''
-                  }`}
-                  onClick={() => handleSort('duration')}
-                >
-                  {sortField === 'duration' && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    Duration
-                    {getSortIcon('duration')}
-                  </div>
-                </th>
-                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/20">
-              {sortedVideos.map((video, index) => (
-                <tr
-                  key={video.id}
-                  className={`hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 ${
-                    video.unavailable ? 'opacity-60' : ''
-                  } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
-                      {video.index}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
-                      <img
-                        src={video.thumbnail}
-                        alt={video.title}
-                        className="w-full h-full object-cover cursor-pointer"
-                        onClick={() => handleVideoClick(video.videoId)}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = UnavailableImage;
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
-                        onClick={() => handleVideoClick(video.videoId)}
-                      >
-                        <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-110 transition-transform duration-225 border border-white/30">
-                          <Play className="w-6 h-6 text-white fill-white" />
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                    <div className="flex items-center gap-3">
-                      {video.unavailable && (
-                        <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
-                          <AlertTriangle className="w-4 h-4" />
-                        </div>
-                      )}
-                         <div
-                          className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 ${
-                            video.unavailable ? 'text-gray-600 dark:text-gray-400' : ''
-                          }`}
-                          onClick={(e) => handleShowDescription(video, e)}
-                          title={video.title}
-                        >
-                          {video.title}
-                        </div>
-                    </div>
-                  </td>
-                  <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      {video.channelTitle || 'Unknown Channel'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
-                      <Clock className="w-3 h-3" />
-                      {video.duration}
-                    </span>
-                  </td>
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => handleVideoClick(video.videoId)}
-                        className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        title="Open video"
-                      >
-                        <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
-                      </button>
-                      <button
-                        onClick={(e) => handleSearchActions(video, e)}
-                        className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        title="Search actions"
-                      >
-                        <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
-                      </button>
-                      <button
-                        onClick={(e) => handleShowDescription(video, e)}
-                            // [FIX] Removed "hidden" class to make the button visible on mobile. Changed "sm:flex" to "flex".
-                        className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
-                        title="View description"
-                      >
-                        <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:animate-wiggle" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+  return (
+    <>
+      <div 
+        data-filter-container
+        className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
+          isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
+        }`}
+      >
+        <div className="overflow-x-auto">
+          <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+            <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
+              <tr>
+                <th
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-white/10 transition-all duration-225 select-none relative rounded-tl-3xl ${
+                    sortField === 'index' ? 'bg-primary/20' : ''
+                  }`}
+                  onClick={() => handleSort('index')}
+                >
+                  {sortField === 'index' && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                  )}
+                  {/* 2. MODIFIED: Added position="bottom" to sort tooltips */}
+                  <Tooltip title="Sort by Index" position="bottom">
+                    <div className="flex items-center gap-2">
+                      #
+                      {getSortIcon('index')}
+                    </div>
+                  </Tooltip>
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider">
+                  Thumbnail
+                </th>
+                <th
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                    sortField === 'title' ? 'bg-primary/20' : ''
+                  }`}
+                  onClick={() => handleSort('title')}
+                >
+                  {sortField === 'title' && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                  )}
+                  <Tooltip title="Sort by Title" position="bottom">
+                    <div className="flex items-center gap-2">
+                      Title
+                      {getSortIcon('title')}
+                    </div>
+                  </Tooltip>
+                </th>
+                <th className={`hidden sm:table-cell px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                  sortField === 'channel' ? 'bg-primary/20' : ''
+                }`}
+                  onClick={() => handleSort('channel')}
+                >
+                  {sortField === 'channel' && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                  )}
+                  <Tooltip title="Sort by Channel" position="bottom">
+                    <div className="flex items-center gap-2">
+                      Channel
+                      {getSortIcon('channel')}
+                    </div>
+                  </Tooltip>
+                </th>
+                <th
+                  className={`px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider cursor-pointer hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 select-none relative ${
+                    sortField === 'duration' ? 'bg-primary/20' : ''
+                  }`}
+                  onClick={() => handleSort('duration')}
+                >
+                  {sortField === 'duration' && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                  )}
+                   <Tooltip title="Sort by Duration" position="bottom">
+                    <div className="flex items-center gap-2">
+                      Duration
+                      {getSortIcon('duration')}
+                    </div>
+                  </Tooltip>
+                </th>
+                <th className="px-3 sm:px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white tracking-wider rounded-tr-3xl">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/20">
+              {sortedVideos.map((video, index) => {
+                const isLastRow = index === sortedVideos.length - 1;
+                return (
+                  <tr
+                    key={video.id}
+                    className={`hover:bg-white/10 dark:hover:bg-black/10 transition-all duration-225 ${
+                      video.unavailable ? 'opacity-60' : ''
+                    } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
+                  >
+                    <td className={`px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
+                      <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
+                        {video.index}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="relative w-32 h-20 rounded-2xl overflow-hidden group shadow-lg hover:scale-[1.03] transition-transform duration-225">
+                        <img
+                          src={video.thumbnail}
+                          alt={video.title}
+                          className="w-full h-full object-cover cursor-pointer"
+                          onClick={() => handleVideoClick(video.videoId)}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = UnavailableImage;
+                          }}
+                        />
+                        <div
+                          className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl"
+                          onClick={() => handleVideoClick(video.videoId)}
+                        >
+                          <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-3 hover:scale-110 transition-transform duration-225 border border-white/30">
+                            <Play className="w-6 h-6 text-white fill-white" />
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
+                      <div className="flex items-center gap-3">
+                        {video.unavailable && (
+                          <Tooltip title="This video is unavailable">
+                            <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
+                              <AlertTriangle className="w-4 h-4" />
+                            </div>
+                          </Tooltip>
+                        )}
+                        <Tooltip title={video.title} subtitle="Tap for Description" className="flex-1">
+                            <div
+                              className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium text-left`}
+                              onClick={(e) => handleShowDescription(video, e)}
+                            >
+                              {video.title}
+                            </div>
+                        </Tooltip>
+                      </div>
+                    </td>
+                    <td className="hidden sm:table-cell px-6 py-4 whitespace-nowrap max-w-xs">
+                      <Tooltip title={video.channelTitle || 'Unknown Channel'}>
+                        <span className="text-sm text-gray-700 dark:text-gray-300 truncate block">
+                          {video.channelTitle || 'Unknown Channel'}
+                        </span>
+                      </Tooltip>
+                    </td>
+                    {/* 3. MODIFIED: Removed Tooltip from Duration cell */}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
+                        <Clock className="w-3 h-3" />
+                        {video.duration}
+                      </span>
+                    </td>
+                    <td className={`px-3 sm:px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-br-3xl' : ''}`}>
+                      <div className="flex items-center gap-1">
+                        <Tooltip title="Open in YouTube">
+                          <button
+                            onClick={() => handleVideoClick(video.videoId)}
+                            className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                          >
+                            <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Search Actions">
+                          <button
+                            onClick={(e) => handleSearchActions(video, e)}
+                            className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                          >
+                            <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="View Description">
+                          <button
+                            onClick={(e) => handleShowDescription(video, e)}
+                            className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                          >
+                            <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:animate-wiggle" />
+                          </button>
+                        </Tooltip>
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-      {/* Modals */}
-      {showSearchActions && selectedVideo && (
-        <SearchActionsModal
-          video={selectedVideo}
-          onClose={() => {
-            setShowSearchActions(false);
-            setSelectedVideo(null);
-          }}
-        />
-      )}
+      {/* Modals */}
+      {showSearchActions && selectedVideo && (
+        <SearchActionsModal
+          video={selectedVideo}
+          onClose={() => {
+            setShowSearchActions(false);
+            setSelectedVideo(null);
+          }}
+        />
+      )}
 
-      {showDescription && selectedVideo && (
-        <VideoDescriptionModal
-          video={selectedVideo}
-          onClose={() => {
-            setShowDescription(false);
-            setSelectedVideo(null);
-          }}
-        />
-      )}
-    </>
-  );
+      {showDescription && selectedVideo && (
+        <VideoDescriptionModal
+          video={selectedVideo}
+          onClose={() => {
+            setShowDescription(false);
+            setSelectedVideo(null);
+          }}
+        />
+      )}
+    </>
+  );
 };
