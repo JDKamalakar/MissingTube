@@ -246,7 +246,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           <AlertTriangle className="w-4 h-4" />
                         </div>
                       )}
-                       <Tooltip title={video.title} subtitle="Tap for description">
+                       <Tooltip title={video.title} subtitle="Tap For Description">
                           <div
                             className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium flex-1 text-left`}
                             onClick={(e) => handleShowDescription(video, e)}
