@@ -29,13 +29,20 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
-      {/* MODIFIED: Added `overflow-hidden` to ensure child elements are clipped by the rounded corners. */}
+      {/* MODIFIED: 
+        - Re-added `flex flex-col` to structure the modal vertically.
+        - Removed `overflow-y-auto` so the container itself doesn't scroll.
+      */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
-                       max-h-[85vh] flex flex-col mobile-modal-full overflow-hidden"
+                       max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
+        {/* MODIFIED:
+          - The header is now a non-growing flex item.
+          - Re-added a semi-opaque background to it.
+        */}
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
@@ -52,7 +59,11 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* MODIFIED: Removed `rounded-b-2xl` as the parent now handles clipping. */}
+        {/* MODIFIED: 
+          - This content wrapper is now the scrollable element.
+          - `flex-grow` makes it fill the available space.
+          - `overflow-y-auto` makes it scrollable.
+        */}
         <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
@@ -76,7 +87,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Grid and table view modes
                 </li>
-                <li className="flex items-center gap-2">
+                {/* ... other list items ... */}
+                 <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Multi-platform search actions
                 </li>
