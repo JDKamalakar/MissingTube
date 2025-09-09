@@ -171,3 +171,4 @@ const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
     </div> 
   ); 
 };
+export default AboutModal;
