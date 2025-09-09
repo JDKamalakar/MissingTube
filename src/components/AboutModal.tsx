@@ -5,7 +5,6 @@ interface AboutModalProps {
   onClose: () => void;
 }
 
-// MODIFIED: Changed to a named export
 export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -30,16 +29,14 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
-      {/* FIXED: Added flex-col to enable vertical stacking. */}
-      {/* FIXED: Removed overflow-y-auto from the main container. */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
                        max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
-        {/* Header is sticky and remains in place. */}
-        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
+        {/* MODIFIED: Removed bg-white/20 dark:bg-gray-800/20 from header */}
+        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
@@ -55,7 +52,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* FIXED: The content area now has flex-grow and its own scrollbar. */}
         <div className="p-4 sm:p-8 flex-grow overflow-y-auto overflow-x-hidden custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
@@ -172,4 +168,3 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
     </div>
   );
 };
-// MODIFIED: Removed the default export
