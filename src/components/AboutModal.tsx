@@ -35,13 +35,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         role="dialog"
         aria-modal="true"
       >
-        {/* MODIFIED HEADER: 
-            - Added `relative` for pseudo-element positioning (though not strictly needed *here* for this method, good practice).
-            - Removed `border-b`.
-            - `rounded-t-2xl` is kept for top corners.
-            - Explicit background `bg-white/20 dark:bg-gray-800/20`
-        */}
-        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl flex-shrink-0 shadow-sm">
+        <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
               <Info className="w-5 h-5 sm:w-6 sm:h-6 text-primary transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
@@ -57,16 +51,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        {/* MODIFIED CONTENT DIV: 
-            - Added `relative` for pseudo-element positioning.
-            - Added `rounded-b-2xl` for bottom corners.
-            - Added custom CSS for pseudo-elements to create the inverted corners.
-            - The `z-index` here ensures the pseudo-elements are above the main modal's background but below the header.
-        */}
-        <div className="relative p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar rounded-b-2xl
-                      before:content-[''] before:absolute before:top-0 before:left-0 before:w-6 before:h-6 before:rounded-br-2xl before:shadow-[0_2px_0_0_theme(colors.gray.300/30),_2px_0_0_0_theme(colors.gray.300/30),_2px_2px_0_0_theme(colors.white/20)] before:dark:shadow-[0_2px_0_0_theme(colors.gray.700/30),_2px_0_0_0_theme(colors.gray.700/30),_2px_2px_0_0_theme(colors.gray.800/20)] before:z-20
-                      after:content-[''] after:absolute after:top-0 after:right-0 after:w-6 after:h-6 after:rounded-bl-2xl after:shadow-[0_2px_0_0_theme(colors.gray.300/30),_-2px_0_0_0_theme(colors.gray.300/30),_-2px_2px_0_0_theme(colors.white/20)] after:dark:shadow-[0_2px_0_0_theme(colors.gray.700/30),_-2px_0_0_0_theme(colors.gray.700/30),_-2px_2px_0_0_theme(colors.gray.800/20)] after:z-20
-            ">
+        {/* MODIFIED: Added `rounded-b-2xl` to round the bottom corners */}
+        <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar rounded-b-2xl">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
               <h3 className="text-lg sm:text-xl font-semibold text-on-surface mb-2 sm:mb-3">
