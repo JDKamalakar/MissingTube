@@ -140,7 +140,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
 
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <a
-                    href="https://github.com/JDKamalakar/MissingTube"
+                    href="https://github.com/JDKamalakar"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
