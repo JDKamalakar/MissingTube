@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Download, X, Smartphone, Laptop, Star, Zap, Shield, Share, Check, Hourglass } from 'lucide-react';
+import { Download, X, Smartphone, Laptop, Star, Zap, Shield, Share, Check, Slash, Hourglass } from 'lucide-react'; // Added Hourglass icon
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -175,7 +175,38 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       />
 
       <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 overflow-hidden">
+        {/* Aurora Background Animation */}
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            background: `conic-gradient(from ${auroraOffset}deg at 50% 50%, 
+              rgba(14, 165, 233, 0.3) 0deg,
+              rgba(6, 182, 212, 0.4) 60deg,
+              rgba(16, 185, 129, 0.3) 120deg,
+              rgba(139, 92, 246, 0.4) 180deg,
+              rgba(236, 72, 153, 0.3) 240deg,
+              rgba(251, 191, 36, 0.4) 300deg,
+              rgba(14, 165, 233, 0.3) 360deg)`,
+            filter: 'blur(40px)',
+            transform: 'scale(1.5)',
+          }}
+        />
         
+        {/* Secondary Aurora Layer */}
+        <div 
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{
+            background: `conic-gradient(from ${-auroraOffset * 0.7}deg at 30% 70%, 
+              rgba(16, 185, 129, 0.4) 0deg,
+              rgba(139, 92, 246, 0.3) 90deg,
+              rgba(236, 72, 153, 0.4) 180deg,
+              rgba(251, 191, 36, 0.3) 270deg,
+              rgba(16, 185, 129, 0.4) 360deg)`,
+            filter: 'blur(60px)',
+            transform: 'scale(1.8)',
+          }}
+        />
+
         {showFlairs && (
           <>
             <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
@@ -189,38 +220,7 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
           </>
         )}
 
-        <div className="relative p-8 text-center">
-          
-          <div 
-            className="absolute inset-0 opacity-30 pointer-events-none"
-            style={{
-              background: `conic-gradient(from ${auroraOffset}deg at 50% 50%, 
-                rgba(14, 165, 233, 0.3) 0deg,
-                rgba(6, 182, 212, 0.4) 60deg,
-                rgba(16, 185, 129, 0.3) 120deg,
-                rgba(139, 92, 246, 0.4) 180deg,
-                rgba(236, 72, 153, 0.3) 240deg,
-                rgba(251, 191, 36, 0.4) 300deg,
-                rgba(14, 165, 233, 0.3) 360deg)`,
-              filter: 'blur(40px)',
-              transform: 'scale(1.5)',
-            }}
-          />
-          
-          <div 
-            className="absolute inset-0 opacity-20 pointer-events-none"
-            style={{
-              background: `conic-gradient(from ${-auroraOffset * 0.7}deg at 30% 70%, 
-                rgba(16, 185, 129, 0.4) 0deg,
-                rgba(139, 92, 246, 0.3) 90deg,
-                rgba(236, 72, 153, 0.4) 180deg,
-                rgba(251, 191, 36, 0.3) 270deg,
-                rgba(16, 185, 129, 0.4) 360deg)`,
-              filter: 'blur(60px)',
-              transform: 'scale(1.8)',
-            }}
-          />
-
+        <div className="relative p-8 text-center z-10">
           <div className="relative mx-auto mb-6">
             <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20">
               <img
@@ -236,12 +236,12 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
             </div>
             {showFlairs && (
               <>
-                <div className="absolute -top-4 left-1/4 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
-                <div className="absolute top-1/4 -right-4 w-4 h-4 bg-purple-400 rounded-full animate-bounce opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
-                <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-yellow-400 rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
-                <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
-                <div className="absolute top-1/2 -right-6 w-2 h-2 bg-yellow-400 rounded-full animate-bounce opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
-                <div className="absolute -top-2 right-1/3 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
+                <div className="absolute -top-4 left-1/4 w-3 h-3 bg-warning rounded-full animate-bounce opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                <div className="absolute top-1/4 -right-4 w-4 h-4 bg-tertiary rounded-full animate-bounce opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-warning rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-tertiary rounded-full animate-bounce opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                <div className="absolute top-1/2 -right-6 w-2 h-2 bg-warning rounded-full animate-bounce opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                <div className="absolute -top-2 right-1/3 w-2 h-2 bg-tertiary rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
               </>
             )}
           </div>
@@ -271,9 +271,132 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
               );
             })}
           </div>
-          
-          {/* ... (rest of the conditional UI logic) ... */}
-          
+
+          {isIOS && isSafari ? (
+            <div className="text-center">
+              <div className="bg-warning-container/20 border border-warning/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03]">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Share className="w-5 h-5 text-on-warning-container" />
+                  <span className="font-semibold text-on-warning-container">iOS Safari Instructions</span>
+                </div>
+                <p className="text-sm text-on-warning-container">
+                  1. Tap the <strong>Share</strong> button in Safari<br/>
+                  2. Scroll down and select <strong>"Add to Home Screen"</strong><br/>
+                  3. Tap <strong>"Add"</strong> to install
+                </p>
+              </div>
+              <button
+                onClick={handleDismissPermanently}
+                className="group w-full py-3 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <Check className="w-5 h-5 text-green-500 transition-transform duration-700 group-hover:rotate-[720deg]" />
+                  Got it!
+                </div>
+              </button>
+            </div>
+          ) : installAvailable && currentDeferredPrompt ? (
+            <div className="text-center">
+              <div className="bg-primary-container/20 border border-primary/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03] relative overflow-hidden">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Download className="w-5 h-5 text-on-primary-container" />
+                  <span className="font-semibold text-on-primary-container">Install & Get App</span>
+                </div>
+                <p className="text-sm text-on-primary-container mb-4">
+                  Install MissingTube as a native app for the best experience.
+                </p>
+                <button
+                  onClick={handleInstallClick}
+                  disabled={isInstalling}
+                  className="relative w-full flex items-center justify-center gap-3 py-4 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                >
+                  {isInstalling ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></div>
+                      Installing...
+                    </>
+                  ) : (
+                    <>
+                      {/* Animate download icon */}
+                      <Download className="w-5 h-5 animate-bounce-subtle" /> 
+                      Install App
+                    </>
+                  )}
+                </button>
+                {/* Flairs for the install button's parent div */}
+                {showFlairs && (
+                    <>
+                        <div className="absolute -top-1 left-1/4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="absolute top-1/4 -right-1 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                        <div className="absolute bottom-1/2 -left-1 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                        <div className="absolute -bottom-1 right-1/3 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                        <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                    </>
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={handleClose}
+                  className="group flex-1 py-3 bg-white/10 text-on-surface rounded-2xl font-medium transition-all duration-200 hover:bg-white/20 hover:scale-105 active:scale-95"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Hourglass className="w-5 h-5 text-on-surface/70 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" /> {/* Hourglass icon with hover animation */}
+                    Maybe Later
+                  </div>
+                </button>
+                <button
+                  onClick={handleDismissPermanently}
+                  className="group flex-1 py-3 bg-white/10 text-red-500 rounded-2xl font-medium transition-all duration-200 hover:bg-white/20 hover:scale-105 active:scale-95"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <X className="w-6 h-6 text-red-500 transition-transform duration-[2000ms] group-hover:rotate-[720deg]" />
+                    No Thanks
+                  </div>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center">
+              <div className="bg-secondary-container/20 border border-secondary/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03]">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <DeviceIcon className="w-5 h-5 text-on-secondary-container" />
+                  <span className="font-semibold text-on-secondary-container">Manual Installation</span>
+                </div>
+                <div className="text-sm text-on-secondary-container text-left space-y-2">
+                  {isChrome && (
+                    <p><strong>Chrome:</strong> Look for the install icon in the address bar, or go to Settings → Install MissingTube</p>
+                  )}
+                  {isEdge && (
+                    <p><strong>Edge:</strong> Click the "..." menu → Apps → Install this site as an app</p>
+                  )}
+                  {!isChrome && !isEdge && (
+                    <p>Look for an install option in your browser's menu, or bookmark this page for quick access.</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleClose}
+                  className="group flex-1 py-3 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <Check className="w-5 h-5 text-green-500 transition-transform duration-2000ms group-hover:rotate-[720deg]" />
+                    Got it!
+                  </div>
+                </button>
+                <button
+                  onClick={handleDismissPermanently}
+                  className="group flex-1 py-3 bg-white/10 text-red-500 rounded-2xl font-medium transition-all duration-200 hover:bg-white/20 hover:scale-105 active:scale-95"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <X className="w-6 h-6 text-red-500 transition-transform duration-[2000ms] group-hover:rotate-[720deg]" />
+                    No Thanks
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
