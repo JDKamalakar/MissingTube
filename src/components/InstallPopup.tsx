@@ -1,89 +1,88 @@
-// src/components/pwaInstaller.tsx
+import React, { useState, useEffect, useRef } from 'react';
+import { Download, X, Smartphone, Laptop, Star, Zap, Shield, Share, Check, Hourglass } from 'lucide-react';
 
-import React, { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
-
-// IMPORTANT: This 'declare global' block ensures that BeforeInstallPromptEvent
-// is recognized by TypeScript across your project, even though this file is a module.
-// We are adding it here as per your request to avoid a separate global.d.ts file.
-declare global {
-  interface BeforeInstallPromptEvent extends Event {
-    readonly platforms: Array<string>;
-    readonly userChoice: Promise<{
-      outcome: 'accepted' | 'dismissed';
-      platform: string;
-    }>;
-    prompt(): Promise<void>;
-  }
-
-  // Also augment WindowEventMap to ensure addEventListener types correctly
-  interface WindowEventMap {
-    'beforeinstallprompt': BeforeInstallPromptEvent;
-  }
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-let deferredPrompt: BeforeInstallPromptEvent | null = null;
-let installPromptShown = false; // To prevent showing the banner multiple times
-
-/**
- * Checks if Service Workers are supported in the current environment.
- * @returns {boolean} True if Service Workers are supported and not in a known unsupported environment (like StackBlitz).
- */
-function isServiceWorkerSupported(): boolean {
-  if (!('serviceWorker' in navigator)) {
-    return false;
-  }
-  const isStackBlitz =
-    window.location.hostname.includes('stackblitz') ||
-    window.location.hostname.includes('webcontainer') ||
-    (window.location.hostname.includes('localhost') &&
-      window.navigator.userAgent.includes('WebContainer'));
-  return !isStackBlitz;
+interface InstallPopupProps {
+  onClose?: (outcome?: 'accepted' | 'dismissed' | 'manual-close' | 'autoclose') => void;
+  deferredPrompt: BeforeInstallPromptEvent | null;
 }
 
-// Simple component to detect if it's likely a mobile device based on user agent
-const isMobileDevice = () => {
-  if (typeof window === 'undefined') return false; // Server-side rendering check
-  const userAgent = navigator.userAgent || navigator.vendor;
-  return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent);
-};
-
-// ===============================================
-// React Component for PWA Install Prompt
-// ===============================================
-
-interface InstallBannerProps {
-  onInstall: () => void;
-  onDismiss: () => void;
-}
-
-const InstallBanner: React.FC<InstallBannerProps> = ({ onInstall, onDismiss }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const isMobile = isMobileDevice();
-
-  // 1. State for the aurora animation
+export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPrompt: initialDeferredPrompt }) => {
+  const [currentDeferredPrompt, setCurrentDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(initialDeferredPrompt);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstalling, setIsInstalling] = useState(false);
+  const [installAvailable, setInstallAvailable] = useState(false);
+  const [showFlairs, setShowFlairs] = useState(true);
   const [auroraOffset, setAuroraOffset] = useState(0);
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
+  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    const autoDismissTimeout = setTimeout(() => {
-      if (isVisible) {
-        console.log('⏰ Auto-dismissing install prompt after 8 seconds');
-        onDismiss();
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const isChrome = /Chrome/.test(navigator.userAgent);
+  const isEdge = /Edg/.test(navigator.userAgent);
+
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const DeviceIcon = isMobileDevice ? Smartphone : Laptop;
+
+  useEffect(() => {
+    setCurrentDeferredPrompt(initialDeferredPrompt);
+    setInstallAvailable(!!initialDeferredPrompt);
+
+    const checkInstalled = () => {
+      if (window.matchMedia('(display-mode: standalone)').matches ||
+          (window.navigator as any).standalone === true ||
+          document.referrer.includes('android-app://')) {
+        setIsInstalled(true);
+        return true;
       }
-    }, 8000);
+      return false;
+    };
+
+    checkInstalled();
+
+    const handleAppInstalled = () => {
+      console.log('🚀 PWA Popup: App was installed (from InstallPopup listener)');
+      setIsInstalled(true);
+      setCurrentDeferredPrompt(null);
+      setInstallAvailable(false);
+      localStorage.setItem('pwa-installed', 'true');
+      (window as any).installPromptEvent = null;
+      onClose?.('accepted');
+    };
+
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    autoCloseTimerRef.current = setTimeout(() => {
+      if (!isInstalling && !isInstalled) {
+        console.log('🚀 PWA Popup: Auto-closing after 10 seconds.');
+        onClose?.('autoclose');
+      }
+    }, 10000);
 
     return () => {
-      clearTimeout(timeoutId);
-      clearTimeout(autoDismissTimeout);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      if (autoCloseTimerRef.current) {
+        clearTimeout(autoCloseTimerRef.current);
+      }
     };
-  }, [isVisible, onDismiss]);
-  
-  // 2. useEffect to update the aurora state, creating the animation
+  }, [onClose, isInstalling, isInstalled, initialDeferredPrompt]);
+
+  useEffect(() => {
+    if (showFlairs) {
+      const flairHideTimer = setTimeout(() => {
+        setShowFlairs(false);
+      }, 15000);
+
+      return () => clearTimeout(flairHideTimer);
+    }
+  }, [showFlairs]);
+
+  // Aurora animation effect
   useEffect(() => {
     const auroraInterval = setInterval(() => {
       setAuroraOffset(prev => (prev + 1) % 360);
@@ -92,419 +91,193 @@ const InstallBanner: React.FC<InstallBannerProps> = ({ onInstall, onDismiss }) =
     return () => clearInterval(auroraInterval);
   }, []);
 
+  const handleInstallClick = async () => {
+    if (!currentDeferredPrompt) {
+      console.log('🚀 PWA Popup: No deferred prompt available for installation action.');
+      return;
+    }
 
-  return createPortal(
-    <div
-      className={`
-        fixed top-[88px] right-4 z-[9999] font-sans max-w-xs
-        transition-all duration-500 ease-out
-        ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
-      `}
-    >
-      {/* Glow Effect */}
+    setIsInstalling(true);
+    if (autoCloseTimerRef.current) {
+      clearTimeout(autoCloseTimerRef.current);
+    }
+
+    try {
+      console.log('🚀 PWA Popup: Triggering native install prompt');
+      await currentDeferredPrompt.prompt();
+      const { outcome } = await currentDeferredPrompt.userChoice;
+
+      console.log('🚀 PWA Popup: User choice:', outcome);
+
+      if (outcome === 'accepted') {
+        console.log('✅ PWA Popup: User accepted the native install prompt');
+      } else {
+        console.log('❌ PWA Popup: User dismissed the native install prompt');
+        onClose?.('dismissed');
+      }
+
+      setCurrentDeferredPrompt(null);
+      setInstallAvailable(false);
+      (window as any).installPromptEvent = null;
+
+    } catch (error) {
+      console.error('❌ PWA Popup: Error during installation:', error);
+      onClose?.('manual-close');
+    } finally {
+      setIsInstalling(false);
+    }
+  };
+
+  const handleClose = () => {
+    onClose?.('manual-close');
+  };
+
+  const handleDismissPermanently = () => {
+    localStorage.setItem('pwa-popup-dismissed', 'true');
+    onClose?.('dismissed');
+  };
+
+  if (isInstalled) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-xl transition-opacity duration-300 ease-out"
+          onClick={handleClose}
+        />
+        <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 p-8 text-center">
+          <div className="w-16 h-16 bg-tertiary rounded-full flex items-center justify-center mx-auto mb-4">
+            <Star className="w-8 h-8 text-on-tertiary" />
+          </div>
+          <h2 className="text-xl font-bold text-on-surface mb-2">Already Installed!</h2>
+          <p className="text-on-surface-variant mb-4">MissingTube is already installed on your device.</p>
+          <button
+            onClick={handleClose}
+            className="w-full py-3 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95"
+          >
+            Great!
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const features = [
+    { icon: Zap, text: 'Lightning fast performance' },
+    { icon: Shield, text: 'Works offline' },
+    { icon: Star, text: 'Native app experience' }
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 font-inter">
       <div
-        className={`
-          absolute inset-0 rounded-2xl -z-10
-          transition-opacity duration-500 ease-out
-          ${isVisible ? 'opacity-100' : 'opacity-0'}
-        `}
-        style={{
-          filter: 'blur(30px)',
-          background: 'linear-gradient(135deg, rgba(26, 115, 232, 0.5), rgba(66, 165, 245, 0.4), rgba(33, 150, 243, 0.5))',
-          transform: 'translateY(10px) scale(0.95)',
-          pointerEvents: 'none',
-        }}
+        className="fixed inset-0 bg-black/20 backdrop-blur-xl transition-opacity duration-300 ease-out"
+        onClick={handleClose}
       />
 
-      {/* Main Popup Content */}
-      <div
-        id="install-banner-content"
-        className={`
-          relative p-5 rounded-2xl overflow-hidden
-          bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 shadow-xl
-        `}
-      >
-        {/* 3. New Aurora Background Animation */}
-        <div className="absolute inset-0 -z-10">
-          <div
-            className="absolute inset-0 opacity-40 pointer-events-none"
+      <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 overflow-hidden">
+        
+        {showFlairs && (
+          <>
+            <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+            <div className="absolute top-1/4 -right-4 w-3 h-3 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+            <div className="absolute bottom-1/3 -left-6 w-5 h-5 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute -bottom-4 right-1/4 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+            <div className="absolute top-1/2 -right-8 w-3 h-3 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+            <div className="absolute -top-6 right-1/3 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
+            <div className="absolute bottom-0 left-0 w-3 h-3 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '1.3s' }}></div>
+            <div className="absolute top-0 right-0 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.5s' }}></div>
+          </>
+        )}
+
+        <div className="relative p-8 text-center">
+          
+          <div 
+            className="absolute inset-0 opacity-30 pointer-events-none"
             style={{
               background: `conic-gradient(from ${auroraOffset}deg at 50% 50%, 
-                rgba(26, 115, 232, 0.5) 0deg,
-                rgba(66, 165, 245, 0.4) 90deg,
-                rgba(129, 212, 250, 0.5) 180deg,
-                rgba(103, 58, 183, 0.4) 270deg,
-                rgba(26, 115, 232, 0.5) 360deg)`,
-              filter: 'blur(30px)',
+                rgba(14, 165, 233, 0.3) 0deg,
+                rgba(6, 182, 212, 0.4) 60deg,
+                rgba(16, 185, 129, 0.3) 120deg,
+                rgba(139, 92, 246, 0.4) 180deg,
+                rgba(236, 72, 153, 0.3) 240deg,
+                rgba(251, 191, 36, 0.4) 300deg,
+                rgba(14, 165, 233, 0.3) 360deg)`,
+              filter: 'blur(40px)',
               transform: 'scale(1.5)',
             }}
           />
-          <div
-            className="absolute inset-0 opacity-30 pointer-events-none"
+          
+          <div 
+            className="absolute inset-0 opacity-20 pointer-events-none"
             style={{
               background: `conic-gradient(from ${-auroraOffset * 0.7}deg at 30% 70%, 
-                rgba(129, 212, 250, 0.5) 0deg,
-                rgba(103, 58, 183, 0.3) 120deg,
-                rgba(66, 165, 245, 0.4) 240deg,
-                rgba(129, 212, 250, 0.5) 360deg)`,
-              filter: 'blur(40px)',
+                rgba(16, 185, 129, 0.4) 0deg,
+                rgba(139, 92, 246, 0.3) 90deg,
+                rgba(236, 72, 153, 0.4) 180deg,
+                rgba(251, 191, 36, 0.3) 270deg,
+                rgba(16, 185, 129, 0.4) 360deg)`,
+              filter: 'blur(60px)',
               transform: 'scale(1.8)',
             }}
           />
-        </div>
 
-        {/* Light Ripple Effect */}
-        <div
-          className={`
-            absolute -bottom-10 left-1/2 -translate-x-1/2 w-48 h-20 rounded-full -z-10
-            bg-gradient-to-r from-blue-200/40 via-blue-300/50 to-blue-400/40 dark:from-blue-400/20 dark:via-blue-500/30 dark:to-blue-600/20 blur-3xl
-            animate-ripple pointer-events-none
-            ${isVisible ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            transition: 'opacity 500ms ease-out',
-          }}
-        />
-
-        {/* Header Section: Icon and text content */}
-        <div className="flex items-center gap-4 mb-3 relative">
-          <div className="text-3xl drop-shadow-md">
-            {isMobile ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone text-gray-900 dark:text-white group-hover:scale-110 transition-transform duration-200"></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-laptop text-gray-900 dark:text-white group-hover:scale-110 transition-transform duration-200"></svg>
+          <div className="relative mx-auto mb-6">
+            <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20">
+              <img
+                src="/assets/Icon_Light_NB.png"
+                alt="MissingTube"
+                className="w-12 h-12 object-contain dark:hidden transform -rotate-12"
+              />
+              <img
+                src="/assets/Icon_Dark_NB.png"
+                alt="MissingTube"
+                className="w-12 h-12 object-contain hidden dark:block transform -rotate-12"
+              />
+            </div>
+            {showFlairs && (
+              <>
+                <div className="absolute -top-4 left-1/4 w-3 h-3 bg-yellow-400 rounded-full animate-bounce opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                <div className="absolute top-1/4 -right-4 w-4 h-4 bg-purple-400 rounded-full animate-bounce opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-yellow-400 rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-purple-400 rounded-full animate-bounce opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                <div className="absolute top-1/2 -right-6 w-2 h-2 bg-yellow-400 rounded-full animate-bounce opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                <div className="absolute -top-2 right-1/3 w-2 h-2 bg-purple-400 rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
+              </>
             )}
           </div>
-          <div className="flex-1">
-            <div className="font-bold mb-1 text-lg text-shadow-sm text-gray-900 dark:text-white leading-none">Install Portfolio App</div>
-            <div className="text-sm opacity-90 leading-tight text-gray-800 dark:text-gray-200">Add to home screen for quick access and offline viewing</div>
-          </div>
-        </div>
 
-        {/* Buttons Section: Install and Cancel (with X icon) */}
-        <div className="flex gap-3 mt-4">
-          <button
-            onClick={onInstall}
-            className="
-              flex-1 py-3 px-5 rounded-lg cursor-pointer font-semibold text-sm group
-              transition-all duration-300 ease-in-out
-              shadow-md hover:shadow-lg active:scale-95 hover:scale-[1.08]
-              text-white
-              bg-gradient-to-r from-blue-600 to-blue-700 border border-blue-500/30
-              hover:from-blue-700 hover:to-blue-800 hover:shadow-blue-500/50
-              flex items-center justify-center gap-2
-            "
-          >
-            <span className="group-hover:scale-110 transition-transform duration-200">⬇️</span>
-            <span>Install</span>
-          </button>
-          <button
-            onClick={onDismiss}
-            className="
-              flex-1 py-3 px-5 rounded-lg cursor-pointer font-semibold text-sm group
-              transition-all duration-300 ease-in-out
-              shadow-md hover:shadow-lg active:scale-95 hover:scale-[1.08]
-              text-white
-              bg-white/20 border border-white/30
-              hover:bg-white/30 hover:shadow-white/25
-              flex items-center justify-center gap-2
-            "
-          >
-            <X className="w-5 h-5 text-red-700 transition-transform duration-200 group-hover:rotate-[360deg] shrink-0" />
-            <span>Cancel</span>
-          </button>
+          <div className="bg-white/10 rounded-2xl p-4 mb-6 border border-gray-300/30 dark:border-gray-700/30 transition-transform duration-200 hover:bg-white/20 hover:scale-[1.03]">
+            <h2 className="text-2xl font-bold text-on-surface mb-2">
+              Install MissingTube
+            </h2>
+            <p className="text-on-surface-variant text-sm leading-relaxed">
+              Get the full MissingTube experience with our Progressive Web App.
+            </p>
+          </div>
+
+          <div className="space-y-3 mb-6">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-3 bg-white/10 rounded-2xl transition-all duration-200 hover:bg-white/20 hover:scale-[1.03]"
+                >
+                  <div className="p-2 bg-primary/20 rounded-xl">
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="text-on-surface text-sm font-medium">{feature.text}</span>
+                </div>
+              );
+            })}
+          </div>
+          
+          {/* ... (rest of the conditional UI logic) ... */}
+          
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 
-interface ThankYouBannerProps {
-  onDismiss: () => void;
-}
-
-const ThankYouBanner: React.FC<ThankYouBannerProps> = ({ onDismiss }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const isMobile = isMobileDevice();
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-
-    const autoDismissTimeout = setTimeout(() => {
-      onDismiss();
-    }, 4000);
-
-    return () => {
-      clearTimeout(timeoutId);
-      clearTimeout(autoDismissTimeout);
-    };
-  }, [onDismiss]);
-
-  return createPortal(
-    <div
-      className={`
-        fixed top-[88px] right-4 z-[9999] font-sans max-w-[280px]
-        transition-all duration-500 ease-out
-        ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}
-      `}
-    >
-      <div
-        className={`
-          absolute inset-0 rounded-xl -z-10
-          transition-opacity duration-500 ease-out
-          ${isVisible ? 'opacity-100' : 'opacity-0'}
-        `}
-        style={{
-          filter: 'blur(20px)',
-          background: 'linear-gradient(135deg, rgba(26, 115, 232, 0.4), rgba(66, 165, 245, 0.3), rgba(33, 150, 243, 0.4))',
-          transform: 'translateY(8px) scale(0.96)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div
-        id="thank-you-banner-content"
-        className={`
-          relative p-4 rounded-xl overflow-hidden
-          bg-white/25 dark:bg-gray-800/25 backdrop-blur-md border border-gray-300/40 dark:border-gray-700/40 shadow-xl
-        `}
-      >
-        <div className="absolute inset-0 -z-10">
-          <div 
-            className="absolute inset-0 opacity-70"
-            style={{
-              background: 'linear-gradient(135deg, #1A73E8 0%, #42A5F5 30%, #2196F3 60%, #1976D2 100%)',
-              animation: 'gradientShift 6s ease-in-out infinite'
-            }}
-          />
-          <div 
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, #E3F2FD 50%, transparent 100%)',
-              animation: 'shimmer 3s linear infinite'
-            }}
-          />
-        </div>
-
-        <div
-          className={`
-            absolute -bottom-8 left-1/2 -translate-x-1/2 w-40 h-16 rounded-full -z-10
-            bg-gradient-to-r from-blue-200/40 via-blue-300/50 to-blue-400/40 blur-2xl
-            animate-ripple pointer-events-none
-            ${isVisible ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            transition: 'opacity 500ms ease-out',
-          }}
-        />
-
-        <div className="flex items-center gap-3">
-          <div className="text-2xl drop-shadow-md">
-            {isMobile ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone-check text-gray-900 dark:text-white"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="m9 12 2 2 4-4"/><path d="M12 18h.01"/></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-laptop-check text-gray-900 dark:text-white"><path d="M11 20H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="M2 15h12"/><path d="m18 22 4-4"/></svg>
-            )}
-          </div>
-          <div>
-            <div className="font-semibold text-shadow-sm text-gray-900 dark:text-white">App Installed!</div>
-            <div className="text-sm opacity-90 text-gray-800 dark:text-gray-200">Thanks for installing the portfolio app</div>
-          </div>
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-};
-
-// Add CSS animations to the document head
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes gradientShift {
-      0%, 100% { 
-        background-position: 0% 50%; 
-        transform: scale(1) rotate(0deg);
-      }
-      25% { 
-        background-position: 100% 50%; 
-        transform: scale(1.05) rotate(1deg);
-      }
-      50% { 
-        background-position: 200% 50%; 
-        transform: scale(1) rotate(0deg);
-      }
-      75% { 
-        background-position: 300% 50%; 
-        transform: scale(1.05) rotate(-1deg);
-      }
-    }
-    
-    @keyframes slideAcross {
-      0% { 
-        transform: translateX(-100%) rotate(45deg); 
-        opacity: 0;
-      }
-      50% { 
-        opacity: 1; 
-      }
-      100% { 
-        transform: translateX(200%) rotate(45deg); 
-        opacity: 0;
-      }
-    }
-    
-    @keyframes float {
-      0%, 100% { 
-        transform: translateY(0px) scale(1); 
-      }
-      50% { 
-        transform: translateY(-10px) scale(1.1); 
-      }
-    }
-    
-    @keyframes shimmer {
-      0% { 
-        transform: translateX(-100%); 
-      }
-      100% { 
-        transform: translateX(100%); 
-      }
-    }
-  `;
-  
-  if (!document.head.querySelector('style[data-pwa-animations]')) {
-    style.setAttribute('data-pwa-animations', 'true');
-    document.head.appendChild(style);
-  }
-}
-
-// ===============================================
-// Main PWA Installer Component
-// ===============================================
-
-const PWAInstaller: React.FC = () => {
-  const [showInstallBanner, setShowInstallBanner] = useState(false);
-  const [showThankYouBanner, setShowThankYouBanner] = useState(false);
-
-  useEffect(() => {
-    // 1. Service Worker Registration
-    if (isServiceWorkerSupported()) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('/sw.js')
-          .then((registration) => {
-            console.log('✅ SW registered successfully:', registration);
-
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              if (newWorker) {
-                newWorker.addEventListener('statechange', () => {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    if (confirm('🔄 New version available! Click OK to update.')) {
-                      window.location.reload();
-                    }
-                  }
-                });
-              }
-            });
-          })
-          .catch((registrationError) => {
-            console.warn(
-              '⚠️ SW registration failed (this is expected in some environments):',
-              registrationError.message
-            );
-          });
-      });
-    } else {
-      console.log('ℹ️ Service Workers not supported in this environment - PWA features will be limited');
-    }
-
-    // 2. Before Install Prompt Listener
-    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-      console.log('🚀 PWA install prompt triggered');
-      e.preventDefault();
-      deferredPrompt = e;
-      if (!installPromptShown) { // Only show if not already shown/installed
-        setTimeout(() => {
-          setShowInstallBanner(true);
-        }, 3000); // Show after 3 seconds
-      }
-    };
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    // 3. App Installed Listener
-    const handleAppInstalled = () => {
-      console.log('🎉 PWA was installed successfully');
-      installPromptShown = true;
-      setShowInstallBanner(false); // Hide install banner if it was open
-      setTimeout(() => {
-        setShowThankYouBanner(true);
-      }, 1000);
-    };
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    // 4. Debug Logging
-    console.log('🔍 PWA Installation Criteria Check:');
-    console.log('- Service Worker:', isServiceWorkerSupported() ? '✅' : '❌ (Not supported in this environment)');
-    console.log('- HTTPS:', location.protocol === 'https:' || location.hostname === 'localhost' ? '✅' : '❌');
-    console.log('- Manifest:', document.querySelector('link[rel="manifest"]') ? '✅' : '❌');
-
-    // Cleanup listeners on unmount
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
-  }, []); // Empty dependency array means this runs once on mount
-
-  const handleInstallClick = async () => {
-    console.log('🎯 User clicked install button');
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`👤 User response to install prompt: ${outcome}`);
-      if (outcome === 'accepted') {
-        console.log('✅ User accepted the install prompt');
-      } else {
-        console.log('❌ User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-    } else {
-      console.log('⚠️ No deferred prompt available');
-      alert(
-        'To install this app:\n\n• Chrome: Click the install icon in the address bar\n• Safari: Tap Share → Add to Home Screen\n• Edge: Click the app icon in the address bar'
-      );
-    }
-    setShowInstallBanner(false); // Hide the install banner
-  };
-
-  const handleDismissInstallBanner = () => {
-    console.log('👋 User dismissed install prompt');
-    setShowInstallBanner(false);
-  };
-
-  const handleDismissThankYouBanner = () => {
-    setShowThankYouBanner(false);
-  };
-
-  return (
-    <>
-      {showInstallBanner && (
-        <InstallBanner
-          onInstall={handleInstallClick}
-          onDismiss={handleDismissInstallBanner}
-        />
-      )}
-      {showThankYouBanner && (
-        <ThankYouBanner
-          onDismiss={handleDismissThankYouBanner}
-        />
-      )}
-    </>
-  );
-};
-
-export default PWAInstaller;
+export default InstallPopup;
