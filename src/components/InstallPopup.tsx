@@ -192,14 +192,14 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
 
         {showFlairs && (
           <>
-            <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
-            <div className="absolute top-1/4 -right-4 w-3 h-3 bg-green-300 rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
-            <div className="absolute bottom-1/3 -left-6 w-5 h-5 bg-yellow-300 rounded-full opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
-            <div className="absolute -bottom-4 right-1/4 w-4 h-4 bg-green-300 rounded-full opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
-            <div className="absolute top-1/2 -right-8 w-3 h-3 bg-yellow-300 rounded-full opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
-            <div className="absolute -top-6 right-1/3 w-4 h-4 bg-green-300 rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
-            <div className="absolute bottom-0 left-0 w-3 h-3 bg-yellow-300 rounded-full opacity-70 transition-opacity duration-500" style={{ animationDelay: '1.3s' }}></div>
-            <div className="absolute top-0 right-0 w-4 h-4 bg-green-300 rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.5s' }}></div>
+            <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+            <div className="absolute top-1/4 -right-4 w-3 h-3 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+            <div className="absolute bottom-1/3 -left-6 w-5 h-5 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute -bottom-4 right-1/4 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+            <div className="absolute top-1/2 -right-8 w-3 h-3 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+            <div className="absolute -top-6 right-1/3 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
+            <div className="absolute bottom-0 left-0 w-3 h-3 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '1.3s' }}></div>
+            <div className="absolute top-0 right-0 w-4 h-4 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.5s' }}></div>
           </>
         )}
 
@@ -219,12 +219,12 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
             </div>
             {showFlairs && (
               <>
-                <div className="absolute -top-4 left-1/4 w-3 h-3 bg-warning rounded-full opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
-                <div className="absolute top-1/4 -right-4 w-4 h-4 bg-tertiary rounded-full opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
-                <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-warning rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
-                <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-tertiary rounded-full opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
-                <div className="absolute top-1/2 -right-6 w-2 h-2 bg-warning rounded-full opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
-                <div className="absolute -top-2 right-1/3 w-2 h-2 bg-tertiary rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
+                <div className="absolute -top-4 left-1/4 w-3 h-3 bg-warning rounded-full animate-bounce opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                <div className="absolute top-1/4 -right-4 w-4 h-4 bg-tertiary rounded-full animate-bounce opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-warning rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-tertiary rounded-full animate-bounce opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                <div className="absolute top-1/2 -right-6 w-2 h-2 bg-warning rounded-full animate-bounce opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                <div className="absolute -top-2 right-1/3 w-2 h-2 bg-tertiary rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '1.1s' }}></div>
               </>
             )}
           </div>
@@ -300,18 +300,18 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
                     </>
                   ) : (
                     <>
-                      <Download className="w-5 h-5-subtle" /> 
+                      <Download className="w-5 h-5 animate-bounce-subtle" /> 
                       Install App
                     </>
                   )}
                 </button>
                 {showFlairs && (
                     <>
-                      <div className="absolute -top-1 left-1/4 w-2 h-2 bg-yellow-300 rounded-full opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="absolute top-1/4 -right-1 w-2 h-2 bg-green-300 rounded-full opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
-                      <div className="absolute bottom-1/2 -left-1 w-2 h-2 bg-yellow-300 rounded-full opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
-                      <div className="absolute -bottom-1 right-1/3 w-2 h-2 bg-green-300 rounded-full opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
-                      <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-yellow-300 rounded-full opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                      <div className="absolute -top-1 left-1/4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="absolute top-1/4 -right-1 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                      <div className="absolute bottom-1/2 -left-1 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="absolute -bottom-1 right-1/3 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                      <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
                     </>
                 )}
               </div>
