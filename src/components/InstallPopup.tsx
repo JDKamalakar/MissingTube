@@ -18,7 +18,6 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
   const [installAvailable, setInstallAvailable] = useState(false);
   const [showFlairs, setShowFlairs] = useState(true);
   const [auroraOffset, setAuroraOffset] = useState(0);
-  const [auroraOffset, setAuroraOffset] = useState(0);
 
   const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
