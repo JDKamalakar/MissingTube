@@ -18,6 +18,7 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
   const [installAvailable, setInstallAvailable] = useState(false);
   const [showFlairs, setShowFlairs] = useState(true);
   const [auroraOffset, setAuroraOffset] = useState(0);
+  const [auroraOffset, setAuroraOffset] = useState(0);
 
   const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -81,6 +82,15 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       return () => clearTimeout(flairHideTimer);
     }
   }, [showFlairs]);
+
+  // Aurora animation effect
+  useEffect(() => {
+    const auroraInterval = setInterval(() => {
+      setAuroraOffset(prev => (prev + 1) % 360);
+    }, 100);
+
+    return () => clearInterval(auroraInterval);
+  }, []);
 
   // Aurora animation effect
   useEffect(() => {
@@ -175,6 +185,38 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       />
 
       <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 overflow-hidden">
+        {/* Aurora Background Animation */}
+        <div 
+          className="absolute inset-0 opacity-30 pointer-events-none"
+          style={{
+            background: `conic-gradient(from ${auroraOffset}deg at 50% 50%, 
+              rgba(14, 165, 233, 0.3) 0deg,
+              rgba(6, 182, 212, 0.4) 60deg,
+              rgba(16, 185, 129, 0.3) 120deg,
+              rgba(139, 92, 246, 0.4) 180deg,
+              rgba(236, 72, 153, 0.3) 240deg,
+              rgba(251, 191, 36, 0.4) 300deg,
+              rgba(14, 165, 233, 0.3) 360deg)`,
+            filter: 'blur(40px)',
+            transform: 'scale(1.5)',
+          }}
+        />
+        
+        {/* Secondary Aurora Layer */}
+        <div 
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{
+            background: `conic-gradient(from ${-auroraOffset * 0.7}deg at 30% 70%, 
+              rgba(16, 185, 129, 0.4) 0deg,
+              rgba(139, 92, 246, 0.3) 90deg,
+              rgba(236, 72, 153, 0.4) 180deg,
+              rgba(251, 191, 36, 0.3) 270deg,
+              rgba(16, 185, 129, 0.4) 360deg)`,
+            filter: 'blur(60px)',
+            transform: 'scale(1.8)',
+          }}
+        />
+
         {/* Aurora Background Animation */}
         <div 
           className="absolute inset-0 opacity-30 pointer-events-none"
