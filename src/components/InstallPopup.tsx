@@ -1,4 +1,3 @@
-y: '0.3s' }}></div>
                 <div className="absolute bottom-1/3 -left-4 w-2 h-2 bg-warning rounded-full animate-bounce opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
                 <div className="absolute -bottom-4 right-1/4 w-3 h-3 bg-tertiary rounded-full animate-bounce opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
                 <div className="absolute top-1/2 -right-6 w-2 h-2 bg-warning rounded-full animate-bounce opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
