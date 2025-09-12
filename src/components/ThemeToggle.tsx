@@ -104,7 +104,7 @@ export const ThemeToggle: React.FC = () => {
 
       <div className={`absolute top-full mt-2 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl sm:rounded-2xl shadow-xl p-2 flex flex-col gap-1 min-w-[160px] transform transition-all duration-500 ease-out origin-top-right ${
         showOptions
-          ? 'opacity-100 scale-100 translate-y-0 rotate-0 pointer-events-auto'
+          ? 'opacity-100 scale-100 rounded-2xl translate-y-0 rotate-0 pointer-events-auto'
           : 'opacity-0 scale-75 -translate-y-4 rotate-12 pointer-events-none'
       }`}>
         {themePopoverOptions.map((option, index) => {
