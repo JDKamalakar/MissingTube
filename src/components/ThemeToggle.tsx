@@ -112,10 +112,10 @@ export const ThemeToggle: React.FC = () => {
           const isLast = index === themePopoverOptions.length - 1;
 
           const cornerClass = isFirst
-            ? 'rounded-t-xl rounded-sm'
+            ? 'rounded-t-xl rounded-lg'
             : isLast
-              ? 'rounded-b-xl rounded-sm'
-              : 'rounded-sm';
+              ? 'rounded-b-xl rounded-lg'
+              : 'rounded-lg';
 
           return (
             <button
