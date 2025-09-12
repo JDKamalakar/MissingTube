@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Download, X, Smartphone, Laptop, Star, Zap, Shield, Share, Check, Slash, Hourglass } from 'lucide-react';
+import { Download, X, Smartphone, Laptop, Star, Zap, Shield, Share, Check, Slash, Hourglass } from 'lucide-react'; // Added Hourglass icon
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
@@ -17,8 +17,6 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
   const [isInstalling, setIsInstalling] = useState(false);
   const [installAvailable, setInstallAvailable] = useState(false);
   const [showFlairs, setShowFlairs] = useState(true);
-  // The auroraOffset state is no longer needed for the new glow effect.
-  // const [auroraOffset, setAuroraOffset] = useState(0); 
 
   const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -82,16 +80,6 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       return () => clearTimeout(flairHideTimer);
     }
   }, [showFlairs]);
-
-  // The useEffect for the aurora animation is no longer needed.
-  /* useEffect(() => {
-    const auroraInterval = setInterval(() => {
-      setAuroraOffset(prev => (prev + 1) % 360);
-    }, 100);
-
-    return () => clearInterval(auroraInterval);
-  }, []);
-  */
 
   const handleInstallClick = async () => {
     if (!currentDeferredPrompt) {
@@ -177,19 +165,6 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       />
 
       <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 overflow-hidden">
-        
-        {/* === START: New Blue Glow Effect === */}
-        <div
-          className="absolute inset-0 rounded-3xl -z-10"
-          style={{
-            filter: 'blur(30px)',
-            background: 'linear-gradient(135deg, rgba(26, 115, 232, 0.5), rgba(66, 165, 245, 0.4), rgba(33, 150, 243, 0.5))',
-            transform: 'translateY(10px) scale(0.95)',
-            pointerEvents: 'none',
-          }}
-        />
-        {/* === END: New Blue Glow Effect === */}
-
         {showFlairs && (
           <>
             <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
@@ -203,7 +178,7 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
           </>
         )}
 
-        <div className="relative p-8 text-center z-10">
+        <div className="relative p-8 text-center">
           <div className="relative mx-auto mb-6">
             <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20">
               <img
@@ -300,18 +275,20 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
                     </>
                   ) : (
                     <>
+                      {/* Animate download icon */}
                       <Download className="w-5 h-5 animate-bounce-subtle" /> 
                       Install App
                     </>
                   )}
                 </button>
+                {/* Flairs for the install button's parent div */}
                 {showFlairs && (
                     <>
-                      <div className="absolute -top-1 left-1/4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="absolute top-1/4 -right-1 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
-                      <div className="absolute bottom-1/2 -left-1 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
-                      <div className="absolute -bottom-1 right-1/3 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
-                      <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
+                        <div className="absolute -top-1 left-1/4 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="absolute top-1/4 -right-1 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-60 transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                        <div className="absolute bottom-1/2 -left-1 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-80 transition-opacity duration-500" style={{ animationDelay: '0.5s' }}></div>
+                        <div className="absolute -bottom-1 right-1/3 w-2 h-2 bg-green-300 rounded-full animate-pulse opacity-75 transition-opacity duration-500" style={{ animationDelay: '0.7s' }}></div>
+                        <div className="absolute top-1/3 left-1/2 w-2 h-2 bg-yellow-300 rounded-full animate-pulse opacity-65 transition-opacity duration-500" style={{ animationDelay: '0.9s' }}></div>
                     </>
                 )}
               </div>
@@ -322,7 +299,7 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
                   className="group flex-1 py-3 bg-white/10 text-on-surface rounded-2xl font-medium transition-all duration-200 hover:bg-white/20 hover:scale-105 active:scale-95"
                 >
                   <div className="flex items-center justify-center gap-2">
-                    <Hourglass className="w-5 h-5 text-on-surface/70 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" />
+                    <Hourglass className="w-5 h-5 text-on-surface/70 transition-transform duration-700 group-hover:rotate-[360deg] group-hover:scale-110" /> {/* Hourglass icon with hover animation */}
                     Maybe Later
                   </div>
                 </button>
