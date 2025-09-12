@@ -121,7 +121,7 @@ export const ThemeToggle: React.FC = () => {
             <button
               key={option.value}
               onClick={() => handleThemeSelect(option.value)}
-              className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs hover:rounded-2xl sm:text-sm font-medium ${cornerClass} ${
+              className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs hover:rounded-xl sm:text-sm font-medium ${cornerClass} ${
                 option.active
                   ? 'bg-primary/80 text-white'
                   : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
