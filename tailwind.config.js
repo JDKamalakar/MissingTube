@@ -72,6 +72,8 @@ export default {
         // --- ADDED WIGGLE AND SHAKE ANIMATIONS ---
         'wiggle': 'wiggle 0.5s ease-in-out infinite',
         'shake': 'shake 0.4s linear infinite',
+        'aurora': 'aurora 8s ease-in-out infinite',
+        'aurora-slow': 'aurora-slow 12s ease-in-out infinite',
       },
       keyframes: {
         'fade-in': {
@@ -178,6 +180,38 @@ export default {
           '25%': { transform: 'translateX(-5px)' },
           '75%': { transform: 'translateX(5px)' },
         },
+        'aurora': {
+          '0%, 100%': { 
+            transform: 'translateX(-50%) translateY(-50%) rotate(0deg) scale(1)',
+            opacity: '0.3'
+          },
+          '25%': { 
+            transform: 'translateX(-40%) translateY(-60%) rotate(90deg) scale(1.1)',
+            opacity: '0.5'
+          },
+          '50%': { 
+            transform: 'translateX(-60%) translateY(-40%) rotate(180deg) scale(0.9)',
+            opacity: '0.4'
+          },
+          '75%': { 
+            transform: 'translateX(-45%) translateY(-55%) rotate(270deg) scale(1.05)',
+            opacity: '0.6'
+          },
+        },
+        'aurora-slow': {
+          '0%, 100%': { 
+            transform: 'translateX(-50%) translateY(-50%) rotate(0deg) scale(1)',
+            opacity: '0.2'
+          },
+          '33%': { 
+            transform: 'translateX(-30%) translateY(-70%) rotate(120deg) scale(1.2)',
+            opacity: '0.4'
+          },
+          '66%': { 
+            transform: 'translateX(-70%) translateY(-30%) rotate(240deg) scale(0.8)',
+            opacity: '0.3'
+          },
+        },
       },
       boxShadow: {
         'elevation-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.05)',
@@ -187,6 +221,10 @@ export default {
         'elevation-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 0px 0px 1px rgba(14, 165, 233, 0.15)',
         'glow-small': '0 0 5px 1px rgba(var(--md-sys-color-primary-rgb), 0.2)', 
         'glow-large': '0 0 25px 8px rgba(var(--md-sys-color-primary-rgb), 0.6)', 
+      },
+      backgroundImage: {
+        'gradient-conic': 'conic-gradient(var(--tw-gradient-stops))',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       textShadow: {
         'sm': '0px 1px 2px rgba(0, 0, 0, 0.4)',
