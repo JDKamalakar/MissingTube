@@ -24,7 +24,8 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
   return (
     <div className={`group/tooltip relative ${className}`}>
       {children}
-      <div className={`absolute bottom-full mb-2 w-max max-w-xs hidden group-hover/tooltip:flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
+      {/* MODIFICATION: Changed mb-2 to -mb-1 for a -4px overlap */}
+      <div className={`absolute bottom-full -mb-1 w-max max-w-xs hidden group-hover/tooltip:flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -48,7 +49,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
     setIsTitleHovered(true);
     setTimeout(() => {
       setIsTitleHovered(false);
-    }, 2500); 
+    }, 3000); // MODIFICATION: Increased duration to 3 seconds
 
     onDescriptionClick(video, e);
   };
@@ -60,10 +61,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
       {/* Thumbnail Container */}
       <div className="relative p-4 pb-2">
         <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
+          {/* MODIFICATION: Added rounded-2xl to the img tag to prevent corner glitch on hover */}
           <img
             src={video.thumbnail}
             alt={video.title}
-            className="w-full h-48 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-48 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300 rounded-2xl"
             onClick={() => onVideoClick(video.videoId)}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
@@ -80,8 +82,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
             </div>
           </div>
 
-          {/* MODIFICATION: Always render tooltip div and toggle opacity for smooth transitions on mobile */}
-          <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 max-w-xs flex flex-col items-center pointer-events-none z-20 transition-opacity duration-300 ${isTitleHovered ? 'opacity-100' : 'opacity-0'}`}>
+          {/* MODIFICATION: Increased z-index to z-50 to ensure visibility */}
+          <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 max-w-xs flex flex-col items-center pointer-events-none z-50 transition-opacity duration-300 ${isTitleHovered ? 'opacity-100' : 'opacity-0'}`}>
             <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-center w-full">
               <p className="font-semibold text-sm whitespace-pre-wrap line-clamp-2">{video.title}</p>
               <p className="opacity-80 text-xs">Tap For Description</p>
@@ -128,7 +130,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
               Search
             </button>
           </Tooltip>
-          {/* MODIFICATION: Added align="end" back to align tooltip to the right edge of the button */}
           <Tooltip title="Open in YouTube" align="end">
             <button
               onClick={() => onVideoClick(video.videoId)}
@@ -141,7 +142,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
       </div>
     </div>
   );
-};2222
+};
 
 
 interface VideoGridProps {
