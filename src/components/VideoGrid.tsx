@@ -26,7 +26,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
       {children}
       {/* Tooltip */}
       <div
-        className={`absolute bottom-full -mb-1 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 group-hover/tooltip:block transform group-hover/tooltip:translate-x-[-4px] sm:block`}
+        className={`absolute bottom-full -mb-1 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 group-hover/tooltip:block transform group-hover/tooltip:translate-x-[-10px] sm:block`}
         style={{
           '@media (max-width: 640px)': {
             opacity: 1, // Ensure tooltip is visible on mobile
