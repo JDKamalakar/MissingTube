@@ -129,7 +129,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
             </button>
           </Tooltip>
           {/* Open in YouTube Button */}
-          <Tooltip title="Open in YouTube" align="end">
+          <Tooltip title="Open" align="end">
             <button
               onClick={() => onVideoClick(video.videoId)}
               className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
