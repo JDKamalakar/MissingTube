@@ -227,7 +227,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                   >
                     {/* MODIFICATION: Changed padding on index cell */}
-                    <td className={`sm:px-1 px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
+                    <td className={`sm:px-2 px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
                       <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
                         {video.index}
                       </div>
