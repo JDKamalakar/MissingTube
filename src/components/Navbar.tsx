@@ -7,6 +7,28 @@ import { AboutModal } from './AboutModal';
 import { ComparisonModal } from './ComparisonModal';
 import { useTheme } from './ThemeProvider';
 
+// ADDED: Custom Pixel-style smartphone icon component from Code 2
+const PixelSmartphoneIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({ className, size = 24, ...props }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+    <path d="M5 7h14" />
+    <text x="12" y="15" fill="currentColor" fontSize="6px" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" dominantBaseline="middle" stroke="none">G</text>
+  </svg>
+);
+
+
 interface NavbarProps {
   onApiKeyChange: (apiKey: string) => void;
   onRestoreComplete: () => void;
@@ -36,6 +58,29 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [canScroll, setCanScroll] = useState(false);
   const [isNavbarHidden, setIsNavbarHidden] = useState(false);
   const lastScrollY = useRef(0);
+
+  // ADDED: State and effects for mobile and dark mode detection from Code 2
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSystemDark, setIsSystemDark] = useState(false);
+
+  useEffect(() => {
+    const checkDeviceType = () => setIsMobile(window.innerWidth < 640);
+    checkDeviceType();
+    window.addEventListener('resize', checkDeviceType);
+    return () => window.removeEventListener('resize', checkDeviceType);
+  }, []);
+
+  useEffect(() => {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      setIsSystemDark(mediaQuery.matches);
+      const handler = (e: MediaQueryListEvent) => setIsSystemDark(e.matches);
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  const isDark = theme === 'dark' || (theme === 'system' && isSystemDark);
+  const SystemIcon = isMobile ? PixelSmartphoneIcon : Monitor;
+  // END ADDED SECTION
 
   const SHRINK_THRESHOLD = 80;
   const HIDE_THRESHOLD = 300;
@@ -67,7 +112,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           } else if (currentScrollY < lastScrollY.current || currentScrollY <= SHRINK_THRESHOLD) {
             setIsNavbarHidden(false);
           }
-          // Only close mobile menu when scrolling down, not up
           if (showMobileMenu && currentScrollY > lastScrollY.current) {
             setShowMobileMenu(false);
           }
@@ -83,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [canScroll]);
+  }, [canScroll, showMobileMenu]);
 
   const navItems = useMemo(() => [
     { name: 'History', icon: History, label: 'History', action: () => setShowHistoryPanel(true), hoverAnim: 'group-hover:[transform:rotate(-360deg)]' },
@@ -94,9 +138,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   ], []);
 
   const themeOptions = [
-    { value: 'system' as const, icon: Monitor, color: 'text-blue-500 dark:text-blue-600' },
-    { value: 'light' as const, icon: Sun, color: 'text-yellow-500' },
-    { value: 'dark' as const, icon: Moon, color: 'text-blue-500 dark:text-blue-800' },
+    { value: 'system' as const, icon: Monitor },
+    { value: 'light' as const, icon: Sun },
+    { value: 'dark' as const, icon: Moon },
   ];
 
   const closeMobileMenu = useCallback(() => {
@@ -196,8 +240,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                     'left-[66.666%]'
                   }`}
                 />
+                {/* MODIFICATION START: Updated theme toggle logic */}
                 {themeOptions.map(option => {
                   const isActive = theme === option.value;
+                  let IconComponent;
+                  let iconColorClass;
+
+                  switch (option.value) {
+                    case 'system':
+                      IconComponent = SystemIcon;
+                      iconColorClass = isActive ? (isDark ? 'text-blue-400' : 'text-yellow-500') : 'text-blue-500';
+                      break;
+                    case 'light':
+                      IconComponent = Sun;
+                      iconColorClass = 'text-yellow-500';
+                      break;
+                    case 'dark':
+                      IconComponent = Moon;
+                      iconColorClass = 'text-blue-500 dark:text-blue-400';
+                      break;
+                    default:
+                      IconComponent = option.icon;
+                  }
+
                   return (
                     <button
                       key={option.value}
@@ -205,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       className={`group relative z-10 flex-1 flex justify-center items-center py-2 transition-transform duration-200 rounded-lg active:scale-95`}
                       aria-label={`Set ${option.value} theme`}
                     >
-                      <option.icon className={`w-5 h-5 transition-all duration-500 ease-in-out ${option.color} ${
+                      <IconComponent className={`w-5 h-5 transition-all duration-500 ease-in-out ${iconColorClass} ${
                           isActive
                             ? 'scale-110 rotate-[360deg]'
                             : 'group-hover:rotate-[360deg]'
@@ -213,6 +278,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </button>
                   );
                 })}
+                {/* MODIFICATION END */}
               </div>
             </div>
           </div>
@@ -228,4 +294,4 @@ export const Navbar: React.FC<NavbarProps> = ({
       {showComparisonModal && (<ComparisonModal onClose={() => { setShowComparisonModal(false); setActiveNavItem(null); }} currentVideos={currentVideos} currentPlaylistInfo={currentPlaylistInfo} />)}
     </>
   );
-};1111
+};
