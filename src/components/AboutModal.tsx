@@ -150,7 +150,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                     href="https://jds-personal-portfolio.netlify.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-primary text-on-primary rounded-b-xl sm:rounded-r-2xl sm:rounded-l-lg font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 text-xs sm:text-sm mobile-button-compact"
+                    className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-primary text-on-primary rounded-b-xl sm:rounded-r-2xl rounded-t sm:rounded-l-lg font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 text-xs sm:text-sm mobile-button-compact"
                   >
                     <Globe className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:animate-spin flex-shrink-0" />
                     <span className="truncate text-xs sm:text-sm">Portfolio</span>
