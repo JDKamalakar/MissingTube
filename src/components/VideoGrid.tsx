@@ -6,26 +6,21 @@ import { Play, Clock, AlertTriangle, Search, ExternalLink, ArrowUpDown, ArrowUp,
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// MODIFICATION: Added 'align' prop to control tooltip horizontal alignment
+// 1. MODIFIED: The Tooltip component now uses a named group to isolate its hover effect.
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
   subtitle?: string;
   className?: string;
-  align?: 'start' | 'center' | 'end';
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, align = 'center' }) => {
-  const alignClass = {
-    start: 'items-start',
-    center: 'items-center',
-    end: 'items-end',
-  }[align];
-
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className }) => {
   return (
+    // Changed `group` to `group/tooltip`
     <div className={`group/tooltip relative ${className}`}>
       {children}
-      <div className={`absolute bottom-full mb-2 w-max max-w-xs hidden group-hover/tooltip:flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
+      {/* Changed `group-hover:` to `group-hover/tooltip:` */}
+      <div className="absolute bottom-full mb-2 w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -200,15 +195,6 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   </div>
                 </div>
 
-                {/* MODIFICATION: Added hover tooltip/overlay for the title */}
-                <div 
-                  className="absolute bottom-0 left-0 right-0 p-3 bg-black/50 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none cursor-pointer"
-                  onClick={(e) => handleShowDescription(video, e)}
-                >
-                  <p className="font-medium text-white text-sm line-clamp-2">{video.title}</p>
-                  <p className="text-xs text-white/80">Tap For Description</p>
-                </div>
-
                 <div className="flex items-center absolute bottom-2 right-2 gap-1 bg-white/20 dark:bg-black/40 text-white backdrop-blur-xl rounded-2xl shadow-xl border border-white/30 elevation-2 px-3 py-3 text-sm">
                   <Clock className="w-3 h-3" />
                   {video.duration}
@@ -222,15 +208,16 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
 
             {/* Content */}
             <div className="p-4 pt-2 flex-1 flex flex-col">
-              {/* MODIFICATION: Removed tooltip from title */}
-              <h3
-                className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 h-full mb-2 ${
-                  video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
-                }`}
-                onClick={(e) => handleShowDescription(video, e)}
-              >
-                {video.title}
-              </h3>
+              <Tooltip title={video.title} subtitle="Tap For Description" className="flex-1 mb-2">
+                <h3
+                  className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 h-full ${
+                    video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
+                  }`}
+                  onClick={(e) => handleShowDescription(video, e)}
+                >
+                  {video.title}
+                </h3>
+              </Tooltip>
               
               <Tooltip title={video.channelTitle || 'Unknown Channel'} className="mb-4">
                 <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
@@ -239,18 +226,16 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
               </Tooltip>
 
               <div className="flex gap-2 mt-auto">
-                {/* MODIFICATION: Removed flex-1 from tooltip wrapper for equal height */}
-                <Tooltip title="Search Actions">
+                <Tooltip title="Search Actions" className="flex-1">
                   <button
                     onClick={(e) => handleSearchActions(video, e)}
-                    className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group flex-1"
+                    className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
                   >
                     <Search className="w-3 h-3 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
                     Search
                   </button>
                 </Tooltip>
-                {/* MODIFICATION: Added align="end" to fix tooltip clipping */}
-                <Tooltip title="Open in YouTube" align="end">
+                <Tooltip title="Open in YouTube">
                   <button
                     onClick={() => handleVideoClick(video.videoId)}
                     className="flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
