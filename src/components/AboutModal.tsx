@@ -29,12 +29,20 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
         onClick={onClose}
       />
 
+      {/* MODIFIED: 
+        - Re-added `flex flex-col` to structure the modal vertically.
+        - Removed `overflow-y-auto` so the container itself doesn't scroll.
+      */}
       <div
         className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-sm sm:max-w-2xl animate-modal-enter elevation-3
-                   max-h-[85vh] flex flex-col mobile-modal-full"
+                       max-h-[85vh] flex flex-col mobile-modal-full"
         role="dialog"
         aria-modal="true"
       >
+        {/* MODIFIED:
+          - The header is now a non-growing flex item.
+          - Re-added a semi-opaque background to it.
+        */}
         <div className="flex items-center justify-between p-4 sm:p-6 sticky top-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl z-10 rounded-t-2xl border-b border-gray-300/30 dark:border-gray-700/30 flex-shrink-0 shadow-sm">
           <div className="flex items-center gap-3">
             <div className="p-2 sm:p-3 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 hover:scale-[1.08] active:scale-95 hover:shadow-lg group">
@@ -51,6 +59,11 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
           </button>
         </div>
 
+        {/* MODIFIED: 
+          - This content wrapper is now the scrollable element.
+          - `flex-grow` makes it fill the available space.
+          - `overflow-y-auto` makes it scrollable.
+        */}
         <div className="p-4 sm:p-8 flex-grow overflow-y-auto custom-scrollbar">
           <div className="space-y-4 sm:space-y-6">
             <div className="group relative text-center p-4 sm:p-6 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-2xl border border-gray-300/30 dark:border-gray-700/30 shadow-md transition-all duration-300 ease-out hover:shadow-xl hover:scale-[1.03] z-0 hover:z-10">
@@ -74,6 +87,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Grid and table view modes
                 </li>
+                {/* ... other list items ... */}
                  <li className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
                   Multi-platform search actions
@@ -124,13 +138,11 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                   </a>
                 </div>
 
-                {/* MODIFICATION: Restored gap to the container */}
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <a
                     href="https://github.com/JDKamalakar"
                     target="_blank"
                     rel="noopener noreferrer"
-                    // MODIFICATION: Reverted rounding to original state
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
                   >
                     <Github className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-500 group-hover:rotate-[360deg] flex-shrink-0" />
@@ -141,7 +153,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                     href="https://x.com/jayrajkamalakar"
                     target="_blank"
                     rel="noopener noreferrer"
-                    // MODIFICATION: Reverted rounding to original state
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-white/20 dark:bg-gray-800/20 backdrop-blur-lg text-on-surface rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-white/30 hover:dark:bg-gray-700/30 hover:scale-105 active:scale-95 group border border-gray-300/30 dark:border-gray-700/30 text-xs sm:text-sm mobile-button-compact"
                   >
                     <Twitter className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:rotate-45 flex-shrink-0" />
@@ -152,7 +163,6 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                     href="https://jds-personal-portfolio.netlify.app"
                     target="_blank"
                     rel="noopener noreferrer"
-                    // MODIFICATION: Reverted rounding to original state
                     className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium transition-all duration-225 shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 group border border-primary/50 text-xs sm:text-sm mobile-button-compact"
                   >
                     <Globe className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-225 group-hover:animate-spin flex-shrink-0" />
