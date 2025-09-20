@@ -6,7 +6,6 @@ import UnavailableImage from '../assets/Unavailable.png';
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// 1. MODIFIED: Added a `position` prop to the Tooltip component
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -21,7 +20,8 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
   return (
     <div className={`group/tooltip relative flex ${className}`}>
       {children}
-      <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
+      {/* MODIFICATION: Changed items-center to items-start for left alignment */}
+      <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-start opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -154,7 +154,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                   {sortField === 'index' && (
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                   )}
-                  {/* 2. MODIFIED: Added position="bottom" to sort tooltips */}
                   <Tooltip title="Sort by Index" position="bottom">
                     <div className="flex items-center gap-2">
                       #
@@ -227,7 +226,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       video.unavailable ? 'opacity-60' : ''
                     } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                   >
-                    <td className={`px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
+                    {/* MODIFICATION: Changed padding on index cell */}
+                    <td className={`sm:px-1 px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
                       <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
                         {video.index}
                       </div>
@@ -252,12 +252,23 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <Play className="w-6 h-6 text-white fill-white" />
                           </div>
                         </div>
+                        {/* MODIFICATION: Added unavailable icon inside thumbnail for mobile */}
+                        {video.unavailable && (
+                          <div className="absolute bottom-1 left-1 z-10 sm:hidden">
+                            <Tooltip title="This video is unavailable">
+                              <div className="flex-shrink-0 bg-error text-white rounded-lg p-1 shadow-md animate-pulse">
+                                <AlertTriangle className="w-4 h-4" />
+                              </div>
+                            </Tooltip>
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
                       <div className="flex items-center gap-3">
+                        {/* MODIFICATION: Unavailable icon now only shows on desktop here */}
                         {video.unavailable && (
-                          <Tooltip title="This video is unavailable">
+                          <Tooltip title="This video is unavailable" className="hidden sm:flex">
                             <div className="flex-shrink-0 bg-error text-white rounded-lg p-1.5 shadow-md animate-pulse">
                               <AlertTriangle className="w-4 h-4" />
                             </div>
@@ -280,7 +291,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         </span>
                       </Tooltip>
                     </td>
-                    {/* 3. MODIFIED: Removed Tooltip from Duration cell */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`text-sm px-3 py-3 rounded-xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
                         <Clock className="w-3 h-3" />
@@ -345,4 +355,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1111
+};
