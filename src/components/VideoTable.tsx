@@ -20,7 +20,6 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
   return (
     <div className={`group/tooltip relative flex ${className}`}>
       {children}
-      {/* MODIFICATION: Changed items-center to items-start for left alignment */}
       <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-start opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
@@ -141,7 +140,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
-        <div className="overflow-x-auto">
+        {/* MODIFICATION: Added rounded-3xl to fix corner glitch */}
+        <div className="overflow-x-auto rounded-3xl">
           <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
               <tr>
@@ -226,9 +226,9 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       video.unavailable ? 'opacity-60' : ''
                     } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                   >
-                    {/* MODIFICATION: Changed padding on index cell */}
                     <td className={`sm:px-8 px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
-                      <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
+                      {/* MODIFICATION: Adjusted rounding for mobile view */}
+                      <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
                         {video.index}
                       </div>
                     </td>
@@ -252,27 +252,23 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <Play className="w-6 h-6 text-white fill-white" />
                           </div>
                         </div>
-                        {/* MODIFICATION: Added unavailable icon inside thumbnail for mobile */}
                         {video.unavailable && (
-                          <div className="absolute bottom-1 left-1 z-10 sm:hidden">
-                            <Tooltip title="This video is unavailable">
-                              <div className="flex-shrink-0 bg-error text-white rounded-lg p-1 shadow-md animate-pulse">
-                                <AlertTriangle className="w-4 h-4" />
-                              </div>
-                            </Tooltip>
+                          // MODIFICATION: Positioned to bottom-right, removed tooltip
+                          <div className="absolute bottom-1 right-1 z-10 sm:hidden">
+                            <div className="flex-shrink-0 bg-error text-white rounded-lg p-1 shadow-md animate-pulse">
+                              <AlertTriangle className="w-4 h-4" />
+                            </div>
                           </div>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
                       <div className="flex items-center gap-3">
-                        {/* MODIFICATION: Unavailable icon now only shows on desktop here */}
                         {video.unavailable && (
-                          <Tooltip title="This video is unavailable" className="hidden sm:flex">
-                            <div className="flex-shrink-0 bg-error text-white rounded-lg p-1.5 shadow-md animate-pulse">
-                              <AlertTriangle className="w-4 h-4" />
-                            </div>
-                          </Tooltip>
+                          // MODIFICATION: Removed tooltip
+                          <div className="hidden sm:flex flex-shrink-0 bg-error text-white rounded-lg p-1.5 shadow-md animate-pulse">
+                            <AlertTriangle className="w-4 h-4" />
+                          </div>
                         )}
                         <Tooltip title={video.title} subtitle="Tap for Description" className="flex-1">
                             <div
@@ -355,4 +351,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};1111
+};
