@@ -73,7 +73,6 @@ export const ThemeToggle: React.FC = () => {
         }`}
         aria-label="Toggle theme"
       >
-        {/* [FIXED] Corrected typo from "sm-h-6" to "sm:h-6" */}
         <div className={`relative flex items-center justify-center transition-all duration-300 ease-in-out ${
             isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-6 sm:h-6'
           } ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}
@@ -111,17 +110,25 @@ export const ThemeToggle: React.FC = () => {
           const isFirst = index === 0;
           const isLast = index === themePopoverOptions.length - 1;
 
-          const cornerClass = isFirst
-            ? 'rounded-t-xl rounded'
-            : isLast
-              ? 'rounded-b-xl rounded'
-              : 'rounded';
+          // MODIFICATION START: Determine rounding class based on active state and position
+          let roundingClass;
+          if (option.active) {
+            roundingClass = 'rounded-xl'; // Pill shape for the active item
+          } else {
+            // Original logic for non-active items to maintain container shape
+            roundingClass = isFirst
+              ? 'rounded-t-xl rounded'
+              : isLast
+                ? 'rounded-b-xl rounded'
+                : 'rounded';
+          }
+          // MODIFICATION END
 
           return (
             <button
               key={option.value}
               onClick={() => handleThemeSelect(option.value)}
-              className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs hover:rounded-xl hover:gap-2 sm:text-sm font-medium ${cornerClass} ${
+              className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs hover:rounded-xl hover:gap-2 sm:text-sm font-medium ${roundingClass} ${ // Use the new roundingClass variable
                 option.active
                   ? 'bg-primary/80 text-white'
                   : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
@@ -144,4 +151,4 @@ export const ThemeToggle: React.FC = () => {
       </div>
     </div>
   );
-};1111
+};
