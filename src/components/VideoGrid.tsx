@@ -26,7 +26,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
       {children}
       {/* Tooltip */}
       <div
-        className={`absolute bottom-full -mb-1 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 group-hover/tooltip:block transform group-hover/tooltip:translate-x-[-20px] sm:block`}
+        className={`absolute bottom-full -mb-1 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 group-hover/tooltip:block transform group-hover/tooltip:translate-x-[-4px] sm:block`}
         style={{
           '@media (max-width: 640px)': {
             opacity: 1, // Ensure tooltip is visible on mobile
@@ -129,7 +129,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
             </button>
           </Tooltip>
           {/* Open in YouTube Button */}
-          <Tooltip title="Open" align="end">
+          <Tooltip title="Open in YouTube" align="end">
             <button
               onClick={() => onVideoClick(video.videoId)}
               className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
