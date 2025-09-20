@@ -308,7 +308,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                         <Tooltip title="View Description">
                           <button
                             onClick={(e) => handleShowDescription(video, e)}
-                            className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-2xl rounded-r-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
+                            className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-2xl rounded-l-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                           >
                             <FileText className="w-3 h-3 sm:w-5 sm:h-5 text-on-tertiary-container group-hover:animate-wiggle" />
                           </button>
