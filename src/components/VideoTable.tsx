@@ -282,7 +282,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </td>
                     {/* 3. MODIFIED: Removed Tooltip from Duration cell */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`text-sm px-3 py-3 rounded-2xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
+                      <span className={`text-sm px-3 py-3 rounded-xl flex items-center gap-2 w-fit bg-white/20 dark:bg-black/20 text-gray-900 dark:text-white border border-white/20 shadow-lg hover:scale-[1.03] transition-all duration-300`}>
                         <Clock className="w-3 h-3" />
                         {video.duration}
                       </span>
