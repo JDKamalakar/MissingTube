@@ -125,7 +125,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ onClose }) => {
                 </div>
 
                 {/* MODIFICATION: Added gap back to the container */}
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
                   <a
                     href="https://github.com/JDKamalakar"
                     target="_blank"
