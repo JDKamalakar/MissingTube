@@ -12,7 +12,7 @@ interface TooltipProps {
   subtitle?: string;
   className?: string;
   align?: 'start' | 'center' | 'end';
-  offsetX?: boolean; // MODIFICATION: Added prop to control horizontal offset
+  offsetX?: boolean;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, align = 'center', offsetX = false }) => {
@@ -27,8 +27,8 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
       {children}
       {/* Tooltip */}
       <div
-        // MODIFICATION: Changed -mb-1 to mb-2 for more space, and made translate conditional
-        className={`absolute bottom-full mb-2 w-max max-w-xs hidden sm:flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 ${offsetX ? 'group-hover/tooltip:translate-x-[-30px]' : ''}`}
+        // MODIFICATION: Removed 'hidden sm:flex' to make tooltips visible on mobile
+        className={`absolute bottom-full mb-2 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 ${offsetX ? 'group-hover/tooltip:translate-x-[-30px]' : ''}`}
       >
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
@@ -117,7 +117,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
               <Search className="w-3 h-3 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" /> Search
             </button>
           </Tooltip>
-          {/* MODIFICATION: Added offsetX prop to apply the translation */}
           <Tooltip title="Open" align="end" offsetX={true}>
             <button
               onClick={() => onVideoClick(video.videoId)}
@@ -289,4 +288,4 @@ interface VideoGridProps {
         )}
       </>
     );
-  };1111
+  };
