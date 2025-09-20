@@ -34,6 +34,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
   );
 };
 
+// MODIFICATION: Extracted the card into its own component to manage hover state
 interface VideoCardProps {
   video: Video;
   onVideoClick: (videoId: string) => void;
@@ -44,22 +45,9 @@ interface VideoCardProps {
 const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClick, onDescriptionClick }) => {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
 
-  // MODIFICATION: New handler to show tooltip on tap for mobile
-  const handleTitleClick = (e: React.MouseEvent) => {
-    // Show tooltip temporarily on any click (for mobile tap)
-    setIsTitleHovered(true);
-    setTimeout(() => {
-      setIsTitleHovered(false);
-    }, 2500); // Tooltip will be visible for 2.5 seconds
-
-    // Proceed with opening the description modal
-    onDescriptionClick(video, e);
-  };
-
   return (
-    // MODIFICATION: Removed overflow-hidden to prevent tooltip clipping
     <div
-      className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
+      className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl overflow-hidden shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col"
     >
       {/* Thumbnail Container */}
       <div className="relative p-4 pb-2">
@@ -84,8 +72,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
             </div>
           </div>
 
-          {(isTitleHovered) && (
-            <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 max-w-xs flex flex-col items-center pointer-events-none z-20 transition-opacity duration-300 ${isTitleHovered ? 'opacity-100' : 'opacity-0'}`}>
+          {/* MODIFICATION: Title tooltip is now here, controlled by state */}
+          {isTitleHovered && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-11/12 max-w-xs flex flex-col items-center pointer-events-none z-20">
               <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-center w-full">
                 <p className="font-semibold text-sm whitespace-pre-wrap line-clamp-2">{video.title}</p>
                 <p className="opacity-80 text-xs">Tap For Description</p>
@@ -109,10 +98,10 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
         <h3
           onMouseEnter={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
-          onClick={handleTitleClick} // MODIFICATION: Using new handler
           className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 h-10 mb-2 ${
             video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
           }`}
+          onClick={(e) => onDescriptionClick(video, e)}
         >
           {video.title}
         </h3>
@@ -133,8 +122,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
               Search
             </button>
           </Tooltip>
-          {/* MODIFICATION: Removed align="end" to center the tooltip */}
-          <Tooltip title="Open in YouTube">
+          <Tooltip title="Open in YouTube" align="end">
             <button
               onClick={() => onVideoClick(video.videoId)}
               className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
