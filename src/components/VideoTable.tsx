@@ -258,7 +258,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                       <div className="flex items-center gap-3">
                         {video.unavailable && (
                           <Tooltip title="This video is unavailable">
-                            <div className="flex-shrink-0 bg-error text-white rounded-full p-1.5 shadow-md animate-pulse">
+                            <div className="flex-shrink-0 bg-error text-white rounded-lg p-1.5 shadow-md animate-pulse">
                               <AlertTriangle className="w-4 h-4" />
                             </div>
                           </Tooltip>
