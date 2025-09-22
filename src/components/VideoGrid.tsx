@@ -247,7 +247,7 @@ interface VideoGridProps {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-105 active:scale-95 ${
                     sortField === field
                       ? 'bg-primary text-white rounded-full shadow-md'
-                      : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-lg border border-white/30 dark:border-white/20'
+                      : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-xl border border-white/30 dark:border-white/20'
                   }`}
                 >
                   {label} {getSortIcon(field)}
