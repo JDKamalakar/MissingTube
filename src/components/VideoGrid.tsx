@@ -250,7 +250,7 @@ interface VideoGridProps {
                 } else {
                     switch (index) {
                         case 0: // Index
-                            roundingClasses = 'rounded-l-xl sm:rounded-l-2xl';
+                            roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-l-2xl';
                             break;
                         case 1: // Duration
                             roundingClasses = 'rounded-r-xl sm:rounded-2xl';
