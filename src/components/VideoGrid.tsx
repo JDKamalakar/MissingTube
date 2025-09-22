@@ -262,7 +262,7 @@ interface VideoGridProps {
                             roundingClasses = 'rounded-r-xl rounded sm:rounded-r-xl';
                             break;
                         default:
-                            roundingClasses = 'rounded-xl sm:rounded-xl';
+                            roundingClasses = 'rounded-lg sm:rounded-lg';
                     }
                 }
 
