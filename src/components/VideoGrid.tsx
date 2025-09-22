@@ -59,7 +59,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
   };
 
   return (
-    <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col">
+    // MODIFICATION: Removed hover:scale-105 to fix thumbnail corner glitch
+    <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col">
       <div className="relative p-4 pb-2">
         <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
           <img
@@ -96,7 +97,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
           onMouseEnter={() => setIsTitleHovered(true)}
           onMouseLeave={() => setIsTitleHovered(false)}
           onClick={handleTitleClick}
-          className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 h-10 mb-2 ${
+          className={`font-medium line-clamp-2 text-sm cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-300 h-10 mb-2 ${
             video.unavailable ? 'text-gray-600 dark:text-gray-400' : 'text-gray-900 dark:text-white'
           }`}
         >
@@ -111,7 +112,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
           <Tooltip title="Search Actions" className="flex-1">
             <button
               onClick={(e) => onSearchClick(video, e)}
-              className="w-full h-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-225 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
+              // MODIFICATION: Changed duration to 300
+              className="w-full h-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
             >
               <Search className="w-3 h-3 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" /> Search
             </button>
@@ -119,7 +121,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
           <Tooltip title="Open" align="end" offsetX={true}>
             <button
               onClick={() => onVideoClick(video.videoId)}
-              className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-225 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
+              // MODIFICATION: Changed duration to 300
+              className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
             >
               <ExternalLink className="w-3 h-3 duration-1000 group-hover:animate-bounce" />
             </button>
@@ -236,33 +239,32 @@ interface VideoGridProps {
     return (
       <>
         {/* Sort Controls */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
           <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
-          <div className="w-full grid grid-cols-2 sm:flex sm:gap-2 gap-3">
+          <div className="w-full grid grid-cols-2 sm:flex gap-2">
             {sortOptions.map((option, index) => {
                 const isActive = sortField === option.field;
                 const tooltipPosition = index > 1 ? 'bottom' : 'top';
                 
-                // MODIFICATION: Logic to handle rounding for active vs inactive states with gaps
                 let roundingClasses = '';
                 if (isActive) {
                     roundingClasses = 'rounded-full';
                 } else {
                     switch (index) {
-                        case 0: // Index
-                            roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-l-xl';
+                        case 0:
+                            roundingClasses = 'rounded-l-xl sm:rounded-l-2xl';
                             break;
-                        case 1: // Duration
-                            roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-lg';
+                        case 1:
+                            roundingClasses = 'rounded-r-xl sm:rounded-2xl';
                             break;
-                        case 2: // Title
-                            roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-lg';
+                        case 2:
+                            roundingClasses = 'rounded-l-xl sm:rounded-2xl';
                             break;
-                        case 3: // Channel
-                            roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-r-xl';
+                        case 3:
+                            roundingClasses = 'rounded-r-xl sm:rounded-r-2xl';
                             break;
                         default:
-                            roundingClasses = 'rounded-lg sm:rounded-lg';
+                            roundingClasses = 'rounded-xl sm:rounded-2xl';
                     }
                 }
 
@@ -270,7 +272,8 @@ interface VideoGridProps {
                   <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center" position={tooltipPosition}>
                     <button
                       onClick={() => handleSort(option.field)}
-                      className={`flex-1 w-full flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-110 active:scale-95 ${roundingClasses} ${
+                      // MODIFICATION: Changed duration to 300
+                      className={`flex-1 w-full flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-110 active:scale-95 ${roundingClasses} ${
                         isActive
                           ? 'bg-primary text-white shadow-md'
                           : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 border border-white/30 dark:border-white/20'
@@ -315,4 +318,4 @@ interface VideoGridProps {
         )}
       </>
     );
-  };1111
+  };
