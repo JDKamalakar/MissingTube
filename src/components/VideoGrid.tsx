@@ -6,6 +6,7 @@ import { Play, Clock, AlertTriangle, Search, ExternalLink, ArrowUpDown, ArrowUp,
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
+// MODIFICATION: Added 'position' prop
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -13,20 +14,24 @@ interface TooltipProps {
   className?: string;
   align?: 'start' | 'center' | 'end';
   offsetX?: boolean;
+  position?: 'top' | 'bottom';
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, align = 'center', offsetX = false }) => {
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, align = 'center', offsetX = false, position = 'top' }) => {
   const alignClass = {
     start: 'items-start',
     center: 'items-center',
     end: 'items-end',
   }[align];
 
+  // MODIFICATION: Logic to switch between top and bottom placement
+  const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
+
   return (
     <div className={`group/tooltip relative ${className}`}>
       {children}
       <div
-        className={`absolute bottom-full mb-2 w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 ${offsetX ? 'group-hover/tooltip:translate-x-[-30px]' : ''}`}
+        className={`absolute ${positionClasses} w-max max-w-xs flex flex-col ${alignClass} opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-50 ${offsetX ? 'group-hover/tooltip:translate-x-[-30px]' : ''}`}
       >
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
@@ -59,7 +64,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
     <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col">
       <div className="relative p-4 pb-2">
         <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
-          {/* MODIFICATION: Added overflow-hidden to the img tag to prevent corner glitches on hover */}
           <img
             src={video.thumbnail}
             alt={video.title}
@@ -224,7 +228,6 @@ interface VideoGridProps {
       setShowDescription(true);
     };
   
-    // MODIFICATION: Rearranged sort options for the new 2x2 layout
     const sortOptions = [
         { field: 'index' as SortField, label: 'Index' },
         { field: 'duration' as SortField, label: 'Duration' },
@@ -237,28 +240,23 @@ interface VideoGridProps {
         {/* Sort Controls */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
           <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
-          {/* MODIFICATION: New layout for sort buttons */}
-          <div className="w-full grid grid-cols-2 sm:flex gap-2 sm:gap-0">
+          {/* MODIFICATION: Added gap-2 back for all screen sizes */}
+          <div className="w-full grid grid-cols-2 sm:flex gap-2">
             {sortOptions.map((option, index) => {
+                const isActive = sortField === option.field;
                 
-                // Determine rounding classes for mobile (2x2 grid) and desktop (flex row)
-                let roundingClasses = '';
-                if (index === 0) { // Index
-                    roundingClasses = 'rounded-l-xl sm:rounded-r-none sm:rounded-l-2xl';
-                } else if (index === 1) { // Duration
-                    roundingClasses = 'rounded-r-xl sm:rounded-none';
-                } else if (index === 2) { // Title
-                    roundingClasses = 'rounded-l-xl sm:rounded-none';
-                } else if (index === 3) { // Channel
-                    roundingClasses = 'rounded-r-xl sm:rounded-l-none sm:rounded-r-2xl';
-                }
+                // MODIFICATION: Active buttons are rounded-full, inactive ones are consistently rounded.
+                const roundingClasses = isActive ? 'rounded-full' : 'rounded-xl sm:rounded-2xl';
+                
+                // MODIFICATION: Tooltips for the second row (mobile) appear below the button.
+                const tooltipPosition = index > 1 ? 'bottom' : 'top';
 
                 return (
-                  <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center">
+                  <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center" position={tooltipPosition}>
                     <button
                       onClick={() => handleSort(option.field)}
-                      className={`flex-1 flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-110 active:scale-95 ${roundingClasses} ${
-                        sortField === option.field
+                      className={`flex-1 w-full flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-110 active:scale-95 ${roundingClasses} ${
+                        isActive
                           ? 'bg-primary text-white shadow-md'
                           : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 border border-white/30 dark:border-white/20'
                       }`}
@@ -302,4 +300,4 @@ interface VideoGridProps {
         )}
       </>
     );
-  };22222
+  };
