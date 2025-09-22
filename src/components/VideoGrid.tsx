@@ -250,19 +250,19 @@ interface VideoGridProps {
                 } else {
                     switch (index) {
                         case 0: // Index
-                            roundingClasses = 'rounded-l-xl rounded sm:rounded-l-2xl';
+                            roundingClasses = 'rounded-l-xl rounded sm:rounded-l-xl';
                             break;
                         case 1: // Duration
-                            roundingClasses = 'rounded-r-xl rounded sm:rounded-2xl';
+                            roundingClasses = 'rounded-r-xl rounded sm:rounded-xl';
                             break;
                         case 2: // Title
-                            roundingClasses = 'rounded-l-xl rounded sm:rounded-2xl';
+                            roundingClasses = 'rounded-l-xl rounded sm:rounded-xl';
                             break;
                         case 3: // Channel
-                            roundingClasses = 'rounded-r-xl rounded sm:rounded-r-2xl';
+                            roundingClasses = 'rounded-r-xl rounded sm:rounded-r-xl';
                             break;
                         default:
-                            roundingClasses = 'rounded-xl sm:rounded-2xl';
+                            roundingClasses = 'rounded-xl sm:rounded-xl';
                     }
                 }
 
