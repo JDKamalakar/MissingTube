@@ -253,10 +253,10 @@ interface VideoGridProps {
                             roundingClasses = 'rounded-l-xl rounded sm:rounded-l-2xl';
                             break;
                         case 1: // Duration
-                            roundingClasses = 'rounded-r-xl sm:rounded-2xl';
+                            roundingClasses = 'rounded-r-xl rounded sm:rounded-2xl';
                             break;
                         case 2: // Title
-                            roundingClasses = 'rounded-l-xl sm:rounded-2xl';
+                            roundingClasses = 'rounded-l-xl rounded sm:rounded-2xl';
                             break;
                         case 3: // Channel
                             roundingClasses = 'rounded-r-xl sm:rounded-r-2xl';
