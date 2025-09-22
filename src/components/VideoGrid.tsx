@@ -250,22 +250,22 @@ interface VideoGridProps {
                 if (isActive) {
                     roundingClasses = 'rounded-full';
                 } else {
-                    switch (index) {
-                        case 0:
-                            roundingClasses = 'rounded-l-xl sm:rounded-l-2xl';
-                            break;
-                        case 1:
-                            roundingClasses = 'rounded-r-xl sm:rounded-2xl';
-                            break;
-                        case 2:
-                            roundingClasses = 'rounded-l-xl sm:rounded-2xl';
-                            break;
-                        case 3:
-                            roundingClasses = 'rounded-r-xl sm:rounded-r-2xl';
-                            break;
-                        default:
-                            roundingClasses = 'rounded-xl sm:rounded-2xl';
-                    }
+                    switch (index) {
+                        case 0: // Index
+                            roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-l-xl';
+                            break;
+                        case 1: // Duration
+                            roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-lg';
+                            break;
+                        case 2: // Title
+                            roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-lg';
+                            break;
+                        case 3: // Channel
+                            roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-r-xl';
+                            break;
+                        default:
+                            roundingClasses = 'rounded-lg sm:rounded-lg';
+                    }
                 }
 
                 return (
