@@ -239,7 +239,7 @@ interface VideoGridProps {
     return (
       <>
         {/* Sort Controls */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-1000">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
           <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
           <div className="w-full grid grid-cols-2 sm:flex sm:gap-2 gap-3">
             {sortOptions.map((option, index) => {
