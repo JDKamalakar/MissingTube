@@ -6,7 +6,6 @@ import { Play, Clock, AlertTriangle, Search, ExternalLink, ArrowUpDown, ArrowUp,
 import { SearchActionsModal } from './SearchActionsModal';
 import { VideoDescriptionModal } from './VideoDescriptionModal';
 
-// MODIFICATION: Added 'position' prop
 interface TooltipProps {
   children: React.ReactElement;
   title: string;
@@ -24,7 +23,6 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
     end: 'items-end',
   }[align];
 
-  // MODIFICATION: Logic to switch between top and bottom placement
   const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
 
   return (
@@ -240,16 +238,33 @@ interface VideoGridProps {
         {/* Sort Controls */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
           <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
-          {/* MODIFICATION: Added gap-2 back for all screen sizes */}
           <div className="w-full grid grid-cols-2 sm:flex gap-2">
             {sortOptions.map((option, index) => {
                 const isActive = sortField === option.field;
-                
-                // MODIFICATION: Active buttons are rounded-full, inactive ones are consistently rounded.
-                const roundingClasses = isActive ? 'rounded-full' : 'rounded-xl sm:rounded-2xl';
-                
-                // MODIFICATION: Tooltips for the second row (mobile) appear below the button.
                 const tooltipPosition = index > 1 ? 'bottom' : 'top';
+                
+                // MODIFICATION: Logic to handle rounding for active vs inactive states with gaps
+                let roundingClasses = '';
+                if (isActive) {
+                    roundingClasses = 'rounded-full';
+                } else {
+                    switch (index) {
+                        case 0: // Index
+                            roundingClasses = 'rounded-l-xl sm:rounded-l-2xl';
+                            break;
+                        case 1: // Duration
+                            roundingClasses = 'rounded-r-xl sm:rounded-2xl';
+                            break;
+                        case 2: // Title
+                            roundingClasses = 'rounded-l-xl sm:rounded-2xl';
+                            break;
+                        case 3: // Channel
+                            roundingClasses = 'rounded-r-xl sm:rounded-r-2xl';
+                            break;
+                        default:
+                            roundingClasses = 'rounded-xl sm:rounded-2xl';
+                    }
+                }
 
                 return (
                   <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center" position={tooltipPosition}>
@@ -300,4 +315,4 @@ interface VideoGridProps {
         )}
       </>
     );
-  };1111
+  };
