@@ -59,7 +59,6 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
     <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col">
       <div className="relative p-4 pb-2">
         <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
-          {/* MODIFICATION: Added overflow-hidden to the img tag to prevent corner glitches on hover */}
           <img
             src={video.thumbnail}
             alt={video.title}
@@ -224,7 +223,6 @@ interface VideoGridProps {
       setShowDescription(true);
     };
   
-    // MODIFICATION: Rearranged sort options for the new 2x2 layout
     const sortOptions = [
         { field: 'index' as SortField, label: 'Index' },
         { field: 'duration' as SortField, label: 'Duration' },
@@ -237,37 +235,22 @@ interface VideoGridProps {
         {/* Sort Controls */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
           <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
-          {/* MODIFICATION: New layout for sort buttons */}
-          <div className="w-full grid grid-cols-2 sm:flex gap-2 sm:gap-0">
-            {sortOptions.map((option, index) => {
-                
-                // Determine rounding classes for mobile (2x2 grid) and desktop (flex row)
-                let roundingClasses = '';
-                if (index === 0) { // Index
-                    roundingClasses = 'rounded-l-xl sm:rounded-r-none sm:rounded-l-2xl';
-                } else if (index === 1) { // Duration
-                    roundingClasses = 'rounded-r-xl sm:rounded-none';
-                } else if (index === 2) { // Title
-                    roundingClasses = 'rounded-l-xl sm:rounded-none';
-                } else if (index === 3) { // Channel
-                    roundingClasses = 'rounded-r-xl sm:rounded-l-none sm:rounded-r-2xl';
-                }
-
-                return (
-                  <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center">
-                    <button
-                      onClick={() => handleSort(option.field)}
-                      className={`flex-1 flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-110 active:scale-95 ${roundingClasses} ${
-                        sortField === option.field
-                          ? 'bg-primary text-white shadow-md'
-                          : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 border border-white/30 dark:border-white/20'
-                      }`}
-                    >
-                      {option.label} {getSortIcon(option.field)}
-                    </button>
-                  </Tooltip>
-                );
-            })}
+          {/* MODIFICATION: Re-added gap and reverted to individual button rounding */}
+          <div className="w-full grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2">
+            {sortOptions.map((option) => (
+                <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center">
+                  <button
+                    onClick={() => handleSort(option.field)}
+                    className={`flex-1 flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-225 hover:scale-110 active:scale-95 ${
+                      sortField === option.field
+                        ? 'bg-primary text-white rounded-full shadow-md'
+                        : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 rounded-2xl border border-white/30 dark:border-white/20'
+                    }`}
+                  >
+                    {option.label} {getSortIcon(option.field)}
+                  </button>
+                </Tooltip>
+            ))}
           </div>
         </div>
         <div data-filter-container className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-300 ${isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'}`}>
@@ -302,4 +285,4 @@ interface VideoGridProps {
         )}
       </>
     );
-  };2222
+  };
