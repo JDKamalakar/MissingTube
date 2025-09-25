@@ -265,7 +265,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
                       <div className="flex items-center gap-3">
                         {video.unavailable && (
-                          // MODIFICATION: Removed tooltip
                           <div className="hidden sm:flex flex-shrink-0 bg-error text-white rounded-lg p-1.5 shadow-md animate-pulse">
                             <AlertTriangle className="w-4 h-4" />
                           </div>
