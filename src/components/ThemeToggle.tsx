@@ -127,8 +127,8 @@ export const ThemeToggle: React.FC = () => {
             	className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-xs hover:rounded-xl hover:gap-2 sm:text-sm font-medium ${roundingClass} ${
             	  option.active
             	    ? 'bg-primary/80 text-white'
-                    // ✨ --- STRONGER GLOW APPLIED HERE --- ✨
-            	    : 'text-gray-900 dark:text-white dark:shadow-md dark:shadow-blue-500/40 hover:bg-white/10 dark:hover:bg-black/20 dark:hover:shadow-lg dark:hover:shadow-blue-500/50'
+                    // ✨ --- CHANGES ARE HERE --- ✨
+            	    : 'text-gray-900 dark:text-white dark:shadow-sm dark:shadow-blue-400/20 hover:bg-white/10 dark:hover:bg-black/20 dark:hover:shadow-md dark:hover:shadow-blue-400/30'
           	  }`}
             	style={{
             	  transitionDelay: showOptions ? `${100 + index * 50}ms` : '0ms',
