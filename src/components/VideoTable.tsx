@@ -319,7 +319,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           </button>
                         </Tooltip>
                         {/* MODIFIED: Added specific string values for offsetX */}
-                        <Tooltip title="View Description" align="end" offsetX="translate-x-[90%]">
+                        <Tooltip title="View Description" align="end" offsetX="-translate-x-[40%]">
                           <button
                             onClick={(e) => handleShowDescription(video, e)}
                             className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl rounded-l-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
