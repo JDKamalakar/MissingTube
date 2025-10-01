@@ -310,7 +310,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           </button>
                         </Tooltip>
                         {/* MODIFIED: Added specific string values for offsetX */}
-                        <Tooltip title="Search Actions" align="end" offsetX="-translate-x-[50%]">
+                        <Tooltip title="Search Actions" align="center" offsetX="-translate-x-[50%]">
                           <button
                             onClick={(e) => handleSearchActions(video, e)}
                             className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
