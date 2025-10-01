@@ -13,10 +13,11 @@ interface TooltipProps {
   className?: string;
   position?: 'top' | 'bottom';
   align?: 'start' | 'center' | 'end';
-  offsetX?: boolean;
+  // MODIFIED: offsetX now accepts a string for the CSS class
+  offsetX?: string;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top', align = 'center', offsetX = false }) => {
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top', align = 'center', offsetX = '' }) => {
   const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
   
   const alignClasses = {
@@ -25,13 +26,11 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
     end: 'right-0',
   }[align];
 
-  // MODIFIED: Changed the offset for 'end' alignment to a negative value to move it left
-  const offsetClass = offsetX ? (align === 'end' ? '-translate-x-[-30%]' : '-translate-x-[25%]') : '';
-
   return (
     <div className={`group/tooltip relative flex ${className}`}>
       {children}
-      <div className={`absolute ${positionClasses} ${alignClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-all duration-300 pointer-events-none z-20 group-hover/tooltip:translate-y-0 ${offsetClass}`}>
+      {/* MODIFIED: The offsetX prop is now used directly as a class */}
+      <div className={`absolute ${positionClasses} ${alignClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-all duration-300 pointer-events-none z-20 ${offsetX}`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -310,7 +309,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" />
                           </button>
                         </Tooltip>
-                        <Tooltip title="Search Actions" align="end" offsetX={true}>
+                        {/* MODIFIED: Added specific string values for offsetX */}
+                        <Tooltip title="Search Actions" align="end" offsetX="-translate-x-[50%]">
                           <button
                             onClick={(e) => handleSearchActions(video, e)}
                             className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
@@ -318,7 +318,8 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" />
                           </button>
                         </Tooltip>
-                        <Tooltip title="View Description" align="end" offsetX={true}>
+                        {/* MODIFIED: Added specific string values for offsetX */}
+                        <Tooltip title="View Description" align="end" offsetX="-translate-x-[90%]">
                           <button
                             onClick={(e) => handleShowDescription(video, e)}
                             className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl rounded-l-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
@@ -358,4 +359,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};22222
+};
