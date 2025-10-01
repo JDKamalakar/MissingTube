@@ -301,7 +301,7 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     </td>
                     <td className={`px-3 sm:px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-br-3xl' : ''}`}>
                       <div className="flex items-center gap-1">
-                        <Tooltip title="Open in YouTube">
+                        <Tooltip title="Open in YouTube" align="start">
                           <button
                             onClick={() => handleVideoClick(video.videoId)}
                             className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl rounded-r-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
