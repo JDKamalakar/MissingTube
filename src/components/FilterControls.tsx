@@ -109,7 +109,7 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             </div>
             <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
           </button>
-          <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-1 w-full transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top ${
+          <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-0.5 w-full transform transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] origin-top ${
             isMobileMenuOpen
               ? 'opacity-100 scale-100 translate-y-0'
               : 'opacity-0 scale-75 -translate-y-4'
@@ -119,7 +119,6 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
               const isLast = index === filterOptions.length - 1;
               const isActive = option.mode === filterMode;
               
-              // MODIFIED: Added conditional rounding logic
               let roundingClass;
               if (isActive) {
                 roundingClass = 'rounded-xl';
@@ -131,11 +130,11 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
                 <button
                   key={option.mode}
                   onClick={() => handleFilterChange(option.mode)}
-                  // MODIFIED: Added glow and updated classes
+                  // MODIFIED: Removed the hover glow classes
                   className={`group w-full flex items-center gap-3 px-4 py-3 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 text-sm font-medium hover:rounded-xl ${roundingClass} ${
                     isActive
                       ? 'bg-primary/80 text-white'
-                      : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10 hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                      : 'text-gray-900 dark:text-white hover:bg-white/10 dark:hover:bg-black/10'
                   }`}
                   style={{
                     transitionDelay: isMobileMenuOpen ? `${100 + index * 50}ms` : '0ms',
@@ -162,4 +161,4 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
       )}
     </>
   );
-};111
+};
