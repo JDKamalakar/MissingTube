@@ -59,8 +59,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
   };
 
   return (
-    // MODIFIED: Added glow and smooth easing
-    <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 active:scale-95 transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] transition-[box-shadow] duration-200 group flex flex-col elevation-2 hover:elevation-4 hover:shadow-[0_0_25px_rgba(234,179,8,0.4)] dark:hover:shadow-[0_0_25px_rgba(59,130,246,0.4)]">
+    <div className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 hover:shadow-2xl active:scale-95 transition-all duration-300 group elevation-2 hover:elevation-4 flex flex-col">
       <div className="relative p-4 pb-2">
         <div className="relative bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden">
           <img
@@ -74,8 +73,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
             }}
           />
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer rounded-2xl" onClick={() => onVideoClick(video.videoId)}>
-            {/* MODIFIED: Added glow */}
-            <div className="bg-white/30 backdrop-blur-medium rounded-2xl p-4 hover:scale-110 transition-all duration-225 border border-white/30 hover:shadow-[0_0_20px_rgba(234,179,8,0.5)] dark:hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+            <div className="bg-white/30 backdrop-blur-medium rounded-2xl p-4 hover:scale-110 transition-transform duration-225 border border-white/30">
               <Play className="w-8 h-8 text-white fill-white" />
             </div>
           </div>
@@ -113,8 +111,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
           <Tooltip title="Search Actions" className="flex-1">
             <button
               onClick={(e) => onSearchClick(video, e)}
-              // MODIFIED: Added glow
-              className="w-full h-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-300 hover:scale-105 active:scale-95 group hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+              className="w-full h-full flex items-center justify-center gap-2 py-3 px-3 bg-secondary/60 text-white rounded-xl text-xs font-medium hover:bg-secondary/90 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow-md group"
             >
               <Search className="w-3 h-3 transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" /> Search
             </button>
@@ -122,8 +119,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onVideoClick, onSearchClic
           <Tooltip title="Open" align="end" offsetX={true}>
             <button
               onClick={() => onVideoClick(video.videoId)}
-              // MODIFIED: Added glow
-              className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-300 hover:scale-110 active:scale-95 group hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+              className="h-full flex items-center justify-center p-3 bg-primary/40 text-white rounded-xl hover:bg-primary/90 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow-md group"
             >
               <ExternalLink className="w-3 h-3 duration-1000 group-hover:animate-bounce" />
             </button>
@@ -149,11 +145,10 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   const [sortField, setSortField] = useState<SortField>('index');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [isAnimating, setIsAnimating] = useState(false);
-  // MODIFIED: Added state to detect mobile view for tooltips
   const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
-    const checkScreenSize = () => setIsMobileView(window.innerWidth < 640); // 640px is Tailwind's 'sm' breakpoint
+    const checkScreenSize = () => setIsMobileView(window.innerWidth < 640);
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
@@ -242,16 +237,35 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
   return (
     <>
       {/* Sort Controls */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl border border-white/30 dark:border-white/20 elevation-2 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:scale-105 hover:shadow-[0_0_25px_rgba(234,179,8,0.4)] dark:hover:shadow-[0_0_25px_rgba(59,130,246,0.4)]">
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 p-4 bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-2xl border border-white/30 dark:border-white/20 elevation-2 hover:scale-105 active:scale-95 duration-300">
         <span className="text-sm font-medium text-gray-900 dark:text-white flex-shrink-0">Sort by:</span>
         <div className="w-full grid grid-cols-2 sm:flex sm:gap-2 gap-3">
           {sortOptions.map((option, index) => {
             const isActive = sortField === option.field;
-            // MODIFIED: Tooltip position is now responsive
             const tooltipPosition = isMobileView ? (index > 1 ? 'bottom' : 'top') : 'top';
             
+            // MODIFIED: This entire rounding logic block has been restored
             let roundingClasses = '';
-            // ... (roundingClasses logic is unchanged)
+            if (isActive) {
+              roundingClasses = 'rounded-full';
+            } else {
+              switch (index) {
+                case 0:
+                  roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-l-xl';
+                  break;
+                case 1:
+                  roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-lg';
+                  break;
+                case 2:
+                  roundingClasses = 'rounded-l-xl rounded-lg sm:rounded-lg';
+                  break;
+                case 3:
+                  roundingClasses = 'rounded-r-xl rounded-lg sm:rounded-r-xl';
+                  break;
+                default:
+                  roundingClasses = 'rounded-lg sm:rounded-lg';
+              }
+            }
 
             return (
               <Tooltip key={option.field} title={`Sort by ${option.label}`} align="center" position={tooltipPosition}>
@@ -260,7 +274,7 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
                   className={`flex-1 w-full flex items-center justify-center gap-0.5 px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-110 active:scale-95 ${roundingClasses} ${
                     isActive
                       ? 'bg-primary text-white shadow-md'
-                      : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 border border-white/30 dark:border-white/20 hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                      : 'bg-white/30 dark:bg-black/30 backdrop-blur-lg text-gray-900 dark:text-white hover:bg-white/40 dark:hover:bg-black/40 border border-white/30 dark:border-white/20'
                   }`}
                 >
                   {option.label} {getSortIcon(option.field)}
@@ -290,4 +304,4 @@ export const VideoGrid: React.FC<VideoGridProps> = ({ videos, filterMode = 'all'
       )}
     </>
   );
-};22222
+};
