@@ -27,7 +27,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
     end: 'right-0',
   }[align];
 
-  const offsetClass = offsetX ? (align === 'end' ? 'translate-x-[35%]' : '-translate-x-[55%]') : '';
+  const offsetClass = offsetX ? (align === 'end' ? 'translate-x-[35%]' : '-translate-x-[75%]') : '';
 
   return (
     <div className={`group/tooltip relative flex ${className}`}>
