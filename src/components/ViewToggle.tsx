@@ -88,7 +88,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
             <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : 'rotate-0'}`} />
           </button>
           
-          <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-0.5 w-full transform transition-all duration-500 ease-out origin-top-right ${
+          <div className={`absolute top-full mt-2 left-0 right-0 bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl border border-gray-300/30 dark:border-gray-700/30 rounded-xl shadow-xl p-2 flex flex-col gap-1 w-full transform transition-all duration-500 ease-out origin-top-right ${
             isMobileMenuOpen
               ? 'opacity-100 scale-100 translate-y-0 rotate-0 pointer-events-auto'
               : 'opacity-0 scale-75 -translate-y-4 rotate-12 pointer-events-none'
