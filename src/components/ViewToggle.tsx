@@ -103,7 +103,7 @@ export const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onViewModeChan
               if (isActive) {
                 roundingClass = 'rounded-xl';
               } else {
-                roundingClass = isFirst ? 'rounded-t-lg' : isLast ? 'rounded-b-lg' : '';
+                roundingClass = isFirst ? 'rounded-t-lg rounded' : isLast ? 'rounded-b-lg rounded' : '';
               }
 
               return (
