@@ -61,7 +61,7 @@ export const ThemeToggle: React.FC = () => {
       hoverAnim: 'group-hover:rotate-180',
       activeClass: 'bg-yellow-500/30 text-yellow-700 dark:text-yellow-300 shadow-md border border-yellow-300/50 dark:border-yellow-500/50 dark:shadow-[0_0_10px_rgba(234,179,8,0.3)]',
       // This was already correct (yellow glow)
-      hoverGlowClass: 'shadow-[0_0_10px_rgba(234,179,8,0.4)] hover:shadow-[0_0_16px_rgba(234,179,8,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
+      hoverGlowClass: 'shadow-[0_0_10px_rgba(234,179,8,0.4)] hover:shadow-[0_0_16px_rgba(234,179,8,0.5)]'
     },
     {
       label: 'Dark',
