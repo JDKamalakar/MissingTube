@@ -26,7 +26,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className,
   }[align];
 
   // MODIFIED: Changed the offset for 'end' alignment to a negative value to move it left
-  const offsetClass = offsetX ? (align === 'end' ? 'translate-x-[-25%]' : '-translate-x-[25%]') : '';
+  const offsetClass = offsetX ? (align === 'end' ? 'translate-x-[-5%]' : '-translate-x-[25%]') : '';
 
   return (
     <div className={`group/tooltip relative flex ${className}`}>
