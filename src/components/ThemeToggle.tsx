@@ -3,7 +3,6 @@ import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 
 export const ThemeToggle: React.FC = () => {
-  // MODIFIED: Added isDark to detect the actual system theme
   const { theme, setTheme, isDark } = useTheme();
   const [showOptions, setShowOptions] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,7 +40,6 @@ export const ThemeToggle: React.FC = () => {
     setShowOptions(false);
   };
 
-  // MODIFIED: Rebuilt this array to include the advanced glow and active classes
   const themePopoverOptions = [
     {
       label: 'System',
@@ -51,7 +49,8 @@ export const ThemeToggle: React.FC = () => {
       color: isSystemActive ? (isDark ? 'text-blue-400' : 'text-yellow-500') : 'text-blue-500',
       hoverAnim: 'group-hover:rotate-12',
       activeClass: 'bg-blue-500/30 text-blue-700 dark:text-blue-300 shadow-md border border-blue-300/50 dark:border-blue-500/50 dark:shadow-[0_0_10px_rgba(59,130,246,0.3)]',
-      hoverGlowClass: 'shadow-[0_0_10px_rgba(234,179,8,0.4)] hover:shadow-[0_0_16px_rgba(234,179,8,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
+      // MODIFIED: Corrected to a blue glow in light mode
+      hoverGlowClass: 'shadow-[0_0_10px_rgba(59,130,246,0.4)] hover:shadow-[0_0_16px_rgba(59,130,246,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
     },
     {
       label: 'Light',
@@ -61,6 +60,7 @@ export const ThemeToggle: React.FC = () => {
       color: 'text-yellow-500',
       hoverAnim: 'group-hover:rotate-180',
       activeClass: 'bg-yellow-500/30 text-yellow-700 dark:text-yellow-300 shadow-md border border-yellow-300/50 dark:border-yellow-500/50 dark:shadow-[0_0_10px_rgba(234,179,8,0.3)]',
+      // This was already correct (yellow glow)
       hoverGlowClass: 'shadow-[0_0_10px_rgba(234,179,8,0.4)] hover:shadow-[0_0_16px_rgba(234,179,8,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
     },
     {
@@ -71,7 +71,8 @@ export const ThemeToggle: React.FC = () => {
       color: 'text-blue-500 dark:text-blue-400',
       hoverAnim: 'group-hover:rotate-[360deg]',
       activeClass: 'bg-blue-500/30 text-blue-700 dark:text-blue-300 shadow-md border border-blue-300/50 dark:border-blue-500/50 dark:shadow-[0_0_10px_rgba(59,130,246,0.3)]',
-      hoverGlowClass: 'shadow-[0_0_10px_rgba(234,179,8,0.4)] hover:shadow-[0_0_16px_rgba(234,179,8,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
+      // MODIFIED: Corrected to a blue glow in light mode
+      hoverGlowClass: 'shadow-[0_0_10px_rgba(59,130,246,0.4)] hover:shadow-[0_0_16px_rgba(59,130,246,0.5)] dark:shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:hover:shadow-[0_0_12px_rgba(59,130,246,0.4)]'
     }
   ];
 
@@ -94,7 +95,6 @@ export const ThemeToggle: React.FC = () => {
           isScrolled ? 'w-6 h-6' : 'w-5 h-5 sm:w-6 sm:h-6'
         } ${showOptions ? 'rotate-[360deg]' : 'rotate-0'}`}>
           <Monitor
-            // MODIFIED: Color is now dynamic based on actual system theme
             className={`absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
               isSystemActive ? 'opacity-100 scale-100 rotate-0 group-hover:scale-110' : 'opacity-0 scale-50 rotate-[-90deg]'
             } ${isSystemActive && (isDark ? 'text-blue-400' : 'text-yellow-500')}`}
@@ -130,7 +130,6 @@ export const ThemeToggle: React.FC = () => {
             <button
               key={option.value}
               onClick={() => handleThemeSelect(option.value)}
-              // MODIFIED: Replaced button styling with the advanced glow effect
               className={`group w-full flex items-center gap-3 px-4 py-3 transition-[transform,box-shadow,background-color,border-radius] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] backdrop-blur-sm transform origin-center hover:scale-105 hover:-translate-y-1 hover:rounded-xl text-sm font-medium ${roundingClass} ${
                 option.active
                   ? option.activeClass
@@ -154,4 +153,4 @@ export const ThemeToggle: React.FC = () => {
       </div>
     </div>
   );
-};3333
+};
