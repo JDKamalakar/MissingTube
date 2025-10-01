@@ -12,15 +12,27 @@ interface TooltipProps {
   subtitle?: string;
   className?: string;
   position?: 'top' | 'bottom';
+  // MODIFIED: Added align and offsetX props
+  align?: 'start' | 'center' | 'end';
+  offsetX?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top' }) => {
+const Tooltip: React.FC<TooltipProps> = ({ children, title, subtitle, className, position = 'top', align = 'center', offsetX = false }) => {
   const positionClasses = position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2';
   
+  // MODIFIED: Added alignment and offset logic
+  const alignClasses = {
+    start: 'left-0',
+    center: 'left-1/2 -translate-x-1/2',
+    end: 'right-0',
+  }[align];
+
+  const offsetClass = offsetX ? (align === 'end' ? 'translate-x-[25%]' : '-translate-x-[25%]') : '';
+
   return (
     <div className={`group/tooltip relative flex ${className}`}>
       {children}
-      <div className={`absolute ${positionClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-start opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-300 pointer-events-none z-20`}>
+      <div className={`absolute ${positionClasses} ${alignClasses} w-max max-w-xs hidden group-hover/tooltip:flex flex-col items-center opacity-0 group-hover/tooltip:opacity-100 transition-all duration-300 pointer-events-none z-20 group-hover/tooltip:translate-y-0 ${offsetClass}`}>
         <div className="bg-primary/30 dark:bg-black/30 text-white backdrop-blur-md rounded-xl shadow-2xl shadow-primary/30 px-4 py-2 text-left">
           <p className="font-semibold text-sm whitespace-pre-wrap">{title}</p>
           {subtitle && <p className="opacity-80 text-xs">{subtitle}</p>}
@@ -134,13 +146,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
 
   return (
     <>
-      <div 
+      <div
         data-filter-container
         className={`bg-white/30 dark:bg-black/40 backdrop-blur-heavy rounded-3xl shadow-xl border border-white/30 dark:border-white/20 elevation-2 transition-all duration-300 hover:scale-105 active:scale-95${
           isAnimating ? 'opacity-50 scale-95' : 'opacity-100 scale-100'
         }`}
       >
-        {/* MODIFICATION: Added rounded-3xl to fix corner glitch */}
         <div className="overflow-x-auto rounded-3xl">
           <table className="w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
             <thead className="bg-white/30 dark:bg-black/40 backdrop-blur-heavy">
@@ -227,7 +238,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                     } ${index % 2 === 0 ? 'bg-white/5 dark:bg-black/5' : 'bg-white/10 dark:bg-black/10'}`}
                   >
                     <td className={`sm:px-8 px-6 py-4 whitespace-nowrap ${isLastRow ? 'rounded-bl-3xl' : ''}`}>
-                      {/* MODIFICATION: Adjusted rounding for mobile view */}
                       <div className="flex p-3 bg-primary/20 dark:bg-primary-800/20 text-white backdrop-blur-lg rounded-lg sm:rounded-2xl shadow-md transition-all duration-300 hover:scale-[1.08] items-center justify-center active:scale-95 hover:shadow-lg group">
                         {video.index}
                       </div>
@@ -253,7 +263,6 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           </div>
                         </div>
                         {video.unavailable && (
-                          // MODIFICATION: Positioned to bottom-right, removed tooltip
                           <div className="absolute bottom-1 right-1 z-10 sm:hidden">
                             <div className="flex-shrink-0 bg-error text-white rounded-lg p-1 shadow-md animate-pulse">
                               <AlertTriangle className="w-4 h-4" />
@@ -270,12 +279,12 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                           </div>
                         )}
                         <Tooltip title={video.title} subtitle="Tap for Description" className="flex-1">
-                            <div
-                              className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium text-left`}
-                              onClick={(e) => handleShowDescription(video, e)}
-                            >
-                              {video.title}
-                            </div>
+                          <div
+                            className={`cursor-pointer hover:text-white dark:hover:text-primary transition-colors duration-225 line-clamp-2 font-medium text-left`}
+                            onClick={(e) => handleShowDescription(video, e)}
+                          >
+                            {video.title}
+                          </div>
                         </Tooltip>
                       </div>
                     </td>
@@ -299,18 +308,20 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
                             onClick={() => handleVideoClick(video.videoId)}
                             className="flex p-1.5 sm:p-3 bg-primary-container/20 backdrop-blur-lg rounded-xl rounded-r-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                           >
-                            <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" /> 
+                            <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 text-on-primary-container group-hover:animate-bounce duration-2s" />
                           </button>
                         </Tooltip>
-                        <Tooltip title="Search Actions">
+                        {/* MODIFIED: Added align and offsetX props */}
+                        <Tooltip title="Search Actions" align="end" offsetX={true}>
                           <button
                             onClick={(e) => handleSearchActions(video, e)}
                             className="flex p-1.5 sm:p-3 bg-secondary-container/20 backdrop-blur-lg rounded-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
                           >
-                            <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" /> 
+                            <Search className="w-3 h-3 sm:w-5 sm:h-5 text-on-secondary-container group-hover:rotate-[360deg] transition-transform duration-500" />
                           </button>
                         </Tooltip>
-                        <Tooltip title="View Description">
+                        {/* MODIFIED: Added align and offsetX props */}
+                        <Tooltip title="View Description" align="end" offsetX={true}>
                           <button
                             onClick={(e) => handleShowDescription(video, e)}
                             className="flex p-1.5 sm:p-3 bg-tertiary-container/20 backdrop-blur-lg rounded-xl rounded-l-lg shadow-lg transition-all duration-300 hover:scale-[1.10] items-center justify-center active:scale-95 group touch-target"
@@ -350,4 +361,4 @@ export const VideoTable: React.FC<VideoTableProps> = ({ videos, filterMode = 'al
       )}
     </>
   );
-};11111
+};
