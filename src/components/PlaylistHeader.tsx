@@ -7,9 +7,9 @@ interface PlaylistHeaderProps {
   unavailableCount?: number;
 }
 
-export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ 
-  playlistInfo, 
-  unavailableCount = 0 
+export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
+  playlistInfo,
+  unavailableCount = 0
 }) => {
   return (
     <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out">
@@ -27,7 +27,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       <div className="relative z-10 p-3 sm:p-6 lg:p-8 text-white mobile-card-padding">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6">
           
-          <div className="flex-shrink-0 w-full sm:w-auto"> 
+          <div className="flex-shrink-0 w-full sm:w-auto">
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
@@ -36,20 +36,22 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
           </div>
           
           <div className="flex-1 min-w-0 text-center sm:text-left w-full">
-            <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-3 mb-2 flex-wrap">
+            {/* MODIFICATION: Added 'group' to this parent div */}
+            <div className="group flex items-center justify-center sm:justify-start gap-1 sm:gap-3 mb-2 flex-wrap">
               
               <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-white line-clamp-2 sm:line-clamp-1 break-words">
                 {playlistInfo.title}
               </h1>
               
-              {/* MODIFIED: Replaced bounce animation with animate-wiggle */}
               <a
                 href={`https://www.youtube.com/playlist?list=${playlistInfo.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-1 sm:p-1.5 bg-white/20 hover:bg-white/30 rounded-md sm:rounded-lg transition-all duration-500 ease-in-out group-hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-wiggle"
+                // MODIFICATION: Removed 'group' from here as it's now on the parent
+                className="p-1 sm:p-1.5 bg-white/20 hover:bg-white/30 rounded-md sm:rounded-lg transition-all duration-500 ease-in-out group-hover:scale-110 active:scale-95 touch-target flex-shrink-0 flex items-center justify-center animate-wiggle"
               >
-                <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 transition-transform duration-500 ease-in-out group-hover:rotate-[360deg]" /> 
+                {/* This icon will now rotate when the parent 'group' is hovered */}
+                <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 transition-transform duration-500 ease-in-out group-hover:rotate-[360deg]" />
               </a>
             </div>
             
@@ -80,4 +82,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};1111
+};
