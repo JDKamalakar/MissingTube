@@ -12,12 +12,12 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   unavailableCount = 0
 }) => {
   return (
-    // FIX 1: Added 'isolate' to create a new stacking context and 'transform-gpu' to hint at hardware acceleration for the main card.
-    <div className="relative isolate overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out transform-gpu">
+    // FIX 1: Removed 'isolate' and 'transform-gpu'. Added 'will-change-transform' for smoother animation.
+    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out will-change-transform">
 
-      {/* FIX 2: Added matching border-radius and 'transform-gpu'. This is the most effective fix for the sharp corner bug. */}
+      {/* FIX 2: Removed the independent 'group-hover:scale-[1.05]' animation. This is the key change to prevent rendering conflicts. */}
       <div
-        className="absolute inset-0 bg-cover bg-center group-hover:scale-[1.05] transition-transform duration-500 ease-in-out transform-gpu rounded-2xl sm:rounded-3xl"
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-in-out"
         style={{
           backgroundImage: `url(${playlistInfo.thumbnail})`,
         }}
@@ -30,11 +30,11 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6">
 
           <div className="flex-shrink-0 w-full sm:w-auto">
-            {/* FIX 3: Added 'transform-gpu' to the thumbnail to ensure its scaling animation is smooth. */}
+            {/* FIX 3: Replaced 'transform-gpu' with 'will-change-transform'. */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out hover:scale-110 transform-gpu mx-auto sm:mx-0"
+              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out hover:scale-110 will-change-transform mx-auto sm:mx-0"
             />
           </div>
 
@@ -59,14 +59,14 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
 
-              {/* FIX 4: Added 'transform-gpu' to the count badges for smoother animations. */}
-              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg transform-gpu">
+              {/* FIX 4: Replaced 'transform-gpu' with 'will-change-transform'. */}
+              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg will-change-transform">
                 <ListVideo className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 {playlistInfo.videoCount} videos
               </span>
 
               {unavailableCount > 0 && (
-                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg transform-gpu">
+                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg will-change-transform">
                   <VideoOff className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                   {unavailableCount} unavailable
                 </span>
@@ -83,4 +83,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};4444
+};
