@@ -12,10 +12,12 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   unavailableCount = 0
 }) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out">
+    // FIX 1: Added 'isolate' to create a new stacking context and 'transform-gpu' to hint at hardware acceleration for the main card.
+    <div className="relative isolate overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out transform-gpu">
 
+      {/* FIX 2: Added matching border-radius and 'transform-gpu'. This is the most effective fix for the sharp corner bug. */}
       <div
-        className="absolute inset-0 bg-cover bg-center group-hover:scale-[1.05] transition-transform duration-500 ease-in-out"
+        className="absolute inset-0 bg-cover bg-center group-hover:scale-[1.05] transition-transform duration-500 ease-in-out transform-gpu rounded-2xl sm:rounded-3xl"
         style={{
           backgroundImage: `url(${playlistInfo.thumbnail})`,
         }}
@@ -28,11 +30,11 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6">
 
           <div className="flex-shrink-0 w-full sm:w-auto">
-            {/* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */}
+            {/* FIX 3: Added 'transform-gpu' to the thumbnail to ensure its scaling animation is smooth. */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out hover:scale-110 mx-auto sm:mx-0"
+              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out hover:scale-110 transform-gpu mx-auto sm:mx-0"
             />
           </div>
 
@@ -57,15 +59,14 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
 
-              {/* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */}
-              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
+              {/* FIX 4: Added 'transform-gpu' to the count badges for smoother animations. */}
+              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg transform-gpu">
                 <ListVideo className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 {playlistInfo.videoCount} videos
               </span>
 
               {unavailableCount > 0 && (
-                /* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */
-                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
+                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg transform-gpu">
                   <VideoOff className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                   {unavailableCount} unavailable
                 </span>
@@ -82,4 +83,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};5555
+};
