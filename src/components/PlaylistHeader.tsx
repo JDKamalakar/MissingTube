@@ -28,11 +28,11 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6">
 
           <div className="flex-shrink-0 w-full sm:w-auto">
-            {/* THIS LINE ADDS THE DIRECT HOVER EFFECT TO THE THUMBNAIL */}
+            {/* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
-              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out group-hover:scale-105 hover:scale-110 mx-auto sm:mx-0"
+              className="w-40 sm:w-48 aspect-video sm:w-32 sm:h-32 object-cover rounded-lg sm:rounded-2xl shadow-lg border-2 border-white/20 transition-transform duration-500 ease-in-out hover:scale-110 mx-auto sm:mx-0"
             />
           </div>
 
@@ -56,16 +56,16 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             </p>
 
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
-              
-              {/* THIS LINE ADDS THE DIRECT HOVER EFFECT TO THE VIDEO COUNT */}
-              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out group-hover:scale-105 hover:scale-110 hover:shadow-lg">
+
+              {/* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */}
+              <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
                 <ListVideo className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 {playlistInfo.videoCount} videos
               </span>
 
               {unavailableCount > 0 && (
-                /* THIS LINE ADDS THE DIRECT HOVER EFFECT TO THE UNAVAILABLE COUNT */
-                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out group-hover:scale-105 hover:scale-110 hover:shadow-lg">
+                /* MODIFICATION: Removed 'group-hover:scale-105' to prevent conflict */
+                <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg">
                   <VideoOff className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                   {unavailableCount} unavailable
                 </span>
@@ -82,4 +82,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};5555
+};
