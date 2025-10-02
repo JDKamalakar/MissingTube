@@ -4,7 +4,11 @@ const STORAGE_KEYS = {
   API_KEY: 'youtube_api_key_encrypted',
   PLAYLISTS: 'stored_playlists',
   LAST_PLAYLIST_URL: 'last_playlist_url',
+  // NEW KEY for temporary sample history
+  IS_SAMPLE_ACTIVE: 'is_sample_history_active',
 } as const;
+
+// --- API Key Functions (Unchanged) ---
 
 export const saveApiKey = (encryptedKey: string): void => {
   localStorage.setItem(STORAGE_KEYS.API_KEY, encryptedKey);
@@ -18,6 +22,8 @@ export const clearApiKey = (): void => {
   localStorage.removeItem(STORAGE_KEYS.API_KEY);
 };
 
+// --- Playlist Functions (Unchanged) ---
+
 export const savePlaylists = (playlists: StoredPlaylist[]): void => {
   localStorage.setItem(STORAGE_KEYS.PLAYLISTS, JSON.stringify(playlists));
 };
@@ -27,13 +33,36 @@ export const getPlaylists = (): StoredPlaylist[] => {
   return stored ? JSON.parse(stored) : [];
 };
 
+// --- Last Playlist URL Functions (MODIFIED for Sample Logic) ---
+
+// Function to save a URL to the REAL history and clear the sample flag
 export const saveLastPlaylistUrl = (url: string): void => {
+  // Clear the sample flag when a real URL is saved
+  localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
   localStorage.setItem(STORAGE_KEYS.LAST_PLAYLIST_URL, url);
 };
 
+// Function to get the last URL (Real or Sample indicator)
 export const getLastPlaylistUrl = (): string | null => {
+  // If sample history is active, return the 'test_test' identifier
+  if (localStorage.getItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE)) {
+    return 'test_test'; 
+  }
+  // Otherwise, return the real history item
   return localStorage.getItem(STORAGE_KEYS.LAST_PLAYLIST_URL);
 };
+
+// --- NEW Sample History Control Functions ---
+
+export const activateSampleHistory = (): void => {
+  localStorage.setItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE, 'true');
+};
+
+export const deactivateSampleHistory = (): void => {
+  localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
+};
+
+// --- Backup & Restore Functions (Unchanged) ---
 
 export const createBackup = (currentVideos: any[] = [], currentPlaylistInfo: any = null): BackupData => {
   const playlists = getPlaylists();
@@ -47,7 +76,7 @@ export const createBackup = (currentVideos: any[] = [], currentPlaylistInfo: any
       thumbnail: currentPlaylistInfo.thumbnail,
       lastAccessed: new Date().toISOString(),
       videoCount: currentVideos.length,
-      videos: currentVideos, // Include the latest video data
+      videos: currentVideos, 
     };
     
     if (existingIndex >= 0) {
@@ -76,7 +105,7 @@ export const downloadBackup = (currentVideos: any[] = [], currentPlaylistInfo: a
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `youtube-playlists-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `Youtubelists-backup-${new Date().toISOString().split('T')[0]}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -101,4 +130,4 @@ export const restoreFromBackup = (file: File): Promise<BackupData> => {
     reader.onerror = () => reject(new Error('Failed to read backup file'));
     reader.readAsText(file);
   });
-};11111
+};
