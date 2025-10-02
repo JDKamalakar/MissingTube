@@ -101,4 +101,4 @@ export const restoreFromBackup = (file: File): Promise<BackupData> => {
     reader.onerror = () => reject(new Error('Failed to read backup file'));
     reader.readAsText(file);
   });
-};
+};11111
