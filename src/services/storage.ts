@@ -33,13 +33,13 @@ export const getPlaylists = (): StoredPlaylist[] => {
   return stored ? JSON.parse(stored) : [];
 };
 
-// --- Last Playlist URL Functions (MODIFIED for Sample Logic) ---
+// --- Last Playlist URL Functions (FIXED/MODIFIED) ---
 
 /**
  * Saves a URL to the REAL history and clears the temporary sample history flag.
  */
 export const saveLastPlaylistUrl = (url: string): void => {
-  // Clear the sample flag when a real URL is saved, ensuring sample history is forgotten
+  // Clears the sample flag
   localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
   localStorage.setItem(STORAGE_KEYS.LAST_PLAYLIST_URL, url);
 };
@@ -48,15 +48,15 @@ export const saveLastPlaylistUrl = (url: string): void => {
  * Gets the last URL. Returns 'test_test' if sample history is active.
  */
 export const getLastPlaylistUrl = (): string | null => {
-  // If sample history is active, return the 'test_test' identifier
+  // Returns the sample indicator if active
   if (localStorage.getItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE)) {
     return 'test_test'; 
   }
-  // Otherwise, return the real history item
+  // Otherwise, returns the real history item
   return localStorage.getItem(STORAGE_KEYS.LAST_PLAYLIST_URL);
 };
 
-// --- NEW Sample History Control Functions (The fix for your error) ---
+// --- NEW Sample History Control Functions (The functions that were missing the export) ---
 
 /**
  * Activates the flag indicating that temporary sample data is in use.
@@ -72,7 +72,7 @@ export const deactivateSampleHistory = (): void => {
   localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
 };
 
-// --- Backup & Restore Functions ---
+// --- Backup & Restore Functions (Your original code) ---
 
 export const createBackup = (currentVideos: any[] = [], currentPlaylistInfo: any = null): BackupData => {
   const playlists = getPlaylists();
