@@ -12,7 +12,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   unavailableCount = 0
 }) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in group hover:scale-[1.02] transition-transform duration-500 ease-in-out">
+    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl animate-fade-in hover:scale-[1.02] transition-transform duration-500 ease-in-out">
 
       <div
         className="absolute inset-0 bg-cover bg-center group-hover:scale-[1.05] transition-transform duration-500 ease-in-out"
