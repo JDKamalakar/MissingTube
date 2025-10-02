@@ -1,37 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
-import { extractPlaylistId, generateSampleUrl } from '../utils/youtube';
-import { 
-  saveLastPlaylistUrl, 
-  getLastPlaylistUrl, 
-  activateSampleHistory, 
-  deactivateSampleHistory 
-} from '../utils/storage';
+import { Search, Download } from 'lucide-react';
+import { extractPlaylistId } from '../utils/youtube';
+import { saveLastPlaylistUrl, getLastPlaylistUrl } from '../utils/storage';
 
 interface PlaylistFetcherProps {
   onFetch: (playlistId: string) => void;
   isLoading: boolean;
-  onLoadSampleHistory: (entries: string[]) => void; // NEW PROP for samples
 }
 
-export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ 
-  onFetch, 
-  isLoading, 
-  onLoadSampleHistory // Destructure new prop
-}) => {
+export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoading }) => {
   const [url, setUrl] = useState('');
 
-  // 1. EFFECT: Load last URL and CLEAR sample history on component mount
   useEffect(() => {
-    // On fresh load, deactivate the sample flag to remove temporary history
-    deactivateSampleHistory(); 
-    
-    // Load real history (or null if none)
     const lastUrl = getLastPlaylistUrl();
     if (lastUrl) {
       setUrl(lastUrl);
     }
-    // Note: We intentionally don't set a default URL here.
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -40,42 +24,31 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({
     if (!trimmedUrl) return;
 
     // --- MODIFICATION START ---
+    // Check for the special 'test_test' string
     if (trimmedUrl.toLowerCase() === 'test_test') {
-      // 1. Activate the sample flag in storage
-      activateSampleHistory();
-
-      // 2. Generate 20 sample history URLs
-      const sampleEntries = Array.from({ length: 20 }, (_, i) => 
-        generateSampleUrl(i + 1)
-      );
-
-      // 3. Inform the parent component to load the sample data
-      onLoadSampleHistory(sampleEntries); // Use the new prop
-      
-      // 4. Also call onFetch with the special identifier for the main analysis 
-      onFetch('test_test'); 
-      return; 
+      // Call onFetch with a special identifier for the parent component to handle
+      onFetch('test_test');
+      return; // Exit the function to prevent normal URL processing
     }
     // --- MODIFICATION END ---
 
-    // Normal URL processing:
-    deactivateSampleHistory(); // Ensure sample flag is removed on real submission
     const playlistId = extractPlaylistId(trimmedUrl);
     saveLastPlaylistUrl(trimmedUrl);
     onFetch(playlistId);
   };
 
   return (
-    // ... (Your existing JSX code remains here)
+    // MODIFICATION: Removed the 'group' class from this main container div.
     <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-3 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in hover:scale-[1.02] transition-transform duration-300 mobile-card-padding">
       <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-6">
         <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6">
+          {/* This 'group' correctly controls the header icon's rotation */}
           <div className="p-2 sm:p-3 bg-primary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-[1.2] active:scale-[0.9] group">
             <Search className="w-4 h-4 sm:w-6 sm:h-6 text-on-primary-container transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
           </div>
           <div>
             <h2 className="text-base sm:text-xl font-semibold text-on-surface">Analyze Playlist</h2>
-            <p className="text-on-surface-variant text-xs sm:text-sm">Enter a YouTube playlist URL or **'test_test'** for sample data</p>
+            <p className="text-on-surface-variant text-xs sm:text-sm">Enter a YouTube playlist URL or 'test_test' for sample data</p>
           </div>
         </div>
 
@@ -90,12 +63,12 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({
           />
         </div>
 
+        {/* This 'group' correctly controls the button icon's rotation */}
         <button
           type="submit"
           disabled={isLoading || !url.trim()}
           className="w-full py-2 sm:py-3 h-12 sm:h-16 bg-primary text-on-primary rounded-xl sm:rounded-2xl font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-225 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 sm:gap-3 mobile-button touch-target text-sm sm:text-base mobile-button-compact group"
         >
-          {/* ... (Spinner and button text logic) ... */}
           {isLoading ? (
             <>
               <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></div>
