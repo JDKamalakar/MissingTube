@@ -4,11 +4,7 @@ const STORAGE_KEYS = {
   API_KEY: 'youtube_api_key_encrypted',
   PLAYLISTS: 'stored_playlists',
   LAST_PLAYLIST_URL: 'last_playlist_url',
-  // NEW KEY for temporary sample history flag
-  IS_SAMPLE_ACTIVE: 'is_sample_history_active',
 } as const;
-
-// --- API Key Functions ---
 
 export const saveApiKey = (encryptedKey: string): void => {
   localStorage.setItem(STORAGE_KEYS.API_KEY, encryptedKey);
@@ -22,8 +18,6 @@ export const clearApiKey = (): void => {
   localStorage.removeItem(STORAGE_KEYS.API_KEY);
 };
 
-// --- Playlist Functions ---
-
 export const savePlaylists = (playlists: StoredPlaylist[]): void => {
   localStorage.setItem(STORAGE_KEYS.PLAYLISTS, JSON.stringify(playlists));
 };
@@ -33,46 +27,13 @@ export const getPlaylists = (): StoredPlaylist[] => {
   return stored ? JSON.parse(stored) : [];
 };
 
-// --- Last Playlist URL Functions (FIXED/MODIFIED) ---
-
-/**
- * Saves a URL to the REAL history and clears the temporary sample history flag.
- */
 export const saveLastPlaylistUrl = (url: string): void => {
-  // Clears the sample flag
-  localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
   localStorage.setItem(STORAGE_KEYS.LAST_PLAYLIST_URL, url);
 };
 
-/**
- * Gets the last URL. Returns 'test_test' if sample history is active.
- */
 export const getLastPlaylistUrl = (): string | null => {
-  // Returns the sample indicator if active
-  if (localStorage.getItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE)) {
-    return 'test_test'; 
-  }
-  // Otherwise, returns the real history item
   return localStorage.getItem(STORAGE_KEYS.LAST_PLAYLIST_URL);
 };
-
-// --- NEW Sample History Control Functions (The functions that were missing the export) ---
-
-/**
- * Activates the flag indicating that temporary sample data is in use.
- */
-export const activateSampleHistory = (): void => {
-  localStorage.setItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE, 'true');
-};
-
-/**
- * Deactivates and removes the flag, ensuring no sample data is loaded on the next refresh.
- */
-export const deactivateSampleHistory = (): void => {
-  localStorage.removeItem(STORAGE_KEYS.IS_SAMPLE_ACTIVE);
-};
-
-// --- Backup & Restore Functions (Your original code) ---
 
 export const createBackup = (currentVideos: any[] = [], currentPlaylistInfo: any = null): BackupData => {
   const playlists = getPlaylists();
@@ -115,7 +76,7 @@ export const downloadBackup = (currentVideos: any[] = [], currentPlaylistInfo: a
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Youtubelists-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `youtube-playlists-backup-${new Date().toISOString().split('T')[0]}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
