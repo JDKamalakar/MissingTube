@@ -1,6 +1,5 @@
 import React from 'react';
 import { PlaylistInfo } from '../types';
-// MODIFICATION: Imported new icons for the counts
 import { ExternalLink, ListVideo, VideoOff } from 'lucide-react';
 
 interface PlaylistHeaderProps {
@@ -29,7 +28,6 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-6">
 
           <div className="flex-shrink-0 w-full sm:w-auto">
-            {/* MODIFICATION: Added an individual hover scale effect */}
             <img
               src={playlistInfo.thumbnail}
               alt={playlistInfo.title}
@@ -58,14 +56,12 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-4 text-xs sm:text-sm text-white/70">
 
-              {/* MODIFICATION: Added ListVideo icon and enhanced the hover effect */}
               <span className="flex items-center gap-1.5 sm:gap-2 bg-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg transition-transform duration-300 ease-in-out group-hover:scale-105 hover:scale-110 hover:shadow-lg">
                 <ListVideo className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 {playlistInfo.videoCount} videos
               </span>
 
               {unavailableCount > 0 && (
-                /* MODIFICATION: Added VideoOff icon and enhanced the hover effect */
                 <span className="flex items-center gap-1.5 sm:gap-2 bg-red-500/80 px-2 sm:px-3 py-1 sm:py-1.5 rounded-md sm:rounded-lg animate-pulse transition-transform duration-300 ease-in-out group-hover:scale-105 hover:scale-110 hover:shadow-lg">
                   <VideoOff className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                   {unavailableCount} unavailable
@@ -83,4 +79,4 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       </div>
     </div>
   );
-};44444
+};
