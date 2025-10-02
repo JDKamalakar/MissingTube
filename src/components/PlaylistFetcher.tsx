@@ -38,9 +38,11 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
   };
 
   return (
-    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-3 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in group hover:scale-[1.02] transition-transform duration-300 mobile-card-padding">
+    // MODIFICATION: Removed the 'group' class from this main container div.
+    <div className="bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-2xl p-3 sm:p-6 lg:p-8 shadow-xl border border-gray-300/30 dark:border-gray-700/30 elevation-2 animate-fade-in hover:scale-[1.02] transition-transform duration-300 mobile-card-padding">
       <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-6">
         <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-6">
+          {/* This 'group' correctly controls the header icon's rotation */}
           <div className="p-2 sm:p-3 bg-primary-container rounded-xl sm:rounded-2xl transition-transform duration-225 hover:scale-[1.2] active:scale-[0.9] group">
             <Search className="w-4 h-4 sm:w-6 sm:h-6 text-on-primary-container transition-transform duration-1000 group-hover:[transform:rotate(-360deg)]" />
           </div>
@@ -61,6 +63,7 @@ export const PlaylistFetcher: React.FC<PlaylistFetcherProps> = ({ onFetch, isLoa
           />
         </div>
 
+        {/* This 'group' correctly controls the button icon's rotation */}
         <button
           type="submit"
           disabled={isLoading || !url.trim()}

@@ -165,6 +165,15 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
       />
 
       <div className="relative bg-white/20 dark:bg-gray-800/20 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-300/30 dark:border-gray-700/30 w-full max-w-md animate-modal-enter elevation-3 overflow-hidden">
+        {/* Moving Aurora Background Animation */}
+        <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-cyan-400/15 to-purple-500/20 animate-pulse"></div>
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-conic from-blue-400/30 via-cyan-300/20 to-blue-600/30 animate-spin" style={{ animationDuration: '20s' }}></div>
+          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-conic from-cyan-400/25 via-blue-300/15 to-purple-400/25 animate-spin" style={{ animationDuration: '25s', animationDirection: 'reverse' }}></div>
+          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-gradient-radial from-blue-400/40 via-cyan-300/20 to-transparent animate-pulse" style={{ animationDuration: '3s' }}></div>
+          <div className="absolute bottom-1/4 right-1/4 w-1/3 h-1/3 bg-gradient-radial from-cyan-400/35 via-blue-300/15 to-transparent animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }}></div>
+        </div>
+
         {showFlairs && (
           <>
             <div className="absolute -top-4 -left-4 w-4 h-4 bg-yellow-300 rounded-full animate-pulse opacity-70 transition-opacity duration-500" style={{ animationDelay: '0.1s' }}></div>
@@ -178,18 +187,20 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
           </>
         )}
 
-        <div className="relative p-8 text-center">
+        <div className="relative p-8 text-center z-10">
           <div className="relative mx-auto mb-6">
-            <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20">
+            <div className="w-20 h-20 bg-white/20 dark:bg-black/20 backdrop-blur-lg rounded-3xl flex items-center justify-center transform rotate-12 transition-all duration-300 hover:scale-110 hover:rotate-[20deg] shadow-lg border border-white/30 dark:border-white/20 relative overflow-hidden">
+              {/* Icon Aurora Glow */}
+              <div className="absolute inset-0 bg-gradient-conic from-blue-400/50 via-cyan-300/30 to-blue-500/50 animate-spin rounded-3xl" style={{ animationDuration: '8s' }}></div>
               <img
-                src="/assets/Icon_Light_NB.png"
+                src="/assets/Icon_Light_NB.png" 
                 alt="MissingTube"
-                className="w-12 h-12 object-contain dark:hidden transform -rotate-12"
+                className="w-12 h-12 object-contain dark:hidden transform -rotate-12 relative z-10"
               />
               <img
                 src="/assets/Icon_Dark_NB.png"
                 alt="MissingTube"
-                className="w-12 h-12 object-contain hidden dark:block transform -rotate-12"
+                className="w-12 h-12 object-contain hidden dark:block transform -rotate-12 relative z-10"
               />
             </div>
             {showFlairs && (
@@ -204,11 +215,13 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
             )}
           </div>
 
-          <div className="bg-white/10 rounded-2xl p-4 mb-6 border border-gray-300/30 dark:border-gray-700/30 transition-transform duration-200 hover:bg-white/20 hover:scale-[1.03]">
+          <div className="bg-white/10 rounded-2xl p-4 mb-6 border border-gray-300/30 dark:border-gray-700/30 transition-transform duration-200 hover:bg-white/20 hover:scale-[1.03] relative overflow-hidden">
+            {/* Text Card Aurora */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 via-cyan-300/5 to-blue-500/10 animate-pulse rounded-2xl"></div>
             <h2 className="text-2xl font-bold text-on-surface mb-2">
               Install MissingTube
             </h2>
-            <p className="text-on-surface-variant text-sm leading-relaxed">
+            <p className="text-on-surface-variant text-sm leading-relaxed relative z-10">
               Get the full MissingTube experience with our Progressive Web App.
             </p>
           </div>
@@ -219,12 +232,14 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
               return (
                 <div
                   key={index}
-                  className="flex items-center gap-3 p-3 bg-white/10 rounded-2xl transition-all duration-200 hover:bg-white/20 hover:scale-[1.03]"
+                  className="flex items-center gap-3 p-3 bg-white/10 rounded-2xl transition-all duration-200 hover:bg-white/20 hover:scale-[1.03] relative overflow-hidden"
                 >
+                  {/* Feature Card Aurora */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/8 via-blue-300/4 to-cyan-500/8 animate-pulse rounded-2xl" style={{ animationDelay: `${index * 0.5}s` }}></div>
                   <div className="p-2 bg-primary/20 rounded-xl">
-                    <Icon className="w-4 h-4 text-primary" />
+                    <Icon className="w-4 h-4 text-primary relative z-10" />
                   </div>
-                  <span className="text-on-surface text-sm font-medium">{feature.text}</span>
+                  <span className="text-on-surface text-sm font-medium relative z-10">{feature.text}</span>
                 </div>
               );
             })}
@@ -256,28 +271,33 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
           ) : installAvailable && currentDeferredPrompt ? (
             <div className="text-center">
               <div className="bg-primary-container/20 border border-primary/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03] relative overflow-hidden">
+                {/* Install Section Aurora */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-cyan-400/10 to-blue-600/15 animate-pulse rounded-2xl"></div>
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-conic from-blue-400/20 via-transparent to-cyan-400/20 animate-spin rounded-2xl" style={{ animationDuration: '15s' }}></div>
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Download className="w-5 h-5 text-on-primary-container" />
-                  <span className="font-semibold text-on-primary-container">Install & Get App</span>
+                  <Download className="w-5 h-5 text-on-primary-container relative z-10" />
+                  <span className="font-semibold text-on-primary-container relative z-10">Install & Get App</span>
                 </div>
-                <p className="text-sm text-on-primary-container mb-4">
+                <p className="text-sm text-on-primary-container mb-4 relative z-10">
                   Install MissingTube as a native app for the best experience.
                 </p>
                 <button
                   onClick={handleInstallClick}
                   disabled={isInstalling}
-                  className="relative w-full flex items-center justify-center gap-3 py-4 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                  className="relative w-full flex items-center justify-center gap-3 py-4 bg-primary text-on-primary rounded-2xl font-semibold transition-all duration-200 hover:bg-primary/90 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden z-10"
                 >
+                  {/* Button Aurora Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 via-cyan-300/20 to-blue-500/30 animate-pulse rounded-2xl"></div>
                   {isInstalling ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin"></div>
-                      Installing...
+                      <div className="w-5 h-5 border-2 border-on-primary/30 border-t-on-primary rounded-full animate-spin relative z-10"></div>
+                      <span className="relative z-10">Installing...</span>
                     </>
                   ) : (
                     <>
                       {/* Animate download icon */}
-                      <Download className="w-5 h-5 animate-bounce-subtle" /> 
-                      Install App
+                      <Download className="w-5 h-5 animate-bounce-subtle relative z-10" /> 
+                      <span className="relative z-10">Install App</span>
                     </>
                   )}
                 </button>
@@ -316,12 +336,14 @@ export const InstallPopup: React.FC<InstallPopupProps> = ({ onClose, deferredPro
             </div>
           ) : (
             <div className="text-center">
-              <div className="bg-secondary-container/20 border border-secondary/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03]">
+              <div className="bg-secondary-container/20 border border-secondary/30 rounded-2xl p-4 mb-4 transition-transform duration-200 hover:scale-[1.03] relative overflow-hidden">
+                {/* Manual Install Aurora */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/12 via-blue-400/8 to-cyan-600/12 animate-pulse rounded-2xl"></div>
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <DeviceIcon className="w-5 h-5 text-on-secondary-container" />
-                  <span className="font-semibold text-on-secondary-container">Manual Installation</span>
+                  <DeviceIcon className="w-5 h-5 text-on-secondary-container relative z-10" />
+                  <span className="font-semibold text-on-secondary-container relative z-10">Manual Installation</span>
                 </div>
-                <div className="text-sm text-on-secondary-container text-left space-y-2">
+                <div className="text-sm text-on-secondary-container text-left space-y-2 relative z-10">
                   {isChrome && (
                     <p><strong>Chrome:</strong> Look for the install icon in the address bar, or go to Settings → Install MissingTube</p>
                   )}

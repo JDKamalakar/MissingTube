@@ -10,6 +10,7 @@
   "videos": [
     {
       "id": "sample_video_1",
+      "index": 1,
       "title": "Sample Video - Working",
       "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
       "duration": "PT3M32S",  
@@ -22,6 +23,7 @@
     },
     {
       "id": "sample_video_2",
+      "index": 2,
       "title": "[Private video]",
       "thumbnail": "",
       "duration": "PT0S",  
@@ -34,6 +36,7 @@
     },
     {
       "id": "sample_video_3",
+      "index": 3,
       "title": "Sample Video 3 - Working",
       "thumbnail": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
       "duration": "PT3M32S",  
@@ -46,6 +49,7 @@
     },
     {
       "id": "sample_video_4",
+      "index": 4,
       "title": "[Private video]",
       "thumbnail": "",
       "duration": "PT0S",  
