@@ -72,85 +72,9 @@
     
     <!-- PWA Performance Headers -->
     <meta http-equiv="Cache-Control" content="public, max-age=31536000" />
-    <link rel="preload" href="/manifest.json" as="manifest" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-      // Check if we're in a supported environment for Service Workers
-      const isStackBlitz = window.location.hostname.includes('stackblitz') || 
-                          window.location.hostname.includes('webcontainer');
-      
-      if ('serviceWorker' in navigator && !isStackBlitz) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js', {
-            scope: '/',
-            updateViaCache: 'none'
-          })
-            .then((registration) => {
-              console.log('🚀 PWA: Service Worker registered successfully:', registration.scope);
-              
-              // Check for updates
-              registration.addEventListener('updatefound', () => {
-                console.log('🚀 PWA: New service worker installing...');
-                const newWorker = registration.installing;
-                newWorker?.addEventListener('statechange', () => {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log('🚀 PWA: New content available, will refresh...');
-                    window.location.reload();
-                  }
-                });
-              });
-            })
-            .catch((registrationError) => {
-              console.error('❌ PWA: Service Worker registration failed:', registrationError);
-            });
-        });
-      } else if (isStackBlitz) {
-        console.log('ℹ️ PWA: Service Workers not supported in this environment (StackBlitz/WebContainer)');
-      } else {
-        console.warn('⚠️ PWA: Service Worker not supported in this browser');
-      }
-
-      // PWA install event listeners
-      let deferredPrompt;
-      
-      window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('🚀 PWA: beforeinstallprompt Event fired');
-        e.preventDefault();
-        deferredPrompt = e;
-        // Store the event for later use
-        window.installPromptEvent = e;
-      });
-
-      window.addEventListener('appinstalled', (evt) => {
-        console.log('🚀 PWA: App was installed successfully');
-        // Clear the deferred prompt
-        deferredPrompt = null;
-        window.installPromptEvent = null;
-        
-        // Show installation success notification
-        if (window.showInstallationSuccess) {
-          window.showInstallationSuccess();
-        }
-      });
-
-      // Manual install trigger
-      window.triggerInstall = async () => {
-        if (deferredPrompt || window.installPromptEvent) {
-          const promptEvent = deferredPrompt || window.installPromptEvent;
-          promptEvent.prompt();
-          const { outcome } = await promptEvent.userChoice;
-          console.log(`🚀 PWA: User response to install prompt: ${outcome}`);
-          deferredPrompt = null;
-          window.installPromptEvent = null;
-        } else {
-          console.log('🚀 PWA: Install prompt not available');
-        }
-      };
-    </script>
   </body>
 </html>
